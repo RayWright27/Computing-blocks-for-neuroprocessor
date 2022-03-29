@@ -1,5 +1,6 @@
 #include <systemc.h>
 #include <macro.h>
+#include <iomanip> 
 
 SC_MODULE(dense) {
 	SC_HAS_PROCESS(dense);

@@ -249,7 +249,9 @@ void conv::convolution(void) {
 			cout<<this<<" CONV results ["<<this<<"]\n";
 			for (int i = 0; i < CONV_ED_param; i++){
 				cout<<std::fixed<<std::setprecision(35)<<convolved_mat[i]<<endl;
-			}/**/
+			}
+			cout<<endl<<endl;
+			/**/
 			conv_done = sc_logic(1);
 			cout << "@" << sc_time_stamp() <<" "<<this<<" layer calculated"<<endl;
 		}

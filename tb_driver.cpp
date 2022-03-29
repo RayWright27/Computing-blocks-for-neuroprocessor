@@ -44,7 +44,7 @@ vector<vector<vector<float>>> tb_driver::read_image(std::string filename)
             }
         }
     }
-        
+         
     return image_tensor;
     
 }*/
@@ -375,7 +375,7 @@ void tb_driver::secondConv_sink(void){
             for (int i = 0; i < N5; i++) {
                     for (int j = 0; j < M5; j++) {
                         for (int k = 0; k < L4; k++) {
-                            secondConv_result_arr[i][j][k]=secondConv_result_flattened[i*M5*L4+j*L4+k+1]; 
+                            secondConv_result_arr[i][j][k]=secondConv_result_flattened[i*M5*L4+j*L4+k]; 
                         }
                     }
             } 
@@ -400,26 +400,241 @@ void tb_driver::secondConv_sink(void){
     }
 };
 
-
-/*
-void tb_driver::generate_coeff(void){
-    std::fstream file( coefffile, std::fstream::in);
-    if(!file){
-        cout<<"Файл "<<coefffile<<" не найден\n";
+void tb_driver::secondMaxPool_sink(void){
+    secondMaxPool_result_rdy.write(0);
+    while(true){
+        if (secondMaxPool_fetched == sc_logic(0)){
+            for(int i = 0; i < POOL_ED2; i++){
+                secondMaxPool_result_rdy.write(1);
+                do{
+                    wait(clk->posedge_event());
+                }while (!secondMaxPool_result_vld.read());
+                secondMaxPool_result_flattened[i]=secondMaxPool_result.read();
+                secondMaxPool_result_rdy.write(0);
+            }
+            cout<<"@" << sc_time_stamp() <<" data from secondMaxPool recieved"<<endl;
+            for (int i = 0; i < POOLOUT11; i++) {
+                    for (int j = 0; j < POOLOUT22; j++) {
+                        for (int k = 0; k < POOLOUT33; k++) {
+                            secondMaxPool_result_arr[i][j][k] =
+                            secondMaxPool_result_flattened[i*POOLOUT22*POOLOUT33+j*POOLOUT33+k]; 
+                        }
+                    }
+            } 
+            #ifdef TB_OUTPUT 
+                cout<<"[отладочный вывод][DRI_TB] результат secondMaxPool:"<<endl;
+                for (int i = 0; i < POOLOUT11; i++) {
+                    for (int j = 0; j < POOLOUT22; j++) {
+                        for (int k = 0; k < POOLOUT33; k++) {
+                            cout <<std::setprecision(35)<<std::fixed<< 
+                            secondMaxPool_result_arr[i][j][k] << "\n ";
+                        }
+                    }
+                }
+                 cout << "_________________[secondMaxPool]" << endl;
+            #endif 
+            secondMaxPool_fetched == sc_logic(1);
+        }
+        else{
+            wait(clk->posedge_event());
+        }
     }
-    for (int i = 0; i < DENSE1_COEFF; i++){
-        file >> coeff_flattened[i];
+    
+};/**/
+
+void tb_driver::generate_kernel3(void){
+    if(kernels_generated3 == sc_logic(0)){
+        cout<<"VECTOR SIZE = "<<weights_thirdConv.size()<<" "<<weights_thirdConv[0].size()<<" "<<
+        weights_thirdConv[0][0].size()<<" "<<weights_thirdConv[0][0][0].size()<<endl;
+        for (int i = 0; i < M6; ++i) {
+			for (int k = 0; k < N6; ++k) {
+				for (int j = 0; j < C3; ++j) {
+					for (int c = 0; c < L5; c++){
+						kernel3_flattened[i * N6 * C3 * L5 + 
+						k * C3 * L5 + j * L5 + c] = weights_thirdConv[i][k][j][c];
+					}
+				}
+			}
+		} 
+        /*
+        cout<<"kernel3_flattened\n";
+        for (int i = 0; i < KER3; i++){
+            cout <<std::fixed<<std::setprecision(35)<< kernel3_flattened[i] << "\n ";
+            
+        } /**/ 
+
+        kernel3.write(0);
+        kernel3_vld.write(0);
+
+        //поэлементная передача данных на порты
+        double kernel3_tmp;
+        for (int i = 0; i < KER3; i++){
+            kernel3_vld.write(1);
+            kernel3_tmp=kernel3_flattened[i];
+            kernel3.write(kernel3_tmp);
+            do{
+                wait(clk->posedge_event());
+            }while(!kernel3_rdy.read());
+            kernel3_vld.write(0);
+        }
+        kernel3.write(0);
+        kernels_generated3 = sc_logic(1);
+    }
+    else{
+        wait(clk->posedge_event());
+    }
+};
+
+void tb_driver::generate_biases3(void){
+    for (int i = 0; i < BIASES3; i++){
+        biases3_flattened[i] = biases_thirdConv[i];
+    }
+
+    biases3.write(0);
+    biases3_vld.write(0);
+    
+    double biases3_tmp;
+    for (int i = 0 ;i < BIASES3;i++){
+        biases3_vld.write(1);
+        biases3_tmp=biases3_flattened[i];
+        biases3.write(biases3_tmp);
+        do{
+            wait(clk->posedge_event());
+        }while(!biases3_rdy.read());
+        biases3_vld.write(0);
+    }
+    biases3.write(0);
+};
+
+void tb_driver::thirdConv_sink(void){
+    //инициализируем хэндшейк
+    thirdConv_result_rdy.write(0);
+    //wait(clk->posedge_event());
+    while(true){
+        if (thirdConv_fetched == sc_logic(0)){
+            for(int i=0;i<CONV_ED3;i++){
+                thirdConv_result_rdy.write(1);
+                do{
+                    wait(clk->posedge_event());
+                }while (!thirdConv_result_vld.read());
+                thirdConv_result_flattened[i]=thirdConv_result.read();
+                thirdConv_result_rdy.write(0);
+                //fprintf(outfp, "%f\n", conv_2d_1_result.read());
+            }
+            cout<<"@" << sc_time_stamp() <<" convolution data from thirdConv recieved"<<endl;
+            #ifdef TB_OUTPUT
+            /* 
+            for(int i=0;i<CONV_ED3+1;i++){
+               cout<<std::setprecision(35)<<
+               std::fixed<<thirdConv_result_flattened[i]<<endl;
+            }*/
+            for (int i = 0; i < N7; i++) {
+                    for (int j = 0; j < M7; j++) {
+                        for (int k = 0; k < L5; k++) {
+                            thirdConv_result_arr[i][j][k]=thirdConv_result_flattened[i*M7*L5+j*L5+k]; 
+                        }
+                    }
+            } 
+           
+                cout<<"[отладочный вывод][DRI_TB] результат thirdConv:"<<endl;
+                
+                for (int i = 0; i < N7; i++) {
+                    for (int j = 0; j < M7; j++) {
+                            for (int k = 0; k < L5; k++) {
+                            cout <<std::setprecision(35)<<std::fixed<<thirdConv_result_arr[i][j][k] << "\n ";
+                        }
+                       
+                    } 
+                }
+                cout << "_________________[thirdConv]" << endl;
+            #endif 
+            thirdConv_fetched = sc_logic(1);
+        }
+        else{
+            wait(clk->posedge_event());
+        }
+    }
+};
+
+void tb_driver::generate_kernel4(void){
+    if(kernels_generated4 == sc_logic(0)){
+        cout<<"weights_fourthConv SIZE = "<<weights_fourthConv.size()<<" "<<weights_fourthConv[0].size()<<" "<<
+        weights_fourthConv[0][0].size()<<" "<<weights_fourthConv[0][0][0].size()<<endl;
+        for (int i = 0; i < M8; ++i) {
+			for (int k = 0; k < N8; ++k) {
+				for (int j = 0; j < C4; ++j) {
+					for (int c = 0; c < L6; c++){
+						kernel3_flattened[i * N8 * C4 * L6 + 
+						k * C4 * L6 + j * L6 + c] = weights_thirdConv[i][k][j][c];
+					}
+				}
+			}
+		} 
+        /*
+        cout<<"kernel3_flattened\n";
+        for (int i = 0; i < KER3; i++){
+            cout <<std::fixed<<std::setprecision(35)<< kernel3_flattened[i] << "\n ";
+            
+        } /**/ 
+
+        kernel4.write(0);
+        kernel4_vld.write(0);
+
+        //поэлементная передача данных на порты
+        double kernel4_tmp;
+        for (int i = 0; i < KER4; i++){
+            kernel4_vld.write(1);
+            kernel4_tmp=kernel4_flattened[i];
+            kernel4.write(kernel4_tmp);
+            do{
+                wait(clk->posedge_event());
+            }while(!kernel4_rdy.read());
+            kernel4_vld.write(0);
+        }
+        kernel4.write(0);
+        kernels_generated4 = sc_logic(1);
+    }
+    else{
+        wait(clk->posedge_event());
+    }
+};
+
+void tb_driver::generate_biases4(void){
+    for (int i = 0; i < BIASES4; i++){
+        biases4_flattened[i] = biases_fourthConv[i];
+    }
+
+    biases4.write(0);
+    biases4_vld.write(0);
+    
+    double biases4_tmp;
+    for (int i = 0 ;i < BIASES4;i++){
+        biases4_vld.write(1);
+        biases4_tmp=biases4_flattened[i];
+        biases4.write(biases4_tmp);
+        do{
+            wait(clk->posedge_event());
+        }while(!biases4_rdy.read());
+        biases4_vld.write(0);
+    }
+    biases4.write(0);
+};
+
+void tb_driver::generate_coeff(void){
+    cout<<"weights_firstDense SIZE = "<<weights_firstDense.size()<<" "<<weights_firstDense[0].size()<<endl;
+    for (int j = 0; j < DENSE1_COEFF2; ++j) {
+        for (int i = 0; i < DENSE1_COEFF1; i++){
+            coeff_flattened[j*DENSE1_COEFF1 + i] = weights_firstDense[j][i];
+        }
     }
     /*
     cout<<"------------------------------------------------------------------"<<endl;
-    for (int i = 0; i < DENSE_COEFF; i++){
-        cout<<std::setprecision(10)<<std::fixed
+    for (int i = 0; i < DENSE1_COEFF; i++){
+        cout<<std::setprecision(35)<<std::fixed
         <<coeff_flattened[i]<<endl;
     }
     cout<<"------------------------------------------------------------------"<<endl;
     /**/
-   /* 
-    file.close();
     double coeff_tmp;
     coeff.write(0);
     coeff_vld.write(0);
@@ -435,29 +650,25 @@ void tb_driver::generate_coeff(void){
     coeff.write(0);
     
 };/**/
-/*
-void tb_driver::generate_biases3(void){
-    std::fstream file( biasesfile, std::fstream::in);
-    if(!file){
-        cout<<"Файл "<<biasesfile<<" не найден\n";
-    }
-    for (int i = 0; i < BIASES3; i++){
-        file >> biases3_arr[i];
-    }
-    file.close();
 
-    biases3.write(0);
-    biases3_vld.write(0);
-    for (int i = 0; i < BIASES3; i++){
-        biases3_vld.write(1);
-        biases3.write(biases3_arr[i]);
+void tb_driver::generate_biases5(void){
+    for (int i = 0; i < BIASES5; i++){
+        biases5_arr[i] = biases_firstDense[i];
+        
+    }
+
+    biases5.write(0);
+    biases5_vld.write(0);
+    for (int i = 0; i < BIASES5; i++){
+        biases5_vld.write(1);
+        biases5.write(biases5_arr[i]);
         do{
             wait(clk->posedge_event());
-        }while(!biases3_rdy.read());
-        biases3_vld.write(0);
+        }while(!biases5_rdy.read());
+        biases5_vld.write(0);
     }
 };
-
+/*
 void tb_driver::dense1_sink(void){
     dense1_result_rdy.write(0);
     while(true){
@@ -487,32 +698,28 @@ void tb_driver::dense1_sink(void){
         }
     }
 };/**/
-/*
 void tb_driver::generate_coeff2(void){
-    std::fstream file2( coefffile2, std::fstream::in);
-    if(!file2){
-        cout<<"Файл "<<coefffile2<<" не найден\n";
-    }
-    for (int i = 0; i < DENSE2_COEFF; i++){
-        file2 >> coeff2_flattened[i];
+    cout<<"weights_labeller SIZE = "<<weights_labeller.size()<<" "<<weights_labeller[0].size()<<endl;
+    for (int j = 0; j < DENSE2_COEFF2; ++j) {
+        for (int i = 0; i < DENSE2_COEFF1; i++){
+            coeff2_flattened[j*DENSE2_COEFF1 + i] = weights_labeller[j][i];
+        }
     }
     /*
     cout<<"------------------------------------------------------------------"<<endl;
     for (int i = 0; i < DENSE2_COEFF; i++){
-        cout<<std::setprecision(10)<<std::fixed
+        cout<<std::setprecision(35)<<std::fixed
         <<coeff2_flattened[i]<<endl;
     }
     cout<<"------------------------------------------------------------------"<<endl;
     /**/
-   /*
-    file2.close();
-    double coeff2_tmp;
+    double coeff_tmp;
     coeff2.write(0);
     coeff2_vld.write(0);
     for (int i = 0; i < DENSE2_COEFF; i++){
         coeff2_vld.write(1);
-        coeff2_tmp=coeff2_flattened[i];
-        coeff2.write(coeff2_tmp);
+        coeff_tmp=coeff2_flattened[i];
+        coeff2.write(coeff_tmp);
         do{
             wait(clk->posedge_event());
         }while(!coeff2_rdy.read());
@@ -520,30 +727,27 @@ void tb_driver::generate_coeff2(void){
     }
     coeff2.write(0);
     
-};
+};/**/
 
-void tb_driver::generate_biases4(void){
-    std::fstream file( biasesfile2, std::fstream::in);
-    if(!file){
-        cout<<"Файл "<<biasesfile2<<" не найден\n";
+void tb_driver::generate_biases6(void){
+    for (int i = 0; i < BIASES6; i++){
+        biases6_arr[i] = biases_labeller[i];
+        
     }
-    for (int i = 0; i < BIASES4; i++){
-        file >> biases4_arr[i];
-    }
-    file.close();
 
-    biases4.write(0);
-    biases4_vld.write(0);
-    for (int i = 0; i < BIASES4; i++){
-        biases4_vld.write(1);
-        biases4.write(biases4_arr[i]);
+    biases6.write(0);
+    biases6_vld.write(0);
+    for (int i = 0; i < BIASES6; i++){
+        biases6_vld.write(1);
+        biases6.write(biases6_arr[i]);
         do{
             wait(clk->posedge_event());
-        }while(!biases4_rdy.read());
-        biases4_vld.write(0);
+        }while(!biases6_rdy.read());
+        biases6_vld.write(0);
     }
 };
-
+/**/
+/*
 void tb_driver::dense2_sink(void){
     dense2_result_rdy.write(0);
     while(true){

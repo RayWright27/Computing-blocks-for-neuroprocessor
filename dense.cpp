@@ -1,28 +1,19 @@
 #include "dense.h"
 #include <math.h>
 #include <assert.h>
-void softmax(double* input, size_t size) {
-//	assert(0 <= size <= sizeof(input) / sizeof(double));
-	int i;
-	double m, sum, constant;
-
-	m = -INFINITY;
-	for (i = 0; i < size; ++i) {
-		if (m < input[i]) {
-			m = input[i];
-		}
-	}
-
-	sum = 0.0;
-	for (i = 0; i < size; ++i) {
-		sum += exp(input[i] - m);
-	}
-
-	constant = m + log(sum);
-	for (i = 0; i < size; ++i) {
-		input[i] = exp(input[i] - constant);
-	}
-
+void softmax(double *input, size_t size) {
+    auto out(input);
+    size_t sz = size;
+    float sum = 0.f;
+    for (size_t i = 0; i < sz; ++i) {
+        out[i] = exp(out[i]);
+        sum += out[i];
+    }
+    if (sum != 0.f) {
+        for (size_t i = 0; i < sz; ++i) {
+            out[i] /= sum;
+        }
+    }
 }
 
 void dense::recieve_input(void){
@@ -70,16 +61,14 @@ void dense::recieve_coeff(void){
                     coeff_arr[j][i] = coeff_flattened[DENSE_COEFF2_param * j + i];
                 }
             }
-            
-/*           for(int j = 0; j < DENSE_COEFF2; j++){
-                for(int i = 0; i < DENSE_COEFF1; i++){
-                    cout<<coeff_arr[j][i]<<" ";
+             cout<<"---------------------------coeffs:["<<this<<"]----------------------------------"<<endl;
+           for(int j = 0; j < DENSE_COEFF1_param; j++){
+                for(int i = 0; i < DENSE_COEFF2_param; i++){
+                    cout<<"coeff_arr["<<j<<"]["<<i<<"]="<<coeff_arr[j][i]<<"\n";
                 }
-                cout<<endl;
             }
             cout<<endl<<endl<<endl<<endl;
-            */
-           coeff_recieved = sc_logic(1);
+            coeff_recieved = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" dense coeff recieved ["<<this<<"]"<<endl;
         }
         else{
@@ -100,6 +89,10 @@ void dense::recieve_biases(void){
                 }while(!biases_vld.read());
                 biases_arr[i]=biases.read();
                 biases_rdy.write(0);
+            }
+            cout<<"---------------------------biases:["<<this<<"]----------------------------------"<<endl;
+            for(int i = 0; i < BIASES_param; i++){
+                cout<<biases_arr[i]<<'\n';
             }
             biases_recieved = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" dense biases recieved ["
@@ -137,13 +130,12 @@ void dense::dense_func(void) {
                 softmax(dense_result_arr, DENSE_COEFF2_param);
             }
            
-            /*
-             cout<<"-------------------------------------------------------------"<<endl;
-            for (int i = 0; i < DENSE_OUT1; i++) {
-                cout << dense_result_arr[i] <<endl;
+             cout<<"---------------------------["<<this<<"]----------------------------------"<<endl;
+            for (int i = 0; i < OUT_param; i++) {
+                cout <<std::fixed<<std::setprecision(35)<<dense_result_arr[i] <<endl;
             }
             cout<<"-------------------------------------------------------------"<<endl;
-            cout <<endl<< endl;*/ 
+            cout <<endl<< endl;
             /**/
              cout<<"@" << sc_time_stamp() <<" dense layer calculated ["
             <<this<<"]"<<endl;

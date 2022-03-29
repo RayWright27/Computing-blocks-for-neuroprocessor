@@ -70,7 +70,7 @@
 #define KER3 M6*N6*L4*C2//длина вектора кернела2
 #define M7 ((POOLOUT11-M6+2*ZERO_PAD3)/STRIDE3+1)
 #define N7 ((POOLOUT22-N6+2*ZERO_PAD3)/STRIDE3+1)
-#define CONV_ED2 M6*N6*L5
+#define CONV_ED3 M7*N7*L5
 #define BIASES3 16
 
 //для thridMaxPool
@@ -82,7 +82,7 @@
 #define POOL_STRIDE3 2//
 #define POOL_IN3 F_M111*F_M222*F_M333
 #define POOLOUT111 ((F_M111-P111)/POOL_STRIDE3 +1)
-#define POOLOUT222 ((F_M221-P222)/POOL_STRIDE3 +1)
+#define POOLOUT222 ((F_M222-P222)/POOL_STRIDE3 +1)
 #define POOLOUT333 F_M333
 #define POOL_ED3 POOLOUT111*POOLOUT222*POOLOUT333
 
@@ -96,8 +96,8 @@
 #define KER4 M8*N8*L6*C4//длина вектора кернела2
 #define M9 ((POOLOUT111-M8+2*ZERO_PAD4)/STRIDE4+1)
 #define N9 ((POOLOUT222-N8+2*ZERO_PAD4)/STRIDE4+1)
-#define CONV_ED2 M9*N9*L6
-#define BIASES2 8
+#define CONV_ED4 M9*N9*L6
+#define BIASES4 8
 
 //для fourthMaxPool
 #define P1111 2//число строк КЕРНЕЛА(POOL) 
@@ -116,14 +116,14 @@
 #define DENSE1_COEFF1 POOL_ED4
 #define DENSE1_COEFF2 256
 #define DENSE1_COEFF DENSE1_COEFF1*DENSE1_COEFF2
-#define BIASES3 256
+#define BIASES5 256
 #define DENSE1_OUT 256 
 
 //labeller (secondDense)
 #define DENSE2_COEFF1 DENSE1_OUT
 #define DENSE2_COEFF2 5
 #define DENSE2_COEFF DENSE2_COEFF1*DENSE2_COEFF2
-#define BIASES4 5
+#define BIASES6 5
 #define DENSE2_OUT 5 
 
 

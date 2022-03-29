@@ -105,9 +105,9 @@ void max_pool::max_pooling(void) {
                         wait(clk->posedge_event());
                     }
 				}
-			}/*
+			}
             cout<<"отладочный вывод ["<<this<<"] max_pooling\n";
-            for(int i =0; i < POOL_ED; i++){
+            for(int i =0; i < POOL_ED_param; i++){
                 cout<<"max_pooled["<<i<<"] = "<<max_pooled[i]<<endl;
             }/**/
             max_pool_done = sc_logic(1);
