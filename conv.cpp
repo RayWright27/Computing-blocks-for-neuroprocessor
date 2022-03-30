@@ -245,10 +245,10 @@ void conv::convolution(void) {
 				}
 			}
 
-			/*
+		
 			cout<<this<<" CONV results ["<<this<<"]\n";
 			for (int i = 0; i < CONV_ED_param; i++){
-				cout<<std::fixed<<std::setprecision(35)<<convolved_mat[i]<<endl;
+				cout<<"convolved_mat["<<i<<"]"<<convolved_mat[i]<<endl;
 			}
 			cout<<endl<<endl;
 			/**/

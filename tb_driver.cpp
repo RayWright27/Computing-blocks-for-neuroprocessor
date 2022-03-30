@@ -163,10 +163,10 @@ void tb_driver::generate_image(void){
         }
         file.close();
         /**/
-        /*
+        
             cout<<"------------image_flattened-----------"<<endl;
         for (int i=0;i<IMG;i++){
-            cout<<std::fixed <<std::setprecision(35)<< image_flattened[i]<< " \n";
+            cout<< image_flattened[i]<< " \n";
         } 
         /* */
         //поэлементная передача данных на порты
@@ -624,7 +624,7 @@ void tb_driver::generate_coeff(void){
     cout<<"weights_firstDense SIZE = "<<weights_firstDense.size()<<" "<<weights_firstDense[0].size()<<endl;
     for (int j = 0; j < DENSE1_COEFF2; ++j) {
         for (int i = 0; i < DENSE1_COEFF1; i++){
-            coeff_flattened[j*DENSE1_COEFF1 + i] = weights_firstDense[j][i];
+            coeff_flattened[j*DENSE1_COEFF1 + i] = weights_firstDense[i][j];
         }
     }
     /*
@@ -702,13 +702,13 @@ void tb_driver::generate_coeff2(void){
     cout<<"weights_labeller SIZE = "<<weights_labeller.size()<<" "<<weights_labeller[0].size()<<endl;
     for (int j = 0; j < DENSE2_COEFF2; ++j) {
         for (int i = 0; i < DENSE2_COEFF1; i++){
-            coeff2_flattened[j*DENSE2_COEFF1 + i] = weights_labeller[j][i];
+            coeff2_flattened[j*DENSE2_COEFF1 + i] = weights_labeller[i][j];
         }
     }
     /*
-    cout<<"------------------------------------------------------------------"<<endl;
+    cout<<"-----------------------------TB_DRIVER COEFFS FOR secondDense-------------------------------------"<<endl;
     for (int i = 0; i < DENSE2_COEFF; i++){
-        cout<<std::setprecision(35)<<std::fixed
+        cout
         <<coeff2_flattened[i]<<endl;
     }
     cout<<"------------------------------------------------------------------"<<endl;

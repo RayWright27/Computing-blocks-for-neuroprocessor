@@ -136,7 +136,7 @@ SC_MODULE(tb_driver){
     double          biases6_arr[BIASES6];
     double*         dense2_result_arr;
     
-    const char*     imagefile = "rose1orig.txt";
+    const char*     imagefile = "tulip1.txt";
 
     sc_logic        kernels_generated1 = sc_logic(0);
     sc_logic        biases_generated1 = sc_logic(0);

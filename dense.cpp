@@ -112,6 +112,10 @@ void dense::dense_func(void) {
             for(int i = 0; i < DENSE_COEFF1_param; i++) {
                 for (int j = 0; j < DENSE_COEFF2_param; j++) {
                     dense_result_arr[j] += coeff_arr[i][j] * dense_input[i];
+                    /*
+                    cout<<"dense_result_arr[1]="<<dense_result_arr[1]<<" | coeff_arr[i][1]="<<coeff_arr[i][1]
+                    <<" |  dense_input[i]="<< dense_input[i]<<'\n';
+                    /**/
                     wait(clk->posedge_event());    
                 }			
             }
@@ -132,7 +136,7 @@ void dense::dense_func(void) {
            
              cout<<"---------------------------["<<this<<"]----------------------------------"<<endl;
             for (int i = 0; i < OUT_param; i++) {
-                cout <<std::fixed<<std::setprecision(35)<<dense_result_arr[i] <<endl;
+                cout <<std::scientific<<"dense_result_arr["<<i<<"]"<<dense_result_arr[i] <<endl;
             }
             cout<<"-------------------------------------------------------------"<<endl;
             cout <<endl<< endl;
