@@ -13,7 +13,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //объявление модулей
     
     tb_driver   *DRI_TB;
-    conv        *firstConv;
+    conv        *firstConv;/*
     max_pool    *firstMaxPool;  
     conv        *secondConv;
     max_pool    *secondMaxPool;
@@ -23,7 +23,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     max_pool    *fourthMaxPool;
     dense       *firstDense; 
     dense       *secondDense;
-
+    /**/
     // сигналы
     sc_clock clk;//("clk", 10, SC_NS);
     sc_signal<bool>   rst;
@@ -250,7 +250,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         firstConv->conv_2d_result_rdy_next(firstConv_result_rdy_sig_2);
         firstConv->conv_2d_result_vld_tb(firstConv_result_vld_sig_1);
         firstConv->conv_2d_result_vld_next(firstConv_result_vld_sig_2);
-        
+        /*
         firstMaxPool = new max_pool("firstMaxPool", P1, P2, F_M1, F_M2, F_M3, POOL_IN, 
                                      POOLOUT1, POOLOUT2, POOLOUT3, POOL_ED);
         firstMaxPool->clk(clk);
@@ -284,7 +284,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         secondConv->conv_2d_result_rdy_next(secondConv_result_rdy_sig_2);
         secondConv->conv_2d_result_vld_tb(secondConv_result_vld_sig_1); 
         secondConv->conv_2d_result_vld_next(secondConv_result_vld_sig_2); 
-        /**/ 
+        
         secondMaxPool = new max_pool("secondMaxPool", P11, P22, F_M11, F_M22, F_M33, POOL_IN2, 
                                      POOLOUT11, POOLOUT22, POOLOUT33, POOL_ED2);
         secondMaxPool->clk(clk);
@@ -318,7 +318,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         thirdConv->conv_2d_result_rdy_next(thirdConv_result_rdy_sig_2);
         thirdConv->conv_2d_result_vld_tb(thirdConv_result_vld_sig_1); 
         thirdConv->conv_2d_result_vld_next(thirdConv_result_vld_sig_2); 
-        /**/ 
+        
         thirdMaxPool = new max_pool("thirdMaxPool", P111, P222, F_M111, F_M222, F_M333, POOL_IN3, 
                                      POOLOUT111, POOLOUT222, POOLOUT333, POOL_ED3);
         thirdMaxPool->clk(clk);
@@ -352,7 +352,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         fourthConv->conv_2d_result_rdy_next(fourthConv_result_rdy_sig_2);
         fourthConv->conv_2d_result_vld_tb(fourthConv_result_vld_sig_1); 
         fourthConv->conv_2d_result_vld_next(fourthConv_result_vld_sig_2); 
-        /**/ 
+        /**/ /*
         fourthMaxPool = new max_pool("fourthMaxPool", P1111, P2222, F_M1111, F_M2222, F_M3333, POOL_IN4, 
                                      POOLOUT1111, POOLOUT2222, POOLOUT3333, POOL_ED4);
         fourthMaxPool->clk(clk);
@@ -411,7 +411,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //деструктор
     ~TOP(){
         delete DRI_TB;
-        delete firstConv;
+        delete firstConv;/*
         delete firstMaxPool;
         delete secondConv;
         delete secondMaxPool;

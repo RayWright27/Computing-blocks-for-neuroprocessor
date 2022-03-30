@@ -163,7 +163,7 @@ void tb_driver::generate_image(void){
         }
         file.close();
         /**/
-        
+        /*
             cout<<"------------image_flattened-----------"<<endl;
         for (int i=0;i<IMG;i++){
             cout<< image_flattened[i]<< " \n";

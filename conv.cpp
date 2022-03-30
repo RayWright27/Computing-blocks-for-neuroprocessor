@@ -24,14 +24,14 @@ void conv::recieve_image(void) {
 						image_in_flattened[k * M2_param * C1_param + j *C1_param + i]; //можно цикл по C1 сделать в конце
 					}
 				}
-			}/*
+			}
 			cout << "[отладочный вывод]["<< this <<"] изображение:" << endl;
 			cout <<"размеры: "<< M2_param <<" "<< N2_param<<" " << C1_param<<endl;
 			for (int k = 0; k < N2_param; ++k) {
 				for (int j = 0; j < M2_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
 					
-						cout <<std::fixed <<std::setprecision(35)<< image_in[k][j][i] << "\n ";
+						cout<<"image_in["<<k<<"]["<<j<<"]["<<i<<"]="<< image_in[k][j][i] << "\n ";
 					}
 					//cout << endl;
 				}
@@ -62,16 +62,16 @@ void conv::zero_padding(void){
 			for (int k = 0; k < N2_param; ++k) {
 				for (int j = 0; j < M2_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
-						image_in_padded[k + 2][j + 2][i] = image_in[k][i][j];
+						image_in_padded[k + 1][j + 1][i] = image_in[k][i][j];
 						wait(clk->posedge_event());
 					}
 				}
-			}/*
-			for (int k = 0; k < N2_param+2*2; ++k) {
-				for (int j = 0; j < M2_param+2*2; j++){
+			}
+			for (int k = 0; k < N2_param+2*ZERO_PAD_param; ++k) {
+				for (int j = 0; j < M2_param+2*ZERO_PAD_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
 						cout<<"image_in_padded["<<k<<"]["<<j<<"]["<<i<<"] = "<<
-						std::fixed<<std::setprecision(35)<<image_in_padded[k][j][i]<<'\n';
+						image_in_padded[k][j][i]<<'\n';
 					}
 				}
 			}/**/			
@@ -108,10 +108,10 @@ void conv::recieve_biases(void) {
 			biases_in[k]=biases.read();
 			biases_rdy.write(0);
 		}
-/*
+
 		cout << "[отладочный вывод]["<<this <<"] баесы:" << endl;
 		for (int k = 0; k < BIASES_param; ++k) {
-				cout<<biases_in[k]<<endl;
+				cout<<"biases_in["<<k<<"]="<<biases_in[k]<<endl;
 		}/**/
 		biases_recieved=sc_logic(1);
 		cout<<"@"<<sc_time_stamp()<<" conv biases recieved ["<<this<<"]"<<endl;
@@ -148,13 +148,14 @@ void conv::recieve_kernel(void) {
 					}
 				}
 			}
-		}/*
-		cout<<endl<< "[отладочный вывод]["<< this <<"] кернел:" << endl; 
+		}
+		cout<<endl<< "[отладочный вывод CONV]["<< this <<"] кернел:" << endl; 
 		for (int i = 0; i < M1_param; i++){	
 			for (int k = 0; k < N1_param; ++k) {
 				for (int c = 0; c < C1_param; ++c) {
 					for (int j = 0; j < L1_param; ++j) {
-						cout <<std::setprecision(35)<< kernel_in[i][k][c][j] << "\n";
+						cout<<"kernel_in["<<i<<"]["<<k<<"]["<<c<<"]["
+						<<j<<"]="<< kernel_in[i][k][c][j] << "\n";
 					}
 				}
 			}
@@ -176,14 +177,16 @@ void conv::convolution(void) {
 			     conv_done == sc_logic(0) and zero_pad_done == sc_logic(1))
 		{
 
-			//свёртка		
+			//свёртка	
+			cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;	
 			for (int k = 0; k <L1_param; k++) {//число кернелов и выходных матрицы соотв-но
 				for (int i = 0; i < M3_param; i++) {//(высота/кол-во строк) выходного изображения
 					for (int j = 0; j < N3_param; j++) {//(ширина/кол-во столбцов) выходного изображения
 						for (int c = 0; c < C1_param; c++){//количество входных изображений
 							for (int m = 0; m < M1_param; m++) {//(высота/кол-во строк) кернела
 								for (int n = 0; n < N1_param; n++) {//(ширина/кол-во столбцов) кернела
-									result[i][j][k] += kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];
+									result[i][j][k] += 
+									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];
 									next_trigger();
 										if(verbose==1){ 
 										cout<<this<<" N1_param = "<<n<<" | M1_param = "<<m
@@ -194,6 +197,8 @@ void conv::convolution(void) {
 							}
 						}
 						result[i][j][k] += biases_in[k];
+						cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";
+						
 					}
 					//cout << "_________________" << endl;
 					//cout << endl << endl;
@@ -223,11 +228,11 @@ void conv::convolution(void) {
 				}
 			}	/**/
 /*
-			cout<<"[отладочный вывод]["<< this <<"] результат:"<<endl;
+			cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;
 			for (int k = 0; k < N3_param; ++k) {
 				for (int i = 0; i < M3_param; ++i) {
 					for (int j = 0; j < L3_param; ++j) {
-						cout <<std::setprecision(3) << result[k][i][j] << " ";
+						cout << result[k][i][j] << " ";
 					}
 					cout << endl;
 				}
@@ -245,7 +250,7 @@ void conv::convolution(void) {
 				}
 			}
 
-		
+/*		
 			cout<<this<<" CONV results ["<<this<<"]\n";
 			for (int i = 0; i < CONV_ED_param; i++){
 				cout<<"convolved_mat["<<i<<"]"<<convolved_mat[i]<<endl;
