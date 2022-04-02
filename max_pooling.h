@@ -14,6 +14,7 @@ SC_MODULE(max_pool) {
 	int					POOLOUT2_param;
 	int					POOLOUT3_param;
 	int					POOL_ED_param;
+	int					verbose_param;
 	char*				module_name;
 	//порты
 	sc_in<bool> 		clk, rst;
@@ -50,7 +51,7 @@ SC_MODULE(max_pool) {
 	void send_to_next(void);
 
 	max_pool(sc_module_name module_name, 
-			 int param1, int param2, int param3, int param4, int param5, int param6, int param7, int param8, int param9, int param10)
+			 int param1, int param2, int param3, int param4, int param5, int param6, int param7, int param8, int param9, int param10, bool param11)
 			 :sc_module(module_name),
 			 P1_param(param1),
 			 P2_param(param2),
@@ -61,7 +62,8 @@ SC_MODULE(max_pool) {
 			 POOLOUT1_param(param7),
 			 POOLOUT2_param(param8),
 			 POOLOUT3_param(param9),
-			 POOL_ED_param(param10)
+			 POOL_ED_param(param10),
+			 verbose_param(param11)
 		{
 		cout<<"-------------------------------"<<module_name<<"["<<this<<"]"<< "-------------------------------"<<endl;
 		cout<<"размеры 'ядра' пулинга = "<<P1_param<<"x"<<P2_param<<" | входное изображение = "<<F_M1_param<<"x"<<F_M2_param<<"x"<<F_M3_param<<

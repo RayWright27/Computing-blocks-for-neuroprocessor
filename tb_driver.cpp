@@ -295,6 +295,7 @@ void tb_driver::generate_kernel2(void){
 					for (int c = 0; c < L4; c++){
 						kernel2_flattened[i * N4 * C2 * L4 + 
 						k * C2 * L4 + j * L4 + c] = weights_secondConv[i][k][j][c];
+                        
 					}
 				}
 			}
@@ -446,12 +447,21 @@ void tb_driver::generate_kernel3(void){
     if(kernels_generated3 == sc_logic(0)){
         cout<<"VECTOR SIZE = "<<weights_thirdConv.size()<<" "<<weights_thirdConv[0].size()<<" "<<
         weights_thirdConv[0][0].size()<<" "<<weights_thirdConv[0][0][0].size()<<endl;
+        
         for (int i = 0; i < M6; ++i) {
 			for (int k = 0; k < N6; ++k) {
 				for (int j = 0; j < C3; ++j) {
-					for (int c = 0; c < L5; c++){
+					for (int c = 0; c < L5; ++c){ 
 						kernel3_flattened[i * N6 * C3 * L5 + 
 						k * C3 * L5 + j * L5 + c] = weights_thirdConv[i][k][j][c];
+                       
+                        cout<<std::scientific<<"kernel3_flattened["<<i * N6 * C3 * L5 + 
+						k * C3 * L5 + j * L5 + c<<"]="<<kernel3_flattened[i * N6 * C3 * L5 + 
+						k * C3 * L5 + j * L5 + c]<<" | weights_thirdConv=["<<i<<"]["<<k<<"]["<<j<<"]["<<c<<"]="
+                        <<weights_thirdConv[i][k][j][c]<<"\n";/**/
+
+                        lmao[i*N6*C3*L5 + k*C3*L5 + j*L5 + c]=weights_thirdConv[i][k][j][c];
+                        
 					}
 				}
 			}
@@ -459,19 +469,32 @@ void tb_driver::generate_kernel3(void){
         /*
         cout<<"kernel3_flattened\n";
         for (int i = 0; i < KER3; i++){
-            cout <<std::fixed<<std::setprecision(35)<< kernel3_flattened[i] << "\n ";
+            cout <<std::scientific<<"kernel3_flattened["<<i<<"]="<< kernel3_flattened[i] << "\n ";
             
-        } /**/ 
+        } 
+        cout<<"\n\n\n\n\n";/**/ 
 
         kernel3.write(0);
         kernel3_vld.write(0);
 
         //поэлементная передача данных на порты
+          cout<<"KERNEL3 TEST----------\n";
         double kernel3_tmp;
-        for (int i = 0; i < KER3; i++){
+        for (int i = 0; i < KER3; i++){/*
             kernel3_vld.write(1);
+             cout<<"---------------------------------------------\n";
+            cout<<"kernel3_tmp="<<kernel3_tmp<<" | kernel3_flattened["<<i<<"]="<<kernel3_flattened[i]<<"\n";
             kernel3_tmp=kernel3_flattened[i];
-            kernel3.write(kernel3_tmp);
+            kernel3.write(kernel3_tmp); 
+            cout<<"kernel3_tmp="<<kernel3_tmp<<" | kernel3_flattened["<<i<<"]="<<kernel3_flattened[i]<<"\n";
+            cout<<"---------------------------------------------\n";/**/
+            
+             cout<<"---------------------------------------------\n";
+            cout<<"kernel3_tmp="<<kernel3_tmp<<" | lmao["<<i<<"]="<<lmao[i]<<"\n";
+            kernel3_tmp=lmao[i];
+            kernel3.write(kernel3_tmp); 
+            cout<<"kernel3_tmp="<<kernel3_tmp<<" | lmao["<<i<<"]="<<lmao[i]<<"\n";
+            cout<<"---------------------------------------------\n";/**/
             do{
                 wait(clk->posedge_event());
             }while(!kernel3_rdy.read());
@@ -489,6 +512,12 @@ void tb_driver::generate_biases3(void){
     for (int i = 0; i < BIASES3; i++){
         biases3_flattened[i] = biases_thirdConv[i];
     }
+    cout<<"biases3_flattened\n";
+        for (int i = 0; i < BIASES3; i++){
+            cout <<std::fixed<<std::setprecision(20)<< biases3_flattened[i] << "\n ";
+            
+        } 
+        cout<<"\n\n\n\n\n";/**/
 
     biases3.write(0);
     biases3_vld.write(0);

@@ -100,6 +100,8 @@ SC_MODULE(tb_driver){
 
     double*         kernel3_flattened;
     double          biases3_flattened[BIASES3];
+
+    double*         lmao; //тестовый массив вместо kernel3_flattened
     
     double*         kernel4_flattened;
     double          biases4_flattened[BIASES4];
@@ -214,6 +216,7 @@ SC_MODULE(tb_driver){
         secondMaxPool_result_flattened = new double[POOL_ED2];
 
         kernel3_flattened = new double[KER3];
+        lmao = new double[KER3];
         
         thirdConv_result_flattened = new double[CONV_ED3];
         thirdMaxPool_result_flattened = new double[POOL_ED3];
@@ -331,6 +334,8 @@ SC_MODULE(tb_driver){
 
     ~tb_driver(){
         delete[] kernel2_flattened;
+        delete[] kernel3_flattened;
+        delete[] kernel4_flattened;
         delete[] firstConv_result_flattened;  
         delete[] firstMaxPool_result_flattened; 
         delete[] secondConv_result_flattened;

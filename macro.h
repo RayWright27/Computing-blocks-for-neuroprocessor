@@ -67,7 +67,7 @@
 #define M6 3//число строк КЕРНЕЛА2
 #define N6 3//число столбцов КЕРНЕЛА2
 #define L5 16//число кернелов и выходных изображений соответственно
-#define KER3 M6*N6*L4*C2//длина вектора кернела2
+#define KER3 M6*N6*L5*C3//длина вектора кернела2
 #define M7 ((POOLOUT11-M6+2*ZERO_PAD3)/STRIDE3+1)
 #define N7 ((POOLOUT22-N6+2*ZERO_PAD3)/STRIDE3+1)
 #define CONV_ED3 M7*N7*L5

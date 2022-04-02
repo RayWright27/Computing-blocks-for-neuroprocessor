@@ -1,5 +1,6 @@
 #include "conv.h"
 #include <iomanip>
+#include "weights.hpp"
 void conv::recieve_image(void) {
 	//инициализируем хэндшейк
 	image_rdy.write(0);
@@ -24,18 +25,15 @@ void conv::recieve_image(void) {
 						image_in_flattened[k * M2_param * C1_param + j *C1_param + i]; //можно цикл по C1 сделать в конце
 					}
 				}
-			}
+			}/*
 			cout << "[отладочный вывод]["<< this <<"] изображение:" << endl;
 			cout <<"размеры: "<< M2_param <<" "<< N2_param<<" " << C1_param<<endl;
 			for (int k = 0; k < N2_param; ++k) {
 				for (int j = 0; j < M2_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
-					
 						cout<<"image_in["<<k<<"]["<<j<<"]["<<i<<"]="<< image_in[k][j][i] << "\n ";
 					}
-					//cout << endl;
 				}
-				//cout << endl;
 			}
 			cout << endl;
 			/**/
@@ -62,7 +60,7 @@ void conv::zero_padding(void){
 			for (int k = 0; k < N2_param; ++k) {
 				for (int j = 0; j < M2_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
-						image_in_padded[k + 1][j + 1][i] = image_in[k][i][j];
+						image_in_padded[k + ZERO_PAD_param][j + ZERO_PAD_param][i] = image_in[k][j][i];
 						wait(clk->posedge_event());
 					}
 				}
@@ -138,24 +136,52 @@ void conv::recieve_kernel(void) {
 			kernel_in_flattened[i] = kernel.read();
 			kernel_rdy.write(0);
 		}
+		if(verbose==1){
+			cout<<"kernel_in_flattened "<<this<<"\n";
+			for (int i = 0; i < KER_param; i++){
+				cout <<std::scientific<<"kernel_in_flattened["<<i<<"]="<< kernel_in_flattened[i] << "\n ";
+				
+			} 
+			cout<<"\n\n\n\n\n";/**/ 
+		}
+
 		//разворачивание вектора в 3D массив (сделать в отдельный метод) 
+		if(verbose==1){
+			for (int i = 0; i < M1_param; ++i) {
+			for (int k = 0; k < N1_param; ++k) {
+				for (int j = 0; j < C1_param; ++j) {
+					for (int c = 0; c < L1_param; ++c){
+						
+						kernel_in[i][k][j][c] = weights_thirdConv[i][k][j][c];
+					}
+				}
+			}
+		}
+		}/*
 		for (int i = 0; i < M1_param; ++i) {
 			for (int k = 0; k < N1_param; ++k) {
 				for (int j = 0; j < C1_param; ++j) {
-					for (int c = 0; c < L1_param; c++){
+					for (int c = 0; c < L1_param; ++c){
+						cout<<i<<" "<<k<<" "<<j<<" "<<c<<"\n";
 						kernel_in[i][k][j][c] = kernel_in_flattened[i * N1_param * C1_param * L1_param + 
 						k * C1_param * L1_param + j * L1_param + c];
 					}
 				}
 			}
-		}
-		cout<<endl<< "[отладочный вывод CONV]["<< this <<"] кернел:" << endl; 
-		for (int i = 0; i < M1_param; i++){	
-			for (int k = 0; k < N1_param; ++k) {
-				for (int c = 0; c < C1_param; ++c) {
-					for (int j = 0; j < L1_param; ++j) {
-						cout<<"kernel_in["<<i<<"]["<<k<<"]["<<c<<"]["
-						<<j<<"]="<< kernel_in[i][k][c][j] << "\n";
+		}/**/
+		if(verbose==1){
+			cout << "M1_param= " << M1_param << " N1_param= " << N1_param <<"\n"
+			<<"C1_param= " << C1_param << " L1_param= " << L1_param<<"\n";
+			cout<<endl<< "[отладочный вывод CONV]["<< this <<"] кернел:" << endl; 
+			for (int i = 0; i < M1_param; ++i){	
+				for (int k = 0; k < N1_param; ++k) {	
+					for (int j = 0; j < C1_param; ++j) {
+						for (int c = 0; c < L1_param; ++c) {
+						
+							
+							cout<<"kernel_in["<<i<<"]["<<k<<"]["<<j<<"]["
+							<<c<<"]="<< kernel_in[i][k][j][c] << "\n";
+						}
 					}
 				}
 			}
@@ -178,26 +204,35 @@ void conv::convolution(void) {
 		{
 
 			//свёртка	
-			cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;	
-			for (int k = 0; k <L1_param; k++) {//число кернелов и выходных матрицы соотв-но
+			if(verbose==1){
+				cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;	
+			}
+			for (int k = 0; k < L1_param; k++) {//число кернелов и выходных матрицы соотв-но
 				for (int i = 0; i < M3_param; i++) {//(высота/кол-во строк) выходного изображения
 					for (int j = 0; j < N3_param; j++) {//(ширина/кол-во столбцов) выходного изображения
 						for (int c = 0; c < C1_param; c++){//количество входных изображений
 							for (int m = 0; m < M1_param; m++) {//(высота/кол-во строк) кернела
 								for (int n = 0; n < N1_param; n++) {//(ширина/кол-во столбцов) кернела
 									result[i][j][k] += 
-									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];
+									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];/**/
+									if(verbose==1){ 
+									/*	result[i][j][k] += 
+										weights_thirdConv[m][n][c][k] * image_in_padded[i + m][j + n][c];/**/
+										cout<<std::scientific<<"result["<<i<<"]["<<j<<"]["<<k<<"]+=kernel_in["<<m<<"]["<<n<<"]["<<c<<"]["<<k<<
+										"]*image_in["<<i<<"+"<<m<<"]["<<j<<"+"<<n<<"]["<<c<<"] | ";
+										cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]+="<<kernel_in[m][n][c][k]<<"*"
+										<< image_in_padded[i + m][j + n][c]<<"="<<result[i][j][k]<<"\n";/**/
+									}
 									next_trigger();
-										if(verbose==1){ 
-										cout<<this<<" N1_param = "<<n<<" | M1_param = "<<m
-										<<" | C1_param = "<<c<<" | N3_param = "<<j<<" | M3_param = "
-										<<i<<" | L1_param = "<<k<<"\n ";
-										}
 								}		
 							}
 						}
+						
 						result[i][j][k] += biases_in[k];
-						cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";
+						if(verbose==1){/*
+							cout<<"result_biased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
+						}
+						
 						
 					}
 					//cout << "_________________" << endl;
@@ -212,11 +247,14 @@ void conv::convolution(void) {
 			cout << "размеры выходной матрицы: " << endl;
 			cout << "M3_param= " << M3_param << " N3_param= " << N3_param << " " << endl << endl;
 			/**/
+			if(verbose==1){
+				cout<<"результат после ReLU ["<< this <<"]---------------------------------\n";
+			}
 		 	for (int i = 0; i < M3_param; i++){
 				 for (int j = 0; j < N3_param; j++){
 					 for (int k = 0; k < L3_param; k++){
-						if (result[i][j][k] < 0) {
-							result[i][j][k] = 0;
+						if (result[i][j][k] < 0.f) {
+							result[i][j][k] = 0.f;
 							//wait(clk->posedge_event());
 							next_trigger();
 						}
@@ -224,9 +262,14 @@ void conv::convolution(void) {
 							//wait(clk->posedge_event());
 							next_trigger();
 						}	
+						if(verbose==1){/*
+							cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
+						}
 					}
 				}
-			}	/**/
+			}	
+			
+			/**/
 /*
 			cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;
 			for (int k = 0; k < N3_param; ++k) {
@@ -250,7 +293,7 @@ void conv::convolution(void) {
 				}
 			}
 
-/*		
+			/*
 			cout<<this<<" CONV results ["<<this<<"]\n";
 			for (int i = 0; i < CONV_ED_param; i++){
 				cout<<"convolved_mat["<<i<<"]"<<convolved_mat[i]<<endl;

@@ -77,7 +77,7 @@ void max_pool::max_pooling(void) {
                         for (int m = 0; m < P1_param; m++) {
                             for (int n = 0; n < POOLOUT3_param; n++) {
                                 value = featuremap_in[k * P2_param + j][i * P1_param + m][n];
-                                result[k][i][n] = maximum(result[k][i][n], value);
+                                result[k][i][n] = std::max(result[k][i][n], value);
                                 wait(clk->posedge_event());
                             }       
                         }
@@ -106,10 +106,12 @@ void max_pool::max_pooling(void) {
                     }
 				}
 			}
-            cout<<"отладочный вывод ["<<this<<"] max_pooling\n";
-            for(int i =0; i < POOL_ED_param; i++){
-                cout<<"max_pooled["<<i<<"] = "<<max_pooled[i]<<endl;
-            }/**/
+            if (verbose_param==1){
+                cout<<"отладочный вывод ["<<this<<"] max_pooling\n";
+                for(int i =0; i < POOL_ED_param; i++){
+                    cout<<"max_pooled["<<i<<"] = "<<max_pooled[i]<<endl;
+                }/**/
+            }
             max_pool_done = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" max_pooling done ["<<this<<"]\n";
 

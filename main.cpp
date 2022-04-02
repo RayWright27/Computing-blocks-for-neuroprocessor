@@ -13,7 +13,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //объявление модулей
     
     tb_driver   *DRI_TB;
-    conv        *firstConv;/*
+    conv        *firstConv;
     max_pool    *firstMaxPool;  
     conv        *secondConv;
     max_pool    *secondMaxPool;
@@ -250,9 +250,9 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         firstConv->conv_2d_result_rdy_next(firstConv_result_rdy_sig_2);
         firstConv->conv_2d_result_vld_tb(firstConv_result_vld_sig_1);
         firstConv->conv_2d_result_vld_next(firstConv_result_vld_sig_2);
-        /*
+        
         firstMaxPool = new max_pool("firstMaxPool", P1, P2, F_M1, F_M2, F_M3, POOL_IN, 
-                                     POOLOUT1, POOLOUT2, POOLOUT3, POOL_ED);
+                                     POOLOUT1, POOLOUT2, POOLOUT3, POOL_ED, 0);
         firstMaxPool->clk(clk);
         firstMaxPool->rst(rst);
         firstMaxPool->image(firstConv_result_sig_2);
@@ -286,7 +286,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         secondConv->conv_2d_result_vld_next(secondConv_result_vld_sig_2); 
         
         secondMaxPool = new max_pool("secondMaxPool", P11, P22, F_M11, F_M22, F_M33, POOL_IN2, 
-                                     POOLOUT11, POOLOUT22, POOLOUT33, POOL_ED2);
+                                     POOLOUT11, POOLOUT22, POOLOUT33, POOL_ED2, 0);
         secondMaxPool->clk(clk);
         secondMaxPool->rst(rst);
         secondMaxPool->image(secondConv_result_sig_2);
@@ -300,7 +300,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         secondMaxPool->max_pool_result_vld_next(secondMaxPool_result_vld_sig_2);
 
         thirdConv = new conv("thirdConv", M6, N6, L5, KER3, POOLOUT11, POOLOUT22, POOLOUT33,
-                              POOL_ED2, M7, N7, L5, CONV_ED3, BIASES3, ZERO_PAD3, 0, 1);
+                              POOL_ED2, M7, N7, L5, CONV_ED3, BIASES3, ZERO_PAD3, 1, 1);
         thirdConv->clk(clk);
         thirdConv->rst(rst); 
         thirdConv->kernel(kernel3_sig);
@@ -320,7 +320,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         thirdConv->conv_2d_result_vld_next(thirdConv_result_vld_sig_2); 
         
         thirdMaxPool = new max_pool("thirdMaxPool", P111, P222, F_M111, F_M222, F_M333, POOL_IN3, 
-                                     POOLOUT111, POOLOUT222, POOLOUT333, POOL_ED3);
+                                     POOLOUT111, POOLOUT222, POOLOUT333, POOL_ED3, 0);
         thirdMaxPool->clk(clk);
         thirdMaxPool->rst(rst);
         thirdMaxPool->image(thirdConv_result_sig_2);
@@ -352,9 +352,9 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         fourthConv->conv_2d_result_rdy_next(fourthConv_result_rdy_sig_2);
         fourthConv->conv_2d_result_vld_tb(fourthConv_result_vld_sig_1); 
         fourthConv->conv_2d_result_vld_next(fourthConv_result_vld_sig_2); 
-        /**/ /*
+        
         fourthMaxPool = new max_pool("fourthMaxPool", P1111, P2222, F_M1111, F_M2222, F_M3333, POOL_IN4, 
-                                     POOLOUT1111, POOLOUT2222, POOLOUT3333, POOL_ED4);
+                                     POOLOUT1111, POOLOUT2222, POOLOUT3333, POOL_ED4, 0);
         fourthMaxPool->clk(clk);
         fourthMaxPool->rst(rst);
         fourthMaxPool->image(fourthConv_result_sig_2);
@@ -411,7 +411,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //деструктор
     ~TOP(){
         delete DRI_TB;
-        delete firstConv;/*
+        delete firstConv;
         delete firstMaxPool;
         delete secondConv;
         delete secondMaxPool;
@@ -434,25 +434,26 @@ int sc_main(int argc, char* argv[]) {
     //начинаем симуляцию 
     
         int sim_step=1;
-        sc_start(10000000,SC_NS);
-/*
-        for (int i = 0; i <100000; i++){
+//        sc_start(10000000,SC_NS);
+
+        for (int i = 0; i <5000; i++){
             sc_start(sim_step, SC_NS);
             cout << "clk = "<<top->clk<<"  @ "<<sc_time_stamp()<<endl;
-            cout<<" kernel_rdy = "<<top->kernel_rdy_sig<<"| ";
-            cout<<" kernel_vld = "<<top->kernel_vld_sig<<"| ";
-            cout<<" kernel_sig = "<<top->kernel_sig<<endl;
+            cout<<" kernel3_rdy = "<<top->kernel3_rdy_sig<<"| ";
+            cout<<" kernel3_vld = "<<top->kernel3_vld_sig<<"| ";
+            cout<<" kernel3_sig = "<<top->kernel3_sig<<" | i="<<i<<endl;
+            /*
             cout<<" image_rdy = "<<top->image_rdy_sig<<" | "; 
             cout<<" image_vld = "<<top->image_vld_sig<<" | ";
             cout<<" image_sig =  "<<top->image_sig<<endl;
             cout<<" biases_rdy = "<<top->biases_rdy_sig<<"| ";
             cout<<" biases_vld = "<<top->biases_vld_sig<<"| ";
             cout<<" biases_sig = "<<top->biases_sig<<endl;
-            cout<<sc_time_stamp()<<" ";
+         /*   cout<<sc_time_stamp()<<" ";
             cout<<" biases_recieved = "<<top->DENSE1->biases_recieved;
             cout<<" coeff_recieved = "<<top->DENSE1->coeff_recieved;
             cout<<" input_recieved = "<<top->DENSE1->input_recieved<<endl<<endl; 
-            sc_stop();
-        } */
+            sc_stop();/**/
+        }
     return 0;
 }

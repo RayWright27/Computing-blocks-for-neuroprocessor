@@ -95,10 +95,10 @@
 			cout<<"-------------------------------------------------------------------------------------------------"<<endl<<endl;	
 		//	cout<<M1_param<<" "<<L1_param<<" "<<N1_param<<" "<< endl;
 			
-			image_in_padded = new double**[N2_param+2*2];
-			for (int j = 0; j < N2_param+2*2; j++){
-				image_in_padded[j] = new double*[M2_param+2*2];
-				for (int i = 0; i < M2_param + 2*2; i++){
+			image_in_padded = new double**[N2_param+2*ZERO_PAD_param];
+			for (int j = 0; j < N2_param+2*ZERO_PAD_param; j++){
+				image_in_padded[j] = new double*[M2_param+2*ZERO_PAD_param];
+				for (int i = 0; i < M2_param + 2*ZERO_PAD_param; i++){
 					image_in_padded[j][i] = new double[C1_param];		
 				}
 			}/*
