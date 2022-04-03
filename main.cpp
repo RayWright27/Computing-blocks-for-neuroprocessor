@@ -300,7 +300,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         secondMaxPool->max_pool_result_vld_next(secondMaxPool_result_vld_sig_2);
 
         thirdConv = new conv("thirdConv", M6, N6, L5, KER3, POOLOUT11, POOLOUT22, POOLOUT33,
-                              POOL_ED2, M7, N7, L5, CONV_ED3, BIASES3, ZERO_PAD3, 1, 1);
+                              POOL_ED2, M7, N7, L5, CONV_ED3, BIASES3, ZERO_PAD3, 0, 1);
         thirdConv->clk(clk);
         thirdConv->rst(rst); 
         thirdConv->kernel(kernel3_sig);
@@ -434,9 +434,9 @@ int sc_main(int argc, char* argv[]) {
     //начинаем симуляцию 
     
         int sim_step=1;
-//        sc_start(10000000,SC_NS);
+        sc_start(10000000,SC_NS);
 
-        for (int i = 0; i <5000; i++){
+/*        for (int i = 0; i <5000; i++){
             sc_start(sim_step, SC_NS);
             cout << "clk = "<<top->clk<<"  @ "<<sc_time_stamp()<<endl;
             cout<<" kernel3_rdy = "<<top->kernel3_rdy_sig<<"| ";
@@ -454,6 +454,6 @@ int sc_main(int argc, char* argv[]) {
             cout<<" coeff_recieved = "<<top->DENSE1->coeff_recieved;
             cout<<" input_recieved = "<<top->DENSE1->input_recieved<<endl<<endl; 
             sc_stop();/**/
-        }
+ //       }
     return 0;
 }

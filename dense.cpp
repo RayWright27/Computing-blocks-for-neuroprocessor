@@ -67,7 +67,7 @@ void dense::recieve_coeff(void){
                     cout<<"coeff_arr["<<j<<"]["<<i<<"]="<<coeff_arr[j][i]<<"\n";
                 }
             }
-            cout<<endl<<endl<<endl<<endl;
+            cout<<endl<<endl<<endl<<endl;/**/
             coeff_recieved = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" dense coeff recieved ["<<this<<"]"<<endl;
         }
@@ -92,8 +92,8 @@ void dense::recieve_biases(void){
             }
             cout<<"---------------------------biases:["<<this<<"]----------------------------------"<<endl;
             for(int i = 0; i < BIASES_param; i++){
-                cout<<biases_arr[i]<<'\n';
-            }
+                cout<<"biases_arr["<<i<<"]="<<biases_arr[i]<<'\n';
+            }/**/
             biases_recieved = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" dense biases recieved ["
             <<this<<"]"<<endl;
@@ -113,17 +113,20 @@ void dense::dense_func(void) {
                 for (int j = 0; j < DENSE_COEFF2_param; j++) {
                     dense_result_arr[j] += coeff_arr[i][j] * dense_input[i];
                     /*
-                    cout<<"dense_result_arr[1]="<<dense_result_arr[1]<<" | coeff_arr[i][1]="<<coeff_arr[i][1]
-                    <<" |  dense_input[i]="<< dense_input[i]<<'\n';
+                    cout<<"dense_result_arr["<<i<<"]+="<<dense_result_arr[i]<<" | coeff_arr["<<i<<"]["<<j<<"]="<<
+                    coeff_arr[i][j]<<" |  dense_input["<<i<<"]="<< dense_input[i]<<'\n';
                     /**/
                     wait(clk->posedge_event());    
                 }			
             }
+             cout<<"dense_result_arr PRE activation func ["<<this<<"]\n";
              for (int i = 0; i < DENSE_COEFF2_param; i++){
                 dense_result_arr[i] += biases_arr[i];
+                
+                cout<<"dense_result_arr["<<i<<"]="<<dense_result_arr[i]<<"\n";
                 if (func==1){
-                    if (dense_result_arr[i] <= 0) {
-                        dense_result_arr[i]=0;
+                    if (dense_result_arr[i] <= 0.0f) {
+                        dense_result_arr[i]=0.0f;
                         //wait(clk->posedge_event());
                         //next_trigger();
                     }
@@ -133,10 +136,10 @@ void dense::dense_func(void) {
             if (func==2){
                 softmax(dense_result_arr, DENSE_COEFF2_param);
             }
-           
+            
              cout<<"---------------------------["<<this<<"]----------------------------------"<<endl;
             for (int i = 0; i < OUT_param; i++) {
-                cout <<std::scientific<<"dense_result_arr["<<i<<"]"<<dense_result_arr[i] <<endl;
+                cout<<"dense_result_arr["<<i<<"]="<<dense_result_arr[i] <<endl;
             }
             cout<<"-------------------------------------------------------------"<<endl;
             cout <<endl<< endl;

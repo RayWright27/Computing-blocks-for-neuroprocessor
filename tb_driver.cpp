@@ -454,7 +454,7 @@ void tb_driver::generate_kernel3(void){
 					for (int c = 0; c < L5; ++c){ 
 						kernel3_flattened[i * N6 * C3 * L5 + 
 						k * C3 * L5 + j * L5 + c] = weights_thirdConv[i][k][j][c];
-                       
+                       /*
                         cout<<std::scientific<<"kernel3_flattened["<<i * N6 * C3 * L5 + 
 						k * C3 * L5 + j * L5 + c<<"]="<<kernel3_flattened[i * N6 * C3 * L5 + 
 						k * C3 * L5 + j * L5 + c]<<" | weights_thirdConv=["<<i<<"]["<<k<<"]["<<j<<"]["<<c<<"]="
@@ -478,21 +478,22 @@ void tb_driver::generate_kernel3(void){
         kernel3_vld.write(0);
 
         //поэлементная передача данных на порты
-          cout<<"KERNEL3 TEST----------\n";
+        /*
+          cout<<"KERNEL3 TEST----------\n";/**/
         double kernel3_tmp;
-        for (int i = 0; i < KER3; i++){/*
-            kernel3_vld.write(1);
+        for (int i = 0; i < KER3; i++){
+            kernel3_vld.write(1);/*
              cout<<"---------------------------------------------\n";
             cout<<"kernel3_tmp="<<kernel3_tmp<<" | kernel3_flattened["<<i<<"]="<<kernel3_flattened[i]<<"\n";
             kernel3_tmp=kernel3_flattened[i];
             kernel3.write(kernel3_tmp); 
             cout<<"kernel3_tmp="<<kernel3_tmp<<" | kernel3_flattened["<<i<<"]="<<kernel3_flattened[i]<<"\n";
             cout<<"---------------------------------------------\n";/**/
-            
+            /*
              cout<<"---------------------------------------------\n";
-            cout<<"kernel3_tmp="<<kernel3_tmp<<" | lmao["<<i<<"]="<<lmao[i]<<"\n";
+            cout<<"kernel3_tmp="<<kernel3_tmp<<" | lmao["<<i<<"]="<<lmao[i]<<"\n";/**/
             kernel3_tmp=lmao[i];
-            kernel3.write(kernel3_tmp); 
+            kernel3.write(kernel3_tmp); /*
             cout<<"kernel3_tmp="<<kernel3_tmp<<" | lmao["<<i<<"]="<<lmao[i]<<"\n";
             cout<<"---------------------------------------------\n";/**/
             do{
@@ -511,7 +512,7 @@ void tb_driver::generate_kernel3(void){
 void tb_driver::generate_biases3(void){
     for (int i = 0; i < BIASES3; i++){
         biases3_flattened[i] = biases_thirdConv[i];
-    }
+    }/*
     cout<<"biases3_flattened\n";
         for (int i = 0; i < BIASES3; i++){
             cout <<std::fixed<<std::setprecision(20)<< biases3_flattened[i] << "\n ";
@@ -593,16 +594,16 @@ void tb_driver::generate_kernel4(void){
 			for (int k = 0; k < N8; ++k) {
 				for (int j = 0; j < C4; ++j) {
 					for (int c = 0; c < L6; c++){
-						kernel3_flattened[i * N8 * C4 * L6 + 
-						k * C4 * L6 + j * L6 + c] = weights_thirdConv[i][k][j][c];
+						kernel4_flattened[i * N8 * C4 * L6 + 
+						k * C4 * L6 + j * L6 + c] = weights_fourthConv[i][k][j][c];
 					}
 				}
 			}
 		} 
         /*
-        cout<<"kernel3_flattened\n";
-        for (int i = 0; i < KER3; i++){
-            cout <<std::fixed<<std::setprecision(35)<< kernel3_flattened[i] << "\n ";
+        cout<<"TB DRIVER kernel4_flattened---------------------------------------------------\n";
+        for (int i = 0; i < KER4; i++){
+            cout<< kernel4_flattened[i] << "\n ";
             
         } /**/ 
 
@@ -651,16 +652,15 @@ void tb_driver::generate_biases4(void){
 
 void tb_driver::generate_coeff(void){
     cout<<"weights_firstDense SIZE = "<<weights_firstDense.size()<<" "<<weights_firstDense[0].size()<<endl;
-    for (int j = 0; j < DENSE1_COEFF2; ++j) {
-        for (int i = 0; i < DENSE1_COEFF1; i++){
-            coeff_flattened[j*DENSE1_COEFF1 + i] = weights_firstDense[i][j];
+    for (int j = 0; j < DENSE1_COEFF1; ++j) {
+        for (int i = 0; i < DENSE1_COEFF2; i++){
+            coeff_flattened[j*DENSE1_COEFF2 + i] = weights_firstDense[j][i];
         }
     }
     /*
-    cout<<"------------------------------------------------------------------"<<endl;
+    cout<<"-----------------------COEFF1 TB DRIVER-------------------------------------------"<<endl;
     for (int i = 0; i < DENSE1_COEFF; i++){
-        cout<<std::setprecision(35)<<std::fixed
-        <<coeff_flattened[i]<<endl;
+        cout<<"coeff_flattened["<<i<<"]="<<coeff_flattened[i]<<endl;
     }
     cout<<"------------------------------------------------------------------"<<endl;
     /**/
@@ -681,10 +681,12 @@ void tb_driver::generate_coeff(void){
 };/**/
 
 void tb_driver::generate_biases5(void){
+    //cout<<"biases5_arr-----------------------------------------";
     for (int i = 0; i < BIASES5; i++){
         biases5_arr[i] = biases_firstDense[i];
-        
+        //cout<<"biases5_arr["<<i<<"]="<<biases5_arr[i]<<"\n";
     }
+    //cout<<"----------------------------------------------------\n\n";
 
     biases5.write(0);
     biases5_vld.write(0);
@@ -729,16 +731,16 @@ void tb_driver::dense1_sink(void){
 };/**/
 void tb_driver::generate_coeff2(void){
     cout<<"weights_labeller SIZE = "<<weights_labeller.size()<<" "<<weights_labeller[0].size()<<endl;
-    for (int j = 0; j < DENSE2_COEFF2; ++j) {
-        for (int i = 0; i < DENSE2_COEFF1; i++){
-            coeff2_flattened[j*DENSE2_COEFF1 + i] = weights_labeller[i][j];
+    for (int j = 0; j < DENSE2_COEFF1; ++j) {
+        for (int i = 0; i < DENSE2_COEFF2; i++){
+            coeff2_flattened[j*DENSE2_COEFF2 + i] = weights_labeller[j][i];
+            cout<<"weights_labeller["<<j<<"]["<<i<<"]="<<weights_labeller[j][i]<<"\n";
         }
     }
-    /*
+    
     cout<<"-----------------------------TB_DRIVER COEFFS FOR secondDense-------------------------------------"<<endl;
     for (int i = 0; i < DENSE2_COEFF; i++){
-        cout
-        <<coeff2_flattened[i]<<endl;
+        cout<<"coeff2_flattened["<<i<<"]="<<coeff2_flattened[i]<<endl;
     }
     cout<<"------------------------------------------------------------------"<<endl;
     /**/

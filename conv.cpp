@@ -64,7 +64,7 @@ void conv::zero_padding(void){
 						wait(clk->posedge_event());
 					}
 				}
-			}
+			}/*
 			for (int k = 0; k < N2_param+2*ZERO_PAD_param; ++k) {
 				for (int j = 0; j < M2_param+2*ZERO_PAD_param; j++){
 					for (int i = 0; i < C1_param; ++i) {
@@ -106,11 +106,12 @@ void conv::recieve_biases(void) {
 			biases_in[k]=biases.read();
 			biases_rdy.write(0);
 		}
-
-		cout << "[отладочный вывод]["<<this <<"] баесы:" << endl;
-		for (int k = 0; k < BIASES_param; ++k) {
-				cout<<"biases_in["<<k<<"]="<<biases_in[k]<<endl;
-		}/**/
+		if(verbose==1){
+			cout << "[отладочный вывод]["<<this <<"] баесы:" << endl;
+			for (int k = 0; k < BIASES_param; ++k) {
+					cout<<"biases_in["<<k<<"]="<<biases_in[k]<<endl;
+			}/**/
+		}
 		biases_recieved=sc_logic(1);
 		cout<<"@"<<sc_time_stamp()<<" conv biases recieved ["<<this<<"]"<<endl;
 	}
@@ -139,30 +140,18 @@ void conv::recieve_kernel(void) {
 		if(verbose==1){
 			cout<<"kernel_in_flattened "<<this<<"\n";
 			for (int i = 0; i < KER_param; i++){
-				cout <<std::scientific<<"kernel_in_flattened["<<i<<"]="<< kernel_in_flattened[i] << "\n ";
+				cout <<"kernel_in_flattened["<<i<<"]="<< kernel_in_flattened[i] << "\n ";
 				
 			} 
 			cout<<"\n\n\n\n\n";/**/ 
 		}
 
 		//разворачивание вектора в 3D массив (сделать в отдельный метод) 
-		if(verbose==1){
-			for (int i = 0; i < M1_param; ++i) {
-			for (int k = 0; k < N1_param; ++k) {
-				for (int j = 0; j < C1_param; ++j) {
-					for (int c = 0; c < L1_param; ++c){
-						
-						kernel_in[i][k][j][c] = weights_thirdConv[i][k][j][c];
-					}
-				}
-			}
-		}
-		}/*
 		for (int i = 0; i < M1_param; ++i) {
 			for (int k = 0; k < N1_param; ++k) {
 				for (int j = 0; j < C1_param; ++j) {
 					for (int c = 0; c < L1_param; ++c){
-						cout<<i<<" "<<k<<" "<<j<<" "<<c<<"\n";
+						//cout<<i<<" "<<k<<" "<<j<<" "<<c<<"\n";
 						kernel_in[i][k][j][c] = kernel_in_flattened[i * N1_param * C1_param * L1_param + 
 						k * C1_param * L1_param + j * L1_param + c];
 					}
@@ -215,9 +204,8 @@ void conv::convolution(void) {
 								for (int n = 0; n < N1_param; n++) {//(ширина/кол-во столбцов) кернела
 									result[i][j][k] += 
 									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];/**/
-									if(verbose==1){ 
-									/*	result[i][j][k] += 
-										weights_thirdConv[m][n][c][k] * image_in_padded[i + m][j + n][c];/**/
+									if(verbose==1){/*
+									
 										cout<<std::scientific<<"result["<<i<<"]["<<j<<"]["<<k<<"]+=kernel_in["<<m<<"]["<<n<<"]["<<c<<"]["<<k<<
 										"]*image_in["<<i<<"+"<<m<<"]["<<j<<"+"<<n<<"]["<<c<<"] | ";
 										cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]+="<<kernel_in[m][n][c][k]<<"*"
@@ -262,7 +250,7 @@ void conv::convolution(void) {
 							//wait(clk->posedge_event());
 							next_trigger();
 						}	
-						if(verbose==1){/*
+						if(verbose==1){
 							cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
 						}
 					}

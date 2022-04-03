@@ -138,7 +138,7 @@ SC_MODULE(tb_driver){
     double          biases6_arr[BIASES6];
     double*         dense2_result_arr;
     
-    const char*     imagefile = "tulip1.txt";
+    const char*     imagefile = "daisy1.txt";
 
     sc_logic        kernels_generated1 = sc_logic(0);
     sc_logic        biases_generated1 = sc_logic(0);
@@ -346,6 +346,7 @@ SC_MODULE(tb_driver){
         delete[] fourthMaxPool_result_flattened; 
 
         delete[] coeff_flattened; 
+        delete[] coeff2_flattened;
         delete[] dense1_result_arr;
         delete   imagefile;
 
