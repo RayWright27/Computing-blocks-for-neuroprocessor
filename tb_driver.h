@@ -1,12 +1,16 @@
+#define SC_INCLUDE_FX
+#define SC_INCLUDE_DYNAMIC_PROCESSES
 #include <vector>
 #include <cstring>
 #include <macro.h>
 #include <systemc.h>
 #include "weights.hpp"
 #include <png.h>
+#include <sysc/kernel/sc_boost.h>
+#include <sysc/kernel/sc_spawn.h>
+//#define sc_bind boost::bind
 using std::vector;
-
-
+ 
 SC_MODULE(tb_driver){
 	sc_in<bool>     clk;
     sc_out<bool>    rst; 
@@ -18,93 +22,100 @@ SC_MODULE(tb_driver){
     sc_out<bool>    biases_vld;
     sc_in<bool>     firstConv_result_vld;
     sc_out<bool>    firstConv_result_rdy;
-    sc_in<double>   firstConv_result;
-    sc_out<double>  kernel, image, biases;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   firstConv_result;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  biases;  
+    sc_out<sc_fixed<W_LEN_i, I_LEN_i>>  image;
+    static const int ker_port = C1;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel_test[ker_port];
+    
 
-    sc_in<double>   firstMaxPool_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   firstMaxPool_result;
     sc_in<bool>     firstMaxPool_result_vld;
     sc_out<bool>    firstMaxPool_result_rdy;
 
-    sc_out<double>  kernel2, biases2;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel2, biases2;
     sc_in<bool>     kernel2_rdy;
     sc_out<bool>    kernel2_vld;
     sc_in<bool>     biases2_rdy;
     sc_out<bool>    biases2_vld;
 
-    sc_in<double>   secondConv_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   secondConv_result;
     sc_in<bool>     secondConv_result_vld;
     sc_out<bool>    secondConv_result_rdy;
 
-    sc_in<double>   secondMaxPool_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   secondMaxPool_result;
     sc_in<bool>     secondMaxPool_result_vld;
     sc_out<bool>    secondMaxPool_result_rdy;
 
-    sc_out<double>  kernel3, biases3;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel3, biases3;
     sc_in<bool>     kernel3_rdy;
     sc_out<bool>    kernel3_vld;
     sc_in<bool>     biases3_rdy;
     sc_out<bool>    biases3_vld;
 
-    sc_in<double>   thirdConv_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   thirdConv_result;
     sc_in<bool>     thirdConv_result_vld;
     sc_out<bool>    thirdConv_result_rdy;
 
-    sc_in<double>   thirdMaxPool_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   thirdMaxPool_result;
     sc_in<bool>     thirdMaxPool_result_vld;
     sc_out<bool>    thirdMaxPool_result_rdy;
 
-    sc_out<double>  kernel4, biases4;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel4, biases4;
     sc_in<bool>     kernel4_rdy;
     sc_out<bool>    kernel4_vld;
     sc_in<bool>     biases4_rdy;
     sc_out<bool>    biases4_vld;
 
-    sc_in<double>   fourthConv_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   fourthConv_result;
     sc_in<bool>     fourthConv_result_vld;
     sc_out<bool>    fourthConv_result_rdy;
 
-    sc_in<double>   fourthMaxPool_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   fourthMaxPool_result;
     sc_in<bool>     fourthMaxPool_result_vld;
     sc_out<bool>    fourthMaxPool_result_rdy;
  
 
-    sc_out<double>  coeff;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  coeff;
     sc_in<bool>     coeff_rdy;
     sc_out<bool>    coeff_vld;
-    sc_out<double>  biases5;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  biases5;
     sc_in<bool>     biases5_rdy;
     sc_out<bool>    biases5_vld;
 
-    sc_in<double>   firstDense_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   firstDense_result;
     sc_in<bool>     firstDense_result_vld;
     sc_out<bool>    firstDense_result_rdy;
 
-    sc_out<double>  coeff2;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  coeff2;
     sc_in<bool>     coeff2_rdy;
     sc_out<bool>    coeff2_vld;
-    sc_out<double>  biases6;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  biases6;
     sc_in<bool>     biases6_rdy;
     sc_out<bool>    biases6_vld;
 
-    sc_in<double>   secondDense_result;
+    sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   secondDense_result;
     sc_in<bool>     secondDense_result_vld;
     sc_out<bool>    secondDense_result_rdy;
 
-    double          biases_tmp;  
-    double          image_flattened[IMG];
-    double          kernel_flattened[KER];
-	double          biases_flattened[BIASES];
-    
-    double*         kernel2_flattened;
-    double          biases2_flattened[BIASES2];
+    //--------------------------------------------------------------------------------
 
-    double*         kernel3_flattened;
-    double          biases3_flattened[BIASES3];
+    sc_fixed<W_LEN_w, I_LEN_w>     biases_tmp;  
+    sc_fixed<W_LEN_i, I_LEN_i>     image_flattened[IMG];
+	sc_fixed<W_LEN_w, I_LEN_w>     biases_flattened[BIASES];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem1[KER-C1+1];
+    
+    sc_fixed<W_LEN_w, I_LEN_w>*         kernel2_flattened;
+    sc_fixed<W_LEN_w, I_LEN_w>          biases2_flattened[BIASES2];
+
+    sc_fixed<W_LEN_w, I_LEN_w>*         kernel3_flattened;
+    sc_fixed<W_LEN_w, I_LEN_w>          biases3_flattened[BIASES3];
 
     double*         lmao; //тестовый массив вместо kernel3_flattened
     
-    double*         kernel4_flattened;
-    double          biases4_flattened[BIASES4];
+    sc_fixed<W_LEN_w, I_LEN_w>*         kernel4_flattened;
+    sc_fixed<W_LEN_w, I_LEN_w>          biases4_flattened[BIASES4];
 
     double*         firstConv_result_flattened;
     double***       firstConv_result_arr;
@@ -130,15 +141,15 @@ SC_MODULE(tb_driver){
     double***       fourthMaxPool_result_arr;
     double*         fourthMaxPool_result_flattened;
 
-    double*         coeff_flattened;
-    double          biases5_arr[BIASES5];
-    double*         dense1_result_arr;
+    sc_fixed<W_LEN_w, I_LEN_w>*         coeff_flattened;
+    sc_fixed<W_LEN_w, I_LEN_w>          biases5_arr[BIASES5];
+    sc_fixed<W_LEN_w, I_LEN_w>*         dense1_result_arr;
 
-    double*         coeff2_flattened;
-    double          biases6_arr[BIASES6];
-    double*         dense2_result_arr;
+    sc_fixed<W_LEN_w, I_LEN_w>*         coeff2_flattened;
+    sc_fixed<W_LEN_w, I_LEN_w>          biases6_arr[BIASES6];
+    sc_fixed<W_LEN_w, I_LEN_w>*         dense2_result_arr;
     
-    const char*     imagefile = "daisy1.txt";
+    const char*     imagefile = "tulip1.txt";
 
     sc_logic        kernels_generated1 = sc_logic(0);
     sc_logic        biases_generated1 = sc_logic(0);
@@ -176,10 +187,15 @@ SC_MODULE(tb_driver){
     vector<vector<vector<float>>>read_image(std::string filename);
 
     void generate_reset(void);
-    void generate_kernel(void);
+    void generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flattened_mem1);
+    //функця, служащая для динамического создания потоков generate_kernel, в которые можно подавать параметры
+    void wrapper(){
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 1, kernel_flattened_mem1));
+    }
+    //--------------------------------------------------------------------------------------------------------
     void generate_image(void);
     void generate_biases(void);
-
+/*
     void firstConv_sink(void);
     void firstMaxPool_sink(void);
 
@@ -205,31 +221,31 @@ SC_MODULE(tb_driver){
     void generate_coeff2(void);
     void generate_biases6(void);
     void secondDense_sink(void); 
-
+/**/
 	SC_CTOR(tb_driver) {
         firstConv_result_flattened = new double[CONV_ED];
         firstMaxPool_result_flattened = new double[POOL_ED];
 
-        kernel2_flattened = new double[KER2];
+        kernel2_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[KER2];
 
         secondConv_result_flattened = new double[CONV_ED2];
         secondMaxPool_result_flattened = new double[POOL_ED2];
 
-        kernel3_flattened = new double[KER3];
+        kernel3_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[KER3];
         lmao = new double[KER3];
         
         thirdConv_result_flattened = new double[CONV_ED3];
         thirdMaxPool_result_flattened = new double[POOL_ED3];
 
-        kernel4_flattened = new double[KER4];
+        kernel4_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[KER4];
 
         fourthConv_result_flattened = new double[CONV_ED4];
         fourthMaxPool_result_flattened = new double[POOL_ED4];
 
-        coeff_flattened = new double[DENSE1_COEFF];
-        dense1_result_arr = new double[DENSE1_OUT];
-        coeff2_flattened = new double[DENSE2_COEFF];
-        dense2_result_arr = new double[DENSE2_OUT];
+        coeff_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE1_COEFF];
+        dense1_result_arr = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE1_OUT];
+        coeff2_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE2_COEFF];
+        dense2_result_arr = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE2_OUT];
 
     /* Поскольку в SystemC есть ограничение по выделяемой памти создаём динамические 
     массивы*/
@@ -299,12 +315,12 @@ SC_MODULE(tb_driver){
 
         SC_THREAD(generate_reset);
 //        sensitive<<clk.pos();
-        SC_THREAD(generate_kernel);
+        SC_THREAD(wrapper);
         SC_THREAD(generate_image); 
         SC_THREAD(generate_biases);
 //        SC_METHOD(generate_biases);
 //        sensitive<<clk.pos();
-
+/*
         SC_THREAD(firstConv_sink);
         SC_THREAD(firstMaxPool_sink);
 
@@ -335,6 +351,7 @@ SC_MODULE(tb_driver){
     ~tb_driver(){
         delete[] kernel2_flattened;
         delete[] kernel3_flattened;
+        delete[] lmao;
         delete[] kernel4_flattened;
         delete[] firstConv_result_flattened;  
         delete[] firstMaxPool_result_flattened; 

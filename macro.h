@@ -1,4 +1,12 @@
-#define DT_LENGTH 32 
+//для весов и баесов
+#define W_LEN_w 16 //полная длина числа в фикспоинт 
+#define I_LEN_w 2 //длина целой части числа в фикспоинт
+//для изображения/карт признаков
+#define W_LEN_i 20
+#define I_LEN_i 6
+//для softmax
+#define W_LEN_s 40
+#define I_LEN_s 18
 
 //#define TB_OUTPUT 
 

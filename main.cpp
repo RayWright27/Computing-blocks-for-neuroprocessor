@@ -1,8 +1,9 @@
+#define SC_INCLUDE_FX
 #include <systemc.h>
 #include "tb_driver.h"
-#include "conv.h"
-#include "max_pooling.h"
-#include "dense.h"
+#include "conv1_unrlld.h"
+//#include "max_pooling.h"
+//#include "dense.h"
 
 //------------------------------------------------
 // Передача параметров слоя в конструктор модуля слоя происходит в том же порядке, 
@@ -13,7 +14,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //объявление модулей
     
     tb_driver   *DRI_TB;
-    conv        *firstConv;
+    conv        *firstConv;/*
     max_pool    *firstMaxPool;  
     conv        *secondConv;
     max_pool    *secondMaxPool;
@@ -21,7 +22,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     max_pool    *thirdMaxPool;
     conv        *fourthConv;
     max_pool    *fourthMaxPool;
-    dense       *firstDense; 
+    dense       *firstDense;  
     dense       *secondDense;
     /**/
     // сигналы
@@ -33,109 +34,111 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     sc_signal<bool>   image_vld_sig;
     sc_signal<bool>   biases_rdy_sig;
     sc_signal<bool>   biases_vld_sig;
-    sc_signal<double> kernel_sig, image_sig, biases_sig;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> image_sig; 
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel_sig, biases_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel_test_sig[C1];
 
     sc_signal<bool>   firstConv_result_vld_sig_1;
     sc_signal<bool>   firstConv_result_vld_sig_2;
     sc_signal<bool>   firstConv_result_rdy_sig_1;
     sc_signal<bool>   firstConv_result_rdy_sig_2;
-    sc_signal<double> firstConv_result_sig_1;
-    sc_signal<double> firstConv_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> firstConv_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> firstConv_result_sig_2;
 
     sc_signal<bool>   firstMaxPool_result_vld_sig_1;
     sc_signal<bool>   firstMaxPool_result_vld_sig_2;
     sc_signal<bool>   firstMaxPool_result_rdy_sig_1;
     sc_signal<bool>   firstMaxPool_result_rdy_sig_2;
-    sc_signal<double> firstMaxPool_result_sig_1;
-    sc_signal<double> firstMaxPool_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> firstMaxPool_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> firstMaxPool_result_sig_2;
 
     sc_signal<bool>   kernel2_rdy_sig;
     sc_signal<bool>   kernel2_vld_sig;
     sc_signal<bool>   biases2_rdy_sig;
     sc_signal<bool>   biases2_vld_sig;
-    sc_signal<double> kernel2_sig, biases2_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel2_sig, biases2_sig;
 
     sc_signal<bool>   secondConv_result_vld_sig_1;
     sc_signal<bool>   secondConv_result_vld_sig_2;
     sc_signal<bool>   secondConv_result_rdy_sig_1;
     sc_signal<bool>   secondConv_result_rdy_sig_2;
-    sc_signal<double> secondConv_result_sig_1;
-    sc_signal<double> secondConv_result_sig_2;    
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> secondConv_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> secondConv_result_sig_2;    
 
     sc_signal<bool>   secondMaxPool_result_vld_sig_1;
     sc_signal<bool>   secondMaxPool_result_vld_sig_2;
     sc_signal<bool>   secondMaxPool_result_rdy_sig_1;
     sc_signal<bool>   secondMaxPool_result_rdy_sig_2;
-    sc_signal<double> secondMaxPool_result_sig_1;
-    sc_signal<double> secondMaxPool_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> secondMaxPool_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> secondMaxPool_result_sig_2;
 
     sc_signal<bool>   kernel3_rdy_sig;
     sc_signal<bool>   kernel3_vld_sig;
     sc_signal<bool>   biases3_rdy_sig;
     sc_signal<bool>   biases3_vld_sig;
-    sc_signal<double> kernel3_sig, biases3_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel3_sig, biases3_sig;
 
     sc_signal<bool>   thirdConv_result_vld_sig_1;
     sc_signal<bool>   thirdConv_result_vld_sig_2;
     sc_signal<bool>   thirdConv_result_rdy_sig_1;
     sc_signal<bool>   thirdConv_result_rdy_sig_2;
-    sc_signal<double> thirdConv_result_sig_1;
-    sc_signal<double> thirdConv_result_sig_2;    
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> thirdConv_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> thirdConv_result_sig_2;    
 
     sc_signal<bool>   thirdMaxPool_result_vld_sig_1;
     sc_signal<bool>   thirdMaxPool_result_vld_sig_2;
     sc_signal<bool>   thirdMaxPool_result_rdy_sig_1;
     sc_signal<bool>   thirdMaxPool_result_rdy_sig_2;
-    sc_signal<double> thirdMaxPool_result_sig_1;
-    sc_signal<double> thirdMaxPool_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> thirdMaxPool_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> thirdMaxPool_result_sig_2;
 
     sc_signal<bool>   kernel4_rdy_sig;
     sc_signal<bool>   kernel4_vld_sig;
     sc_signal<bool>   biases4_rdy_sig;
     sc_signal<bool>   biases4_vld_sig;
-    sc_signal<double> kernel4_sig, biases4_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel4_sig, biases4_sig;
 
     sc_signal<bool>   fourthConv_result_vld_sig_1;
     sc_signal<bool>   fourthConv_result_vld_sig_2;
     sc_signal<bool>   fourthConv_result_rdy_sig_1;
     sc_signal<bool>   fourthConv_result_rdy_sig_2;
-    sc_signal<double> fourthConv_result_sig_1;
-    sc_signal<double> fourthConv_result_sig_2;    
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> fourthConv_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> fourthConv_result_sig_2;    
 
     sc_signal<bool>   fourthMaxPool_result_vld_sig_1;
     sc_signal<bool>   fourthMaxPool_result_vld_sig_2;
     sc_signal<bool>   fourthMaxPool_result_rdy_sig_1;
     sc_signal<bool>   fourthMaxPool_result_rdy_sig_2;
-    sc_signal<double> fourthMaxPool_result_sig_1;
-    sc_signal<double> fourthMaxPool_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> fourthMaxPool_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> fourthMaxPool_result_sig_2;
 
-    sc_signal<double> coeff_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> coeff_sig;
     sc_signal<bool>   coeff_rdy_sig;
     sc_signal<bool>   coeff_vld_sig;
 
-    sc_signal<double>  biases5_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>>  biases5_sig;
     sc_signal<bool>    biases5_rdy_sig;
     sc_signal<bool>    biases5_vld_sig;
 
-    sc_signal<double>  firstDense_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>>  firstDense_result_sig_1;
     sc_signal<bool>    firstDense_result_vld_sig_1;
     sc_signal<bool>    firstDense_result_rdy_sig_1;
-    sc_signal<double>  firstDense_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>>  firstDense_result_sig_2;
     sc_signal<bool>    firstDense_result_vld_sig_2;
     sc_signal<bool>    firstDense_result_rdy_sig_2;
 
-    sc_signal<double> coeff2_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> coeff2_sig;
     sc_signal<bool>   coeff2_rdy_sig;
     sc_signal<bool>   coeff2_vld_sig;
 
-    sc_signal<double>  biases6_sig;
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>>  biases6_sig;
     sc_signal<bool>    biases6_rdy_sig;
     sc_signal<bool>    biases6_vld_sig;
 
-    sc_signal<double>  secondDense_result_sig_1;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>>  secondDense_result_sig_1;
     sc_signal<bool>    secondDense_result_vld_sig_1;
     sc_signal<bool>    secondDense_result_rdy_sig_1;
-    sc_signal<double>  secondDense_result_sig_2;
+    sc_signal<sc_fixed<W_LEN_i, I_LEN_i>>  secondDense_result_sig_2;
     sc_signal<bool>    secondDense_result_vld_sig_2;
     sc_signal<bool>    secondDense_result_rdy_sig_2;
     
@@ -153,6 +156,9 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         DRI_TB->image_vld(image_vld_sig);
         DRI_TB->biases_rdy(biases_rdy_sig);
         DRI_TB->biases_vld(biases_vld_sig);
+        for (int i = 0; i < C1; i++){
+            DRI_TB->kernel_test[i](kernel_test_sig[i]);
+        }
 
         DRI_TB->firstConv_result(firstConv_result_sig_1);
         DRI_TB->firstConv_result_vld(firstConv_result_vld_sig_1);
@@ -229,8 +235,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         DRI_TB->secondDense_result_vld(secondDense_result_vld_sig_1);
         DRI_TB->secondDense_result_rdy(secondDense_result_rdy_sig_1);
 
-        /*auto  firstConv = std::make_unique<conv>("firstConv", M1, N1, L1, KER, M2, N2, C1, IMG, M3, N3, L3, 
-        CONV_ED, BIASES, 0, 1);*/
+        
         firstConv = new conv("firstConv", M1, N1, L1, KER, M2, N2, C1, IMG, M3, N3, L3, 
         CONV_ED, BIASES, ZERO_PAD, 0, 1);
         firstConv->clk(clk);
@@ -250,7 +255,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         firstConv->conv_2d_result_rdy_next(firstConv_result_rdy_sig_2);
         firstConv->conv_2d_result_vld_tb(firstConv_result_vld_sig_1);
         firstConv->conv_2d_result_vld_next(firstConv_result_vld_sig_2);
-        
+        /*
         firstMaxPool = new max_pool("firstMaxPool", P1, P2, F_M1, F_M2, F_M3, POOL_IN, 
                                      POOLOUT1, POOLOUT2, POOLOUT3, POOL_ED, 0);
         firstMaxPool->clk(clk);
@@ -264,9 +269,9 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         firstMaxPool->max_pool_result_rdy_next(firstMaxPool_result_rdy_sig_2);
         firstMaxPool->max_pool_result_vld_tb(firstMaxPool_result_vld_sig_1);
         firstMaxPool->max_pool_result_vld_next(firstMaxPool_result_vld_sig_2);
-
+    
         secondConv = new conv("secondConv", M4, N4, L4, KER2, POOLOUT1, POOLOUT2, POOLOUT3,
-                              POOL_ED, M5, N5, L4, CONV_ED2, BIASES2, ZERO_PAD2, 0, 1);
+                              POOL_ED, M5, N5, L4, CONV_ED2, BIASES2, ZERO_PAD2, 1, 1);
         secondConv->clk(clk);
         secondConv->rst(rst); 
         secondConv->kernel(kernel2_sig);
@@ -411,7 +416,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //деструктор
     ~TOP(){
         delete DRI_TB;
-        delete firstConv;
+        delete firstConv;/*
         delete firstMaxPool;
         delete secondConv;
         delete secondMaxPool;
@@ -429,31 +434,39 @@ TOP *top = NULL;//чтобы не указывало на какой-то слу
 
 int sc_main(int argc, char* argv[]) {
     sc_core::sc_report_handler::set_actions("/IEEE_Std_1666/deprecated", sc_core::SC_DO_NOTHING);//suppress warning due to set_time_resolution
-    //sc_set_time_resolution(1, SC_NS);
+    sc_set_time_resolution(1, SC_NS);
     top = new TOP("top_module");
     //начинаем симуляцию 
     
-        int sim_step=1;
-        sc_start(10000000,SC_NS);
+    int sim_step=1;
+    sc_start(10000000,SC_NS);
+    sc_fixed<9,2> A[5];
+    A[1] = 1.125;
+    A[2] = -0.125;
+    A[3] = A[1]*A[2];
+    double B = A[3];
+    cout<<"A[1]="<<A[1]<<" A[2]="<<A[2]<<" A[3]="<<A[3]<<"\n";
+    cout<<"B="<<B<<"\n";
+    cout<<sc_fxtype_context::default_value()<<endl;
 
-/*        for (int i = 0; i <5000; i++){
-            sc_start(sim_step, SC_NS);
-            cout << "clk = "<<top->clk<<"  @ "<<sc_time_stamp()<<endl;
-            cout<<" kernel3_rdy = "<<top->kernel3_rdy_sig<<"| ";
-            cout<<" kernel3_vld = "<<top->kernel3_vld_sig<<"| ";
-            cout<<" kernel3_sig = "<<top->kernel3_sig<<" | i="<<i<<endl;
-            /*
-            cout<<" image_rdy = "<<top->image_rdy_sig<<" | "; 
-            cout<<" image_vld = "<<top->image_vld_sig<<" | ";
-            cout<<" image_sig =  "<<top->image_sig<<endl;
-            cout<<" biases_rdy = "<<top->biases_rdy_sig<<"| ";
-            cout<<" biases_vld = "<<top->biases_vld_sig<<"| ";
-            cout<<" biases_sig = "<<top->biases_sig<<endl;
-         /*   cout<<sc_time_stamp()<<" ";
-            cout<<" biases_recieved = "<<top->DENSE1->biases_recieved;
-            cout<<" coeff_recieved = "<<top->DENSE1->coeff_recieved;
-            cout<<" input_recieved = "<<top->DENSE1->input_recieved<<endl<<endl; 
-            sc_stop();/**/
- //       }
+/*  for (int i = 0; i <5000; i++){
+        sc_start(sim_step, SC_NS);
+        cout << "clk = "<<top->clk<<"  @ "<<sc_time_stamp()<<endl;
+        cout<<" kernel3_rdy = "<<top->kernel3_rdy_sig<<"| ";
+        cout<<" kernel3_vld = "<<top->kernel3_vld_sig<<"| ";
+        cout<<" kernel3_sig = "<<top->kernel3_sig<<" | i="<<i<<endl;
+        /*
+        cout<<" image_rdy = "<<top->image_rdy_sig<<" | "; 
+        cout<<" image_vld = "<<top->image_vld_sig<<" | ";
+        cout<<" image_sig =  "<<top->image_sig<<endl;
+        cout<<" biases_rdy = "<<top->biases_rdy_sig<<"| ";
+        cout<<" biases_vld = "<<top->biases_vld_sig<<"| ";
+        cout<<" biases_sig = "<<top->biases_sig<<endl;
+        /*   cout<<sc_time_stamp()<<" ";
+        cout<<" biases_recieved = "<<top->DENSE1->biases_recieved;
+        cout<<" coeff_recieved = "<<top->DENSE1->coeff_recieved;
+        cout<<" input_recieved = "<<top->DENSE1->input_recieved<<endl<<endl; 
+        sc_stop();/**/
+//  }
     return 0;
 }
