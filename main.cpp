@@ -2,7 +2,7 @@
 #include <systemc.h>
 #include "tb_driver.h"
 #include "conv1_unrlld.h"
-//#include "max_pooling.h"
+//#include "max_pooling.h" 
 //#include "dense.h"
 
 //------------------------------------------------
@@ -14,29 +14,20 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //объявление модулей
     
     tb_driver   *DRI_TB;
-    conv        *firstConv;/*
-    max_pool    *firstMaxPool;  
-    conv        *secondConv;
-    max_pool    *secondMaxPool;
-    conv        *thirdConv;
-    max_pool    *thirdMaxPool;
-    conv        *fourthConv;
-    max_pool    *fourthMaxPool;
-    dense       *firstDense;  
-    dense       *secondDense;
+    conv1_unrlld *firstConv;
     /**/
     // сигналы
     sc_clock clk;//("clk", 10, SC_NS);
     sc_signal<bool>   rst;
-    sc_signal<bool>   kernel_rdy_sig;//готовность приёма/передачи данных кернела
-    sc_signal<bool>   kernel_vld_sig;//=1 когда данные кернела видны для считывания 
+    sc_signal<bool>   kernel_rdy_sig[L1];//готовность приёма/передачи данных кернела
+    sc_signal<bool>   kernel_vld_sig[L1];//=1 когда данные кернела видны для считывания 
     sc_signal<bool>   image_rdy_sig;
     sc_signal<bool>   image_vld_sig;
     sc_signal<bool>   biases_rdy_sig;
     sc_signal<bool>   biases_vld_sig;
     sc_signal<sc_fixed<W_LEN_i, I_LEN_i>> image_sig; 
     sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel_sig, biases_sig;
-    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel_test_sig[C1];
+    sc_signal<sc_fixed<W_LEN_w, I_LEN_w>> kernel_test_sig[L1];
 
     sc_signal<bool>   firstConv_result_vld_sig_1;
     sc_signal<bool>   firstConv_result_vld_sig_2;
@@ -144,20 +135,21 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     
     SC_CTOR(TOP):clk("clk",sc_time(2,SC_NS)){//конструктор копирования clk_sig
         //инстанциируем модули и соединения сигналами
+        
         DRI_TB = new tb_driver("tb");
         DRI_TB->clk(clk);
         DRI_TB->rst(rst);
         DRI_TB->kernel(kernel_sig);
         DRI_TB->image(image_sig);
         DRI_TB->biases(biases_sig);
-        DRI_TB->kernel_rdy(kernel_rdy_sig);
-        DRI_TB->kernel_vld(kernel_vld_sig);
         DRI_TB->image_rdy(image_rdy_sig);
         DRI_TB->image_vld(image_vld_sig);
         DRI_TB->biases_rdy(biases_rdy_sig);
         DRI_TB->biases_vld(biases_vld_sig);
-        for (int i = 0; i < C1; i++){
+        for (int i = 0; i < L1; i++){
             DRI_TB->kernel_test[i](kernel_test_sig[i]);
+            DRI_TB->kernel_rdy[i](kernel_rdy_sig[i]);
+            DRI_TB->kernel_vld[i](kernel_vld_sig[i]);
         }
 
         DRI_TB->firstConv_result(firstConv_result_sig_1);
@@ -236,15 +228,16 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         DRI_TB->secondDense_result_rdy(secondDense_result_rdy_sig_1);
 
         
-        firstConv = new conv("firstConv", M1, N1, L1, KER, M2, N2, C1, IMG, M3, N3, L3, 
-        CONV_ED, BIASES, ZERO_PAD, 0, 1);
+        firstConv = new conv1_unrlld("firstConv");
         firstConv->clk(clk);
         firstConv->rst(rst);
-        firstConv->kernel(kernel_sig);
+        for (int i = 0; i < L1; i++){
+            firstConv->kernel[i](kernel_test_sig[i]);
+            firstConv->kernel_rdy[i](kernel_rdy_sig[i]);
+            firstConv->kernel_vld[i](kernel_vld_sig[i]);
+        }
         firstConv->image(image_sig);
         firstConv->biases(biases_sig); 
-        firstConv->kernel_vld(kernel_vld_sig);
-        firstConv->kernel_rdy(kernel_rdy_sig);
         firstConv->image_vld(image_vld_sig);
         firstConv->image_rdy(image_rdy_sig);
         firstConv->biases_vld(biases_vld_sig);
@@ -255,7 +248,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
         firstConv->conv_2d_result_rdy_next(firstConv_result_rdy_sig_2);
         firstConv->conv_2d_result_vld_tb(firstConv_result_vld_sig_1);
         firstConv->conv_2d_result_vld_next(firstConv_result_vld_sig_2);
-        /*
+        /**//*
         firstMaxPool = new max_pool("firstMaxPool", P1, P2, F_M1, F_M2, F_M3, POOL_IN, 
                                      POOLOUT1, POOLOUT2, POOLOUT3, POOL_ED, 0);
         firstMaxPool->clk(clk);
@@ -416,16 +409,7 @@ SC_MODULE(TOP){//топ-модуль нейросетевого ускорите
     //деструктор
     ~TOP(){
         delete DRI_TB;
-        delete firstConv;/*
-        delete firstMaxPool;
-        delete secondConv;
-        delete secondMaxPool;
-        delete thirdConv;
-        delete thirdMaxPool;
-        delete fourthConv;
-        delete fourthMaxPool;      
-        delete firstDense;
-        delete secondDense;
+        
         /**/
     }
 }; 
@@ -439,7 +423,7 @@ int sc_main(int argc, char* argv[]) {
     //начинаем симуляцию 
     
     int sim_step=1;
-    sc_start(10000000,SC_NS);
+    //sc_start(1000000,SC_NS);
     sc_fixed<9,2> A[5];
     A[1] = 1.125;
     A[2] = -0.125;
@@ -448,13 +432,13 @@ int sc_main(int argc, char* argv[]) {
     cout<<"A[1]="<<A[1]<<" A[2]="<<A[2]<<" A[3]="<<A[3]<<"\n";
     cout<<"B="<<B<<"\n";
     cout<<sc_fxtype_context::default_value()<<endl;
-
-/*  for (int i = 0; i <5000; i++){
-        sc_start(sim_step, SC_NS);
+ 
+  for (int i = 0; i <10000000; i++){
+        sc_start(sim_step, SC_NS);/*
         cout << "clk = "<<top->clk<<"  @ "<<sc_time_stamp()<<endl;
-        cout<<" kernel3_rdy = "<<top->kernel3_rdy_sig<<"| ";
-        cout<<" kernel3_vld = "<<top->kernel3_vld_sig<<"| ";
-        cout<<" kernel3_sig = "<<top->kernel3_sig<<" | i="<<i<<endl;
+        cout<<" image_sig = "<<top->image_sig<<"| ";
+        cout<<" image_rdy_sig = "<<top->image_rdy_sig<<"| ";
+        cout<<" image_vld_sig = "<<top->image_vld_sig<<" | i="<<i<<endl;
         /*
         cout<<" image_rdy = "<<top->image_rdy_sig<<" | "; 
         cout<<" image_vld = "<<top->image_vld_sig<<" | ";
@@ -467,6 +451,6 @@ int sc_main(int argc, char* argv[]) {
         cout<<" coeff_recieved = "<<top->DENSE1->coeff_recieved;
         cout<<" input_recieved = "<<top->DENSE1->input_recieved<<endl<<endl; 
         sc_stop();/**/
-//  }
+    }
     return 0;
 }

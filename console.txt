@@ -1,0 +1,1 @@
+g++  -o main main.cpp tb_driver.h tb_driver.cpp macro.h weights.hpp weights.cpp conv1_unrlld.h conv1_unrlld.cpp  -I. -I/usr/local/systemc-2.3.1//include -L/usr/local/systemc-2.3.1//lib-linux64  -lsystemc -lm -Wl,-rpath=/usr/local/systemc-2.3.1//lib-linux64

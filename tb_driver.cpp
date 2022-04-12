@@ -42,10 +42,10 @@ void tb_driver::generate_biases(void) {
 };
 
 
-void tb_driver::generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flattened_mem) {    
-    if(kernels_generated1 == sc_logic(0)){
+void tb_driver::generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flattened_mem) {   
+    if(kernels_generated1[c] == sc_logic(0)){/*
         cout<<"VECTOR SIZE = "<<weights_firstConv.size()<<" "<<weights_firstConv[0].size()<<" "<<
-        weights_firstConv[0][0].size()<<" "<<weights_firstConv[0][0][0].size()<<endl;
+        weights_firstConv[0][0].size()<<" "<<weights_firstConv[0][0][0].size()<<"\n\n";/**/
         for (int i = 0; i < M1; ++i) {
 			for (int k = 0; k < N1; ++k) {
 				for (int j = 0; j < C1; ++j) {
@@ -54,28 +54,29 @@ void tb_driver::generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flatte
                     //cout<<"weights_firstConv[<<"i"<<]
 				}
 			}
-		}   
-        cout<<"kernel_flattened\n";
+		}  /*
+        cout<<"kernel_flattened_mem_"<<c+1<<"\n";
         for (int i = 0; i < (KER/L1); i++){
             cout << kernel_flattened_mem[i] << "\n ";
             
-        } /**/ /*
+        } 
+        cout<<"\n";/**/ 
         kernel_test[c].write(0);
-        kernel_vld.write(0);
+        kernel_vld[c].write(0);
 
         //поэлементная передача данных на порты
         sc_fixed<W_LEN_w, I_LEN_w> kernel_tmp;
         for (int i=0; i<KER; i++){
-            kernel_vld.write(1);
+            kernel_vld[c].write(1);
             kernel_tmp=kernel_flattened_mem[i];
             kernel_test[c].write(kernel_tmp);
             do{
                 wait(clk->posedge_event());
-        }while(!kernel_rdy.read());
-        kernel_vld.write(0);
+        }while(!kernel_rdy[c].read());
+        kernel_vld[c].write(0);
         }
         kernel_test[c].write(0);
-        kernels_generated1 = sc_logic(1);/**/
+        kernels_generated1[c] = sc_logic(1);/**/
     }
     else{
         wait(clk->posedge_event());
