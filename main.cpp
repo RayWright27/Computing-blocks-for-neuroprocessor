@@ -429,9 +429,16 @@ int sc_main(int argc, char* argv[]) {
     A[2] = -0.125;
     A[3] = A[1]*A[2];
     double B = A[3];
-    cout<<"A[1]="<<A[1]<<" A[2]="<<A[2]<<" A[3]="<<A[3]<<"\n";
+    cout<<"A[1]="<<A[1]<<" | "<<A[1].to_bin()<<" A[2]="<<A[2]<<" A[3]="<<A[3]<<"\n";
+    A[1] = -1.125;
+    cout<<"A[1]="<<A[1]<<" | "<<A[1].to_bin()<<" A[2]="<<A[2]<<" A[3]="<<A[3]<<"\n";
     cout<<"B="<<B<<"\n";
     cout<<sc_fxtype_context::default_value()<<endl;
+
+    sc_fixed<8,4> E = 7.5;
+    cout<<"E="<<E<<" | "<<E.to_bin()<<"\n";
+    sc_fixed<8,3,SC_TRN,SC_WRAP,1> E_wr = E;
+    cout<<"E_wr="<<E_wr<<" | "<<E_wr.to_bin()<<"\n";
  
   for (int i = 0; i <10000000; i++){
         sc_start(sim_step, SC_NS);/*

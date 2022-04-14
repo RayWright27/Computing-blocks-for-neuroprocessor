@@ -11,23 +11,25 @@
 //#define sc_bind boost::bind
 using std::vector;
  
-SC_MODULE(tb_driver){
+SC_MODULE(tb_driver){ 
 	sc_in<bool>     clk;
-    sc_out<bool>    rst; 
-    sc_in<bool>     kernel_rdy;
-    sc_out<bool>    kernel_vld;
+    sc_out<bool>    rst;
+    static const int ker_port = L1; 
+    sc_in<bool>     kernel_rdy[ker_port];
+    sc_out<bool>    kernel_vld[ker_port];
     sc_in<bool>     image_rdy;
     sc_out<bool>    image_vld;
     sc_in<bool>     biases_rdy;
     sc_out<bool>    biases_vld;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel_test[ker_port];
+    sc_out<sc_fixed<W_LEN_i, I_LEN_i>>  image;
+    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  biases;  
+    
+
     sc_in<bool>     firstConv_result_vld;
     sc_out<bool>    firstConv_result_rdy;
     sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   firstConv_result;
-    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  biases;  
-    sc_out<sc_fixed<W_LEN_i, I_LEN_i>>  image;
-    static const int ker_port = C1;
-    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel;
-    sc_out<sc_fixed<W_LEN_w, I_LEN_w>>  kernel_test[ker_port];
     
 
     sc_in<sc_fixed<W_LEN_i, I_LEN_i>>   firstMaxPool_result;
@@ -104,7 +106,39 @@ SC_MODULE(tb_driver){
     sc_fixed<W_LEN_w, I_LEN_w>     biases_tmp;  
     sc_fixed<W_LEN_i, I_LEN_i>     image_flattened[IMG];
 	sc_fixed<W_LEN_w, I_LEN_w>     biases_flattened[BIASES];
-    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem1[KER-C1+1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem1[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem2[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem3[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem4[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem5[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem6[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem7[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem8[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem9[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem10[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem11[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem12[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem13[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem14[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem15[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem16[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem17[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem18[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem19[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem20[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem21[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem22[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem23[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem24[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem25[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem26[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem27[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem28[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem29[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem30[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem31[KER/L1];
+    sc_fixed<W_LEN_w, I_LEN_w>     kernel_flattened_mem32[KER/L1];
+
     
     sc_fixed<W_LEN_w, I_LEN_w>*         kernel2_flattened;
     sc_fixed<W_LEN_w, I_LEN_w>          biases2_flattened[BIASES2];
@@ -151,7 +185,8 @@ SC_MODULE(tb_driver){
     
     const char*     imagefile = "tulip1.txt";
 
-    sc_logic        kernels_generated1 = sc_logic(0);
+    sc_logic        kernels_generated1[ker_port];
+   
     sc_logic        biases_generated1 = sc_logic(0);
     sc_logic        image_generated = sc_logic(0);
 
@@ -187,11 +222,44 @@ SC_MODULE(tb_driver){
     vector<vector<vector<float>>>read_image(std::string filename);
 
     void generate_reset(void);
-    void generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flattened_mem1);
-    //функця, служащая для динамического создания потоков generate_kernel, в которые можно подавать параметры
-    void wrapper(){
-        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 1, kernel_flattened_mem1));
+    void generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flattened_mem);
+
+    //функция, служащая для динамического создания потоков generate_kernel, в которые можно подавать параметры
+    void kernel_wrapper(){
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 0, kernel_flattened_mem1));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 1, kernel_flattened_mem2));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 2, kernel_flattened_mem3));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 3, kernel_flattened_mem4));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 4, kernel_flattened_mem5));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 5, kernel_flattened_mem6));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 6, kernel_flattened_mem7));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 7, kernel_flattened_mem8));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 8, kernel_flattened_mem9));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 9, kernel_flattened_mem10));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 10, kernel_flattened_mem11));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 11, kernel_flattened_mem12));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 12, kernel_flattened_mem13));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 13, kernel_flattened_mem14));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 14, kernel_flattened_mem15));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 15, kernel_flattened_mem16));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 16, kernel_flattened_mem17));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 17, kernel_flattened_mem18));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 18, kernel_flattened_mem19));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 19, kernel_flattened_mem20));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 20, kernel_flattened_mem21));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 21, kernel_flattened_mem22));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 22, kernel_flattened_mem23));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 23, kernel_flattened_mem24));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 24, kernel_flattened_mem25));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 25, kernel_flattened_mem26));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 26, kernel_flattened_mem27));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 27, kernel_flattened_mem28));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 28, kernel_flattened_mem29));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 29, kernel_flattened_mem30));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 30, kernel_flattened_mem31));
+        sc_spawn(sc_bind(&tb_driver::generate_kernel, this, 31, kernel_flattened_mem32));
     }
+    
     //--------------------------------------------------------------------------------------------------------
     void generate_image(void);
     void generate_biases(void);
@@ -246,6 +314,10 @@ SC_MODULE(tb_driver){
         dense1_result_arr = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE1_OUT];
         coeff2_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE2_COEFF];
         dense2_result_arr = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE2_OUT];
+
+        for(int i = 0; i < ker_port; i++){
+            kernels_generated1[i] = sc_logic(0);
+        }
 
     /* Поскольку в SystemC есть ограничение по выделяемой памти создаём динамические 
     массивы*/
@@ -315,7 +387,7 @@ SC_MODULE(tb_driver){
 
         SC_THREAD(generate_reset);
 //        sensitive<<clk.pos();
-        SC_THREAD(wrapper);
+        SC_THREAD(kernel_wrapper);
         SC_THREAD(generate_image); 
         SC_THREAD(generate_biases);
 //        SC_METHOD(generate_biases);

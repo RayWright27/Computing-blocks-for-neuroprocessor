@@ -5,6 +5,8 @@
 #include <cstring>
 #include <png.h>
 #include <cstdlib>
+#include <bitset>
+#include <climits>
 using std::vector;
 
 void tb_driver::generate_reset(void){
@@ -21,6 +23,12 @@ void tb_driver::generate_biases(void) {
             biases_flattened[i] = biases_firstConv[i];
             //cout<<biases_flattened[i]<<endl;
         }
+        cout<<"biases_flattened"<<"\n";
+        for (int i = 0; i < (BIASES); i++){
+            cout <<  biases_flattened[i].to_hex() << "\n ";
+            
+        } 
+        cout<<"\n";/**/
 
         for (int i=0;i<BIASES;i++){
             biases_vld.write(1);
@@ -57,10 +65,11 @@ void tb_driver::generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flatte
 		}  /*
         cout<<"kernel_flattened_mem_"<<c+1<<"\n";
         for (int i = 0; i < (KER/L1); i++){
-            cout << kernel_flattened_mem[i] << "\n ";
+            cout << kernel_flattened_mem[i].to_hex() << "\n ";
             
         } 
-        cout<<"\n";/**/ 
+        cout<<"\n";/**/
+         
         kernel_test[c].write(0);
         kernel_vld[c].write(0);
 
@@ -98,7 +107,7 @@ void tb_driver::generate_image(void){
         /*
             cout<<"------------image_flattened-----------"<<endl;
         for (int i=0;i<IMG;i++){
-            cout<< image_flattened[i]<< " \n";
+            cout<< image_flattened[i].to_hex()<< " \n";
         } 
         /* */
         //поэлементная передача данных на порты
