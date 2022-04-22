@@ -446,7 +446,7 @@ bram
 #(
 	.RAM_WIDTH 		(RAM_WIDTH_KER 		),
 	.RAM_ADDR_BITS 	(RAM_ADDR_BITS_KER 	),
-	.DATA_FILE 		("ker_mem23.txt"		),
+	.DATA_FILE 		("ker_mem23.txt"	),
 	.INIT_START_ADDR(0					),
 	.INIT_END_ADDR	(31					)
 )
@@ -816,9 +816,6 @@ begin
 	write_enable		= 0;
 	input_image_ram		= 0;
 	
-	ker_vld[0]			= 1;
-	
-	
 	////////////////////////////
 	//read kernel BRAM		
 	//each loop cycle switches to next address inside BRAM
@@ -826,11 +823,15 @@ begin
 	for (address_kernel[0] = 0; address_kernel[0] < 27; 
 			address_kernel[0] = address_kernel[0] +1)
 			begin
-				repeat(2) @(posedge clk);
-			end
-			
+				if (address_kernel[0] > 0)
+				begin
+					ker_vld[0]			= 1;
+				end
+				begin
+					repeat(2) @(posedge clk);
+				end
+			end	
 	
-			
 	//////////////////////////
 	//loops for displaying values in console
 	$display("Reading data from BRAM");
@@ -845,37 +846,50 @@ begin
 		end
 		
 		repeat(2) @(posedge clk);
-		$finish;
+		
 end
 
 
 initial begin
 	
 	#11
-	img_vld				= 1;
 	////////////////////////////
 	//read image BRAM		
 	//each loop cycle switches to next address inside BRAM
 	repeat(2) @(posedge clk);
 	for (address_image = 0; address_image < 49152; 
-			address_image = address_image +1)
+		address_image = address_image +1)
+		begin
+			if (address_image > 0)
 			begin
-				repeat(2) @(posedge clk);
+				img_vld	= 1;
 			end
+			
+			repeat(2) @(posedge clk);
+		end
+	//img_vld	= 0;
+	//#5000
+	//$finish;
 end
 
 initial begin
 	
 	#11
-	bias_vld				= 1;
+	
 	////////////////////////////
 	//read biases BRAM		
 	//each loop cycle switches to next address inside BRAM
 	repeat(2) @(posedge clk);
-	for (address_biases = 0; address_biases < 49152; 
+	for (address_biases = 0; address_biases < 31; 
 			address_biases = address_biases +1)
 			begin
-				repeat(2) @(posedge clk);
+				if (address_biases > 0)
+				begin
+					bias_vld				= 1;
+				end
+				begin
+					repeat(2) @(posedge clk);
+				end
 			end
 end		
  	

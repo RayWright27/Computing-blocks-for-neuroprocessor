@@ -25,7 +25,11 @@ module firstConv
 		parameter RAM_WIDTH_KER		= 32,
 		parameter KER_MEM_LENGTH	= 27,
 		parameter IMAGE_MEM_LENGTH	= 49152,
-		parameter BIAS_MEM_LENGTH	= 32,/*
+		parameter BIAS_MEM_LENGTH	= 32,
+		parameter C1_PARAM			= 3,
+		parameter M2_PARAM			= 128,
+		parameter N2_PARAM			= 128,
+		/*
 		parameter RAM_ADDR_BITS 	= 9,
 		parameter DATA_FILE 		= "data_file.txt",
 		parameter INIT_START_ADDR 	= 0,
@@ -190,9 +194,13 @@ module firstConv
     reg [6:0]				biases_vals_cnt;				
     reg 					biases_recieved;
     
+    reg [RAM_WIDTH_IMG-1:0]	image_mem_arr_in [N2_PARAM-1:0][M2_PARAM-1:0][C1_PARAM:0];
+    reg	[6:0]				C1_var;
+    reg	[8:0]				M2_var;
+    reg	[8:0]				N2_var;
+    
     reg 					zero_pad_done;
     reg 					conv_done;
-    
     
     ////////////////////////
 	// recieving image
@@ -205,11 +213,14 @@ module firstConv
 		else begin
 			if (image_recieved == 0)		 
 				image_rdy <= 1; 
-				if((image_mem[image_vals_cnt] != image) || (image_vals_cnt == IMAGE_MEM_LENGTH - 1)) begin
+				if( (image_mem[image_vals_cnt] != image ) || (image_vld == 1) || (image_vals_cnt == IMAGE_MEM_LENGTH ) ) begin
 				//counter clicks if new value came to kernel data port or it's the last value  
 					image_vals_cnt = image_vals_cnt + 1'd1;
-				end				
-				image_mem[image_vals_cnt] <= image;			
+					image_mem[image_vals_cnt] <= image;
+				end/*
+				if (image_vld == 1) begin				
+				 
+				end	*/		
 				if (image_vals_cnt == IMAGE_MEM_LENGTH) begin
 					image_recieved <= 1'b1;
 				end
@@ -219,6 +230,39 @@ module firstConv
 				//kernel_rdy0<=0; //why does this break all rdy-val protocol?????
 		end
     /**/
+    
+    ////////////////////////
+    // passing image to 3D array-register 
+    always@(posedge clk)
+    begin
+    	if (reset == 1)
+    	begin
+    		N2_var <= 8'd0;
+    		M2_var <= 8'd0;
+    		C1_var <= 6'd0;    		
+    	end
+    	else if (image_recieved == 1)
+    	begin
+    		image_mem_arr_in[N2_var][M2_var][C1_var] = 
+    		image_mem[N2_var*M2_PARAM*C1_PARAM + M2_var*C1_PARAM + C1_var + 1]; //+1 because костыль in recieving protocol
+    		//incerementing arrays counters
+    		C1_var <= C1_var + 1;
+    		if (C1_var >= C1_PARAM)
+    		begin
+    			C1_var <= 6'd0;
+    			M2_var <= M2_var + 1;
+				if (M2_var >= M2_PARAM)
+				begin
+					M2_var <= 8'd0;					
+					N2_var <= N2_var + 1;
+					if (N2_var >= N2_PARAM)
+//						N2_var <= 8'd0;
+						$finish;
+				end
+			end 
+    	end
+    end   
+        
     
      ////////////////////////
 	// recieving biases
@@ -231,17 +275,21 @@ module firstConv
 		else begin
 			if (biases_recieved == 0)		 
 				biases_rdy <= 1; 
-				if((biases_mem[biases_vals_cnt] != biases) || (biases_vals_cnt == BIAS_MEM_LENGTH - 1)) begin
+				if( ((biases_mem[biases_vals_cnt] != biases) || (biases_vld == 1)) || (biases_vals_cnt == BIAS_MEM_LENGTH ) ) begin
 				//counter clicks if new value came to kernel data port or it's the last value  
 					biases_vals_cnt = biases_vals_cnt + 1'd1;
-				end				
-				biases_mem[biases_vals_cnt] <= biases;			
-				if (biases_vals_cnt == BIAS_MEM_LENGTH) begin
+					biases_mem[biases_vals_cnt] <= biases;
+				end	
+					
+				if (biases_vals_cnt == BIAS_MEM_LENGTH+2) begin
 					biases_recieved <= 1'b1;
+					
 				end
+				
 					
 			else if(biases_recieved == 1)
 				biases_mem[biases_vals_cnt]<=biases_mem[biases_vals_cnt];	
+					
 				//kernel_rdy0<=0; //why does this break all rdy-val protocol?????
 		end
     
@@ -258,11 +306,12 @@ module firstConv
     	else begin
     		if (kernel_recieved[0] == 0)		 
 				kernel_rdy0 <= 1; 
-				if((kernel0_mem[kernel_vals_cnt[0]] != kernel0) || (kernel_vals_cnt[0] == KER_MEM_LENGTH - 1)) begin
+				if(((kernel0_mem[kernel_vals_cnt[0]] != kernel0) || (kernel_vld0 == 1) )|| (kernel_vals_cnt[0] == KER_MEM_LENGTH)) begin
 				//counter clicks if new value came to kernel data port or it's the last value  
 					kernel_vals_cnt[0] = kernel_vals_cnt[0] + 1'd1;
+					kernel0_mem[kernel_vals_cnt[0]] <= kernel0;	
 				end				
-				kernel0_mem[kernel_vals_cnt[0]] <= kernel0;			
+						
 				if (kernel_vals_cnt[0] == KER_MEM_LENGTH) begin
 					kernel_recieved[0] <= 1'b1;
 				end
@@ -292,8 +341,8 @@ module firstConv
 					kernel_recieved[1] <= 1'b1;
     	end
    /**/
-    
-    
+   
+   
    
     
 endmodule
