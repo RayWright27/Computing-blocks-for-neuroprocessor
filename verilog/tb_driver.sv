@@ -22,15 +22,15 @@
 
 module tb_driver;
 
-localparam SF = 2.0**-4.00;  // Q4.4 scaling factor is 2^-4
-
+localparam kerSF = 2.0**-14.00;  // Q4.4 scaling factor is 2^-4
+localparam imgSF = 2.0**-14.00;
 // parameters for BRAM blocks
-parameter	RAM_WIDTH_KER = 20;
+parameter	RAM_WIDTH_KER = 16;  //16 + 4 because of two excess LSBs and MSBs 
 parameter	RAM_ADDR_BITS_KER = 5; // 27 memory rows => we take 2^5=32
 parameter	RAM_WIDTH_IMG = 20;
 parameter	RAM_ADDR_BITS_IMG = 16; // 49152 memory rows => we take 2^5=32
-parameter	RAM_WIDTH_BIAS = 20;
-parameter	RAM_ADDR_BITS_BIAS = 5; //
+parameter	RAM_WIDTH_BIAS = 16;
+parameter	RAM_ADDR_BITS_BIAS = 6; //
 
 
 reg								clk;
@@ -43,17 +43,17 @@ reg								write_enable;
 
 reg 	[RAM_ADDR_BITS_KER-1:0]	address_kernel[31:0];
 reg 	[RAM_WIDTH_KER-1:0] 	input_kernel_ram[31:0];
-reg		[RAM_WIDTH_KER-1:0] 	output_kernel_ram[31:0];
+reg	signed	[RAM_WIDTH_KER-1:0] 	output_kernel_ram[31:0];
 
 
 reg 	[RAM_ADDR_BITS_IMG-1:0]	address_image;
 reg 	[RAM_WIDTH_IMG-1:0] 	input_image_ram;
-wire	[RAM_WIDTH_IMG-1:0] 	output_image_ram;
+wire signed	[RAM_WIDTH_IMG-1:0] 	output_image_ram;
 
 
 reg 	[RAM_ADDR_BITS_BIAS-1:0]address_biases;
 reg 	[RAM_WIDTH_BIAS-1:0] 	input_biases_ram;
-wire	[RAM_WIDTH_BIAS-1:0] 	output_biases_ram;
+wire signed	[RAM_WIDTH_BIAS-1:0] 	output_biases_ram;
 
 
 
@@ -670,7 +670,7 @@ reg								bias_rdy;
 reg								bias_vld;
 wire 							bias_vld_next;
 wire 							bias_rdy_next;
-reg	 [RAM_WIDTH_IMG-1:0]		bias;
+reg	 [RAM_WIDTH_BIAS-1:0]		bias;
 firstConv
 #(
 	.RAM_WIDTH_KER	(RAM_WIDTH_KER		),
@@ -829,24 +829,28 @@ begin
 				end
 				begin
 					repeat(2) @(posedge clk);
+					$display ("KERNEL0[%d] = %f | %b",
+							 address_kernel[0], 
+							 $itor(output_kernel_ram[0]*kerSF), output_kernel_ram[0]);/**/
 				end
 			end	
 	
 	//////////////////////////
 	//loops for displaying values in console
+	/*
 	$display("Reading data from BRAM");
 		repeat(2) @(posedge clk);
-		for (address_kernel[30] = 0; address_kernel[30] < 27; 
-		address_kernel[310] = address_kernel[30] +1)
+		for (address_biases = 0; address_biases < 31; 
+		address_biases = address_biases +1)
 		begin
 			@(posedge clk);
-			#1 $display ("ADDR[%0d], DATA: %h",
-						 address_kernel[30], 
-						output_kernel_ram[30]);
+			#1 $display ("DATA[%d] = %h | %f",
+						 address_biases, 
+						output_biases_ram, $itor(output_biases_ram*kerSF));
 		end
 		
 		repeat(2) @(posedge clk);
-		
+		*/
 end
 
 
@@ -864,12 +868,12 @@ initial begin
 			begin
 				img_vld	= 1;
 			end
-			
 			repeat(2) @(posedge clk);
+			$display ("IMG[%d] = %f | %b",
+					 address_image, 
+					$itor(imgSF*output_image_ram), output_image_ram);//$itor(output_biases_ram*imgSF));*/
 		end
-	//img_vld	= 0;
-	//#5000
-	//$finish;
+	
 end
 
 initial begin
@@ -880,15 +884,19 @@ initial begin
 	//read biases BRAM		
 	//each loop cycle switches to next address inside BRAM
 	repeat(2) @(posedge clk);
-	for (address_biases = 0; address_biases < 31; 
+	for (address_biases = 0; address_biases < 32; 
 			address_biases = address_biases +1)
 			begin
+				
 				if (address_biases > 0)
 				begin
 					bias_vld				= 1;
 				end
 				begin
-					repeat(2) @(posedge clk);
+					repeat(2) @(posedge clk);/*
+					$display ("BIASES[%d] = %h | %b",
+							 address_biases, 
+							output_biases_ram, output_biases_ram);/**/
 				end
 			end
 end		
