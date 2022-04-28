@@ -828,7 +828,7 @@ begin
 					ker_vld[0]			= 1;
 				end
 				begin
-					repeat(2) @(posedge clk);
+					repeat(2) @(posedge clk);/*
 					$display ("KERNEL0[%d] = %f | %b",
 							 address_kernel[0], 
 							 $itor(output_kernel_ram[0]*kerSF), output_kernel_ram[0]);/**/
@@ -868,7 +868,7 @@ initial begin
 			begin
 				img_vld	= 1;
 			end
-			repeat(2) @(posedge clk);
+			repeat(2) @(posedge clk);/*
 			$display ("IMG[%d] = %f | %b",
 					 address_image, 
 					$itor(imgSF*output_image_ram), output_image_ram);//$itor(output_biases_ram*imgSF));*/

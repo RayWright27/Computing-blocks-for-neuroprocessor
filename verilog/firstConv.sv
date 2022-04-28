@@ -223,7 +223,8 @@ module firstConv
 	reg			[8:0]				N2_var2;
     reg 							zero_pad_done;
     
-
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w;
+	wire signed	[RAM_WIDTH_IMG-1:0]  mult_temp_w_conc;
     wire signed [2*RAM_WIDTH_IMG-1:0]res_temp_w;
     wire signed	[RAM_WIDTH_IMG-1:0]  res_temp_w_conc;
     reg signed	[RAM_WIDTH_IMG-1:0]	result_mem [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
@@ -487,12 +488,13 @@ module firstConv
    
    ////////////////////////
    // convolution [0]
-   localparam imgSF = 2.0**-16.00;  // Q6.14 scaling factor is 2^-14
-   localparam tempSF = 2.0**-32.00; // Q12.28 scaling factor is 2^-28 for result_temp
-   assign res_temp_w = kernel_arr_in0[M1_var2][N1_var2][C1_var4][0] * 
-						image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4] +
-						result_mem[M3_var][N3_var][0];
-   assign res_temp_w_conc = res_temp_w[35:16];//[25:5] 
+   localparam imgSF = 2.0**-14.00;  // Q6.14 scaling factor is 2^-14
+   localparam tempSF = 2.0**-30.00; // Q12.28 scaling factor is 2^-28 for result_temp
+   assign mult_temp_w = kernel_arr_in0[M1_var2][N1_var2][C1_var4][0] * 
+   						image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4];
+   assign mult_temp_w_conc = mult_temp_w[33:14];
+   //assign res_temp_w = mult_temp_w + result_mem[M3_var][N3_var][0];
+   assign res_temp_w_conc = mult_temp_w_conc + result_mem[M3_var][N3_var][0];//[25:5] 
    integer j,i,k;
    always@(posedge clk)
        	if (reset == 1) begin
@@ -535,11 +537,14 @@ module firstConv
    				image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4];
    				result_mem[M3_var][N3_var][0] <= res_temp_w_conc;
    				
+   				$display ("result_mem[%0d][%0d][0] = %b",M3_var, N3_var,result_mem[M3_var][N3_var][0]);
    				$display ("kernel_arr_in0[%0d][%0d][%0d][0]*img_mem_arr[%0d+%0d][%0d+%0d][%0d]",
    						   M1_var2, N1_var2, C1_var, M3_var, M1_var2, N3_var, N1_var2, C1_var4 );
-   				$display ("res_temp_w = %b", res_temp_w);
-   				$display ("res_temp_w_conc = %b", res_temp_w_conc);
-   				$display ("result_temp = %b", result_temp);
+   						   
+   			    $display ("mult_temp_w = %b", mult_temp_w);
+   			    $display ("mult_temp_w_conc =  %b", mult_temp_w_conc);
+   				$display ("res_temp_w_conc =   %b", res_temp_w_conc);
+   				//$display ("result_temp = %b", result_temp);
    				$display ("result_mem[%0d][%0d][0] = %b + %b * %b",
 						   M3_var, N3_var, result_mem[M3_var][N3_var][0], 
 						   kernel_arr_in0[M1_var2][N1_var2][C1_var4][0],
@@ -562,8 +567,8 @@ module firstConv
    						C1_var4 <= C1_var4 + 1;
    						if (C1_var4 >= C1_PARAM-1)
    						begin
-							$display ("result_mem[%d][%d][0] = %h",
-									   M3_var, N3_var, result_mem[M3_var][N3_var][0]);
+							$display ("result_mem[%d][%d][0] = %b",
+									   M3_var, N3_var,result_mem[M3_var][N3_var][0]); //$itor(imgSF*result_mem[M3_var][N3_var][0]));
 							$display ("------------------------------------------------");
    							C1_var4 <= 6'd0;
    							N3_var <= N3_var + 1;
