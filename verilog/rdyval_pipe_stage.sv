@@ -39,6 +39,7 @@ module rdyval_pipe_stage #(
     input  logic clk,
     // asynchronous reset, active low
     input  logic rst_n
+   
 );
 
 // Implements the handshake signalling. Notice that the `rdy` flag is just
