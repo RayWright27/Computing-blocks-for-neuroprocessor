@@ -186,7 +186,38 @@ module firstConv
 	input		[RAM_WIDTH_KER-1:0] conv_2d_vld,
 	output reg	[RAM_WIDTH_KER-1:0] conv_2d_rdy,
 	
-	output 		[RAM_WIDTH_IMG-1:0] result0
+	output reg		[RAM_WIDTH_IMG-1:0] result0,
+	output reg		[RAM_WIDTH_IMG-1:0] result1,
+	output reg		[RAM_WIDTH_IMG-1:0] result2,
+	output reg		[RAM_WIDTH_IMG-1:0] result3,
+	output reg		[RAM_WIDTH_IMG-1:0] result4,
+	output reg		[RAM_WIDTH_IMG-1:0] result5,
+	output reg		[RAM_WIDTH_IMG-1:0] result6,
+	output reg		[RAM_WIDTH_IMG-1:0] result7,
+	output reg		[RAM_WIDTH_IMG-1:0] result8,
+	output reg		[RAM_WIDTH_IMG-1:0] result9,
+	output reg		[RAM_WIDTH_IMG-1:0] result10,
+	output reg		[RAM_WIDTH_IMG-1:0] result11,
+	output reg		[RAM_WIDTH_IMG-1:0] result12,
+	output reg		[RAM_WIDTH_IMG-1:0] result13,
+	output reg		[RAM_WIDTH_IMG-1:0] result14,
+	output reg		[RAM_WIDTH_IMG-1:0] result15,
+	output reg		[RAM_WIDTH_IMG-1:0] result16,
+	output reg		[RAM_WIDTH_IMG-1:0] result17,
+	output reg		[RAM_WIDTH_IMG-1:0] result18,
+	output reg		[RAM_WIDTH_IMG-1:0] result19,
+	output reg		[RAM_WIDTH_IMG-1:0] result20,
+	output reg		[RAM_WIDTH_IMG-1:0] result21,
+	output reg		[RAM_WIDTH_IMG-1:0] result22,
+	output reg		[RAM_WIDTH_IMG-1:0] result23,
+	output reg		[RAM_WIDTH_IMG-1:0] result24,
+	output reg		[RAM_WIDTH_IMG-1:0] result25,
+	output reg		[RAM_WIDTH_IMG-1:0] result26,
+	output reg		[RAM_WIDTH_IMG-1:0] result27,
+	output reg		[RAM_WIDTH_IMG-1:0] result28,
+	output reg		[RAM_WIDTH_IMG-1:0] result29,
+	output reg		[RAM_WIDTH_IMG-1:0] result30,
+	output reg		[RAM_WIDTH_IMG-1:0] result31
     );
     
     reg	signed	[RAM_WIDTH_KER-1:0]kernel0_mem [KER_MEM_LENGTH:0];
@@ -289,9 +320,73 @@ module firstConv
     
 	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_0;
 	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_1;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_2;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_3;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_4;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_5;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_6;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_7;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_8;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_9;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_10;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_11;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_12;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_13;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_14;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_15;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_16;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_17;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_18;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_19;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_20;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_21;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_22;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_23;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_24;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_25;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_26;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_27;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_28;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_29;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_30;
+	wire signed [2*RAM_WIDTH_IMG-1:0]mult_temp_w_31;
+	
+	
 	wire signed	[RAM_WIDTH_IMG-1:0] mult_temp_w_conc[31:0];
     wire signed	[RAM_WIDTH_IMG-1:0] res_temp_w_conc[31:0];
-    reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_0 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_0 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_1 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_2 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_3 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_4 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_5 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_6 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_7 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_8 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_9 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_10 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_11 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_12 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_13 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_14 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_15 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_16 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_17 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_18 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_19 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_20 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_21 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_22 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_23 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_24 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_25 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_26 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_27 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_28 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_29 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_30 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+	reg signed	[RAM_WIDTH_IMG-1:0]	result_mem_31 [(N3_PARAM-1):0][(M3_PARAM-1):0][0:0];
+
     reg signed	[2*RAM_WIDTH_IMG-1:0]result_temp[31:0];
     reg 		[8:0]				N1_var2[31:0];
     reg 		[8:0]    			M1_var2[31:0];
@@ -304,7 +399,38 @@ module firstConv
     reg			[8:0]				N3_var_def[31:0];
     reg 		[2:0]				L3_var_def[31:0];  
     reg								result_flattened[31:0];
-    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_0[(CONV_ED-1):0]; 
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_0[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_1[(CONV_ED-1):0]; 
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_2[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_3[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_4[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_5[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_6[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_7[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_8[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_9[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_10[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_11[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_12[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_13[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_14[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_15[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_16[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_17[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_18[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_19[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_20[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_21[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_22[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_23[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_24[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_25[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_26[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_27[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_28[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_29[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_30[(CONV_ED-1):0];
+    reg signed	[RAM_WIDTH_IMG-1:0]	result_fl_31[(CONV_ED-1):0]; 
     
     ////////////////////////
 	// recieving image
@@ -2691,7 +2817,7 @@ module firstConv
    								if (M3_var[0] >= M3_PARAM-1)
    								begin
    									conv_done[0] <= 1;
-   									$finish;
+   									
    								end
    							end
    						end
@@ -2702,98 +2828,62 @@ module firstConv
     /**/
    //---------------------------------------------------------------------------------------------------------------------------
    ////////////////////////
-   // convolution [0]
-   /*
+   // convolution [1]
    assign mult_temp_w_1 = kernel_arr_in1[M1_var2[1]][N1_var2[1]][C1_var4[1]][0] *       //wire for multiplication
    						image_mem_arr_in_zpad[M3_var[1] + M1_var2[1]][N3_var[1] + N1_var2[1]][C1_var4[1]];
-   assign mult_temp_w_conc[0] = mult_temp_w_0[33:14];                             //wire for concatenation after multiplication
-   assign res_temp_w_conc[0] = mult_temp_w_conc[0] + result_mem_0[M3_var][N3_var][0];//wire with result
-   integer j1,i1,k1;//------------------------ONLY FOR SIM!!!
+   assign mult_temp_w_conc[1] = mult_temp_w_1[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[1] = mult_temp_w_conc[1] + result_mem_1[M3_var[1]][N3_var[1]][0];//wire with result
+   //integer j1,i1,k1;
    always@(posedge clk)
        	if (reset == 1) begin
-       		N1_var2 <= 8'd0;
-       		M1_var2 <= 8'd0;
-       		C1_var4 <= 6'd0;
-       		N3_var <= 8'd0;
-			M3_var <= 8'd0;
-			conv_done <= 1'd0;
-			result_temp[0] <= 39'd0;
-			//result_mem <= '{128{'{128{'{ 1{20'd0} }}}}};		
-			for (j1=0; j1 < 128; j1=j1+1) 
+       		N1_var2[1] <= 8'd0;
+       		M1_var2[1] <= 8'd0;
+       		C1_var4[1] <= 6'd0;
+       		N3_var[1] <= 8'd0;
+			M3_var[1] <= 8'd0;
+			conv_done[1] <= 1'd0;
+			result_temp[1] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
 			begin
-				for (i1=0; i1 < 128; i1=i1+1) 
+				for (i=0; i < 128; i=i+1) 
 				begin
-					for( k1=0; k1 < 1; k1=k1+1)
+					for( k=0; k < 1; k=k+1)
 					begin
-						result_mem_0[j][i][k] <= 19'd0;
+						result_mem_1[j][i][k] <= 19'd0;
 					end
 				end	
 			end
        	end
        	else begin
-       		if (kernel_recieved[0] == 1 && zero_pad_done == 1 &&
-       			biases_recieved == 1 && image_deflattened == 1 && conv_done == 0)
+       		if (kernel_recieved[1] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[1] == 0)
    			begin
-   				
-   				result_temp[0] <= result_mem_0[M3_var][N3_var][0] + 
-   				kernel_arr_in0[M1_var2][N1_var2][C1_var4][0] * 
-   				image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4];
-   				
-   				result_mem_0[M3_var][N3_var][0] <= res_temp_w_conc[0];
-   				
-   				$display ("result_mem[%0d][%0d][0] = %b",M3_var, N3_var,result_mem_0[M3_var][N3_var][0]);
-   				$display ("kernel_arr_in0[%0d][%0d][%0d][0]*img_mem_arr[%0d+%0d][%0d+%0d][%0d]",
-   						   M1_var2, N1_var2, C1_var4, M3_var, M1_var2, N3_var, N1_var2, C1_var4 );
-   						   
-   			    $display ("mult_temp_w = %b", mult_temp_w_0);
-   			    $display ("mult_temp_w_conc =  %b", mult_temp_w_conc[0]);
-   				$display ("res_temp_w_conc =   %b", res_temp_w_conc[0]);
-   				//$display ("result_temp = %b", result_temp);
-   				$display ("result_mem[%0d][%0d][0] = %b + %b * %b",
-						   M3_var, N3_var, result_mem_0[M3_var][N3_var][0], 
-						   kernel_arr_in0[M1_var2][N1_var2][C1_var4][0],
-						   image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4]);/**//*
-				$display ("res_temp_w = %f", $itor(tempSF*res_temp_w));
-				$display ("res_temp_w_conc = %f", $itor(imgSF*res_temp_w_conc));
-			    $display ("result_mem[%0d][%0d][0] = %f + %f * %f",
-						   M3_var, N3_var, $itor(imgSF*result_mem[M3_var][N3_var][0]), 
-						   $itor(imgSF*kernel_arr_in0[M1_var2][N1_var2][C1_var4][0]),
-						   $itor(imgSF*image_mem_arr_in_zpad[M3_var + M1_var2][N3_var + N1_var2][C1_var4]));/**/
-				/*
-			    $display (" ");
-   				N1_var2 <= N1_var2 + 1;
-   				if (N1_var2 >= N1_PARAM-1)
+   				result_temp[1] <= result_mem_1[M3_var[1]][N3_var[1]][0] + 
+   				kernel_arr_in1[M1_var2[1]][N1_var2[1]][C1_var4[1]][0] * 
+   				image_mem_arr_in_zpad[M3_var[1] + M1_var2[1]][N3_var[1] + N1_var2[1]][C1_var4[1]];
+   				//-----------------------------------------------------------
+   				result_mem_1[M3_var[1]][N3_var[1]][1] <= res_temp_w_conc[1];
+   				N1_var2[1] <= N1_var2[1] + 1;
+   				if (N1_var2[1] >= N1_PARAM-1)
    				begin
-   					N1_var2 <= 8'd0;
-   					M1_var2 <= M1_var2 + 1;
-   					if (M1_var2 >= M1_PARAM-1)
+   					N1_var2[1] <= 8'd0;
+   					M1_var2[1] <= M1_var2[1] + 1;
+   					if (M1_var2[1] >= M1_PARAM-1)
    					begin
-   						M1_var2 <= 8'd0;
-   							
-   						C1_var4 <= C1_var4 + 1;
-   						if (C1_var4 >= C1_PARAM-1)
+   						M1_var2[1] <= 8'd0;
+   						C1_var4[1] <= C1_var4[1] + 1;
+   						if (C1_var4[1] >= C1_PARAM-1)
    						begin
-   							
-							C1_var4 <= 6'd0;
-   							N3_var <= N3_var + 1;
-   							
-							$display ("result_mem[%d][%d][0] = %b",
-									   M3_var, N3_var,result_mem_0[M3_var][N3_var][0]); //$itor(imgSF*result_mem[M3_var][N3_var][0]));
-							$display ("bias[%d] = %b",
-												   C1_var4, biases_mem[(C1_var4-2)]);
-							$display ("------------------------------------------------");
-							result_mem_0[M3_var][N3_var][0]<= res_temp_w_conc[0] + biases_mem[(C1_var4-2)] ;
-							$display ("result_mem_bias[%d][%d][0] = %b",
-									   M3_var, N3_var,result_mem_0[M3_var][N3_var][0]);	
-							$display ("---------------------------------------------------------------------------------------");   												
-   							if (N3_var >= N3_PARAM-1)
+							C1_var4[1] <= 6'd0;
+   							N3_var[1] <= N3_var[1] + 1;
+							result_mem_1[M3_var[1]][N3_var[1]][0]<= res_temp_w_conc[1] + biases_mem[(C1_var4[1]-2)] ;												
+   							if (N3_var[1] >= N3_PARAM-1)
    							begin
-   								N3_var <= 8'd0;
-   								M3_var <= M3_var + 1;
-   								if (M3_var >= M3_PARAM-1)
+   								N3_var[1] <= 8'd0;
+   								M3_var[1] <= M3_var[1] + 1;
+   								if (M3_var[1] >= M3_PARAM-1)
    								begin
-   									conv_done <= 1;
-   									$finish;
+   									conv_done[1] <= 1;
    								end
    							end
    						end
@@ -2803,8 +2893,2018 @@ module firstConv
    		end
     /**/
 
+   //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [2]
+   
+   assign mult_temp_w_2 = kernel_arr_in2[M1_var2[2]][N1_var2[2]][C1_var4[2]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[2] + M1_var2[2]][N3_var[2] + N1_var2[2]][C1_var4[2]];
+   assign mult_temp_w_conc[2] = mult_temp_w_3[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[2] = mult_temp_w_conc[2] + result_mem_2[M3_var[2]][N3_var[2]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[2] <= 8'd0;
+       		M1_var2[2] <= 8'd0;
+       		C1_var4[2] <= 6'd0;
+       		N3_var[2] <= 8'd0;
+			M3_var[2] <= 8'd0;
+			conv_done[2] <= 1'd0;
+			result_temp[2] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_2[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[2] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[2] == 0)
+   			begin
+   				result_temp[2] <= result_mem_2[M3_var[2]][N3_var[2]][0] + 
+   				kernel_arr_in2[M1_var2[2]][N1_var2[2]][C1_var4[2]][0] * 
+   				image_mem_arr_in_zpad[M3_var[2] + M1_var2[2]][N3_var[2] + N1_var2[2]][C1_var4[2]];
+   				//-----------------------------------------------------------
+   				result_mem_2[M3_var[2]][N3_var[2]][0] <= res_temp_w_conc[2];
+   				N1_var2[2] <= N1_var2[2] + 1;
+   				if (N1_var2[2] >= N1_PARAM-1)
+   				begin
+   					N1_var2[2] <= 8'd0;
+   					M1_var2[2] <= M1_var2[2] + 1;
+   					if (M1_var2[2] >= M1_PARAM-1)
+   					begin
+   						M1_var2[2] <= 8'd0;
+   						C1_var4[2] <= C1_var4[2] + 1;
+   						if (C1_var4[2] >= C1_PARAM-1)
+   						begin
+							C1_var4[2] <= 6'd0;
+   							N3_var[2] <= N3_var[2] + 1;
+							result_mem_2[M3_var[2]][N3_var[2]][0]<= res_temp_w_conc[2] + biases_mem[(C1_var4[2]-2)] ;												
+   							if (N3_var[2] >= N3_PARAM-1)
+   							begin
+   								N3_var[2] <= 8'd0;
+   								M3_var[2] <= M3_var[2] + 1;
+   								if (M3_var[2] >= M3_PARAM-1)
+   								begin
+   									conv_done[2] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+   
+   //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [3]
+   
+   assign mult_temp_w_3 = kernel_arr_in3[M1_var2[3]][N1_var2[3]][C1_var4[3]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[3] + M1_var2[3]][N3_var[3] + N1_var2[3]][C1_var4[3]];
+   assign mult_temp_w_conc[3] = mult_temp_w_3[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[3] = mult_temp_w_conc[3] + result_mem_3[M3_var[3]][N3_var[3]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[3] <= 8'd0;
+       		M1_var2[3] <= 8'd0;
+       		C1_var4[3] <= 6'd0;
+       		N3_var[3] <= 8'd0;
+			M3_var[3] <= 8'd0;
+			conv_done[3] <= 1'd0;
+			result_temp[3] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_3[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[3] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[3] == 0)
+   			begin
+   				result_temp[3] <= result_mem_3[M3_var[3]][N3_var[3]][0] + 
+   				kernel_arr_in3[M1_var2[3]][N1_var2[3]][C1_var4[3]][0] * 
+   				image_mem_arr_in_zpad[M3_var[3] + M1_var2[3]][N3_var[3] + N1_var2[3]][C1_var4[3]];
+   				//-----------------------------------------------------------
+   				result_mem_3[M3_var[3]][N3_var[3]][0] <= res_temp_w_conc[3];
+   				N1_var2[3] <= N1_var2[3] + 1;
+   				if (N1_var2[3] >= N1_PARAM-1)
+   				begin
+   					N1_var2[3] <= 8'd0;
+   					M1_var2[3] <= M1_var2[3] + 1;
+   					if (M1_var2[3] >= M1_PARAM-1)
+   					begin
+   						M1_var2[3] <= 8'd0;
+   						C1_var4[3] <= C1_var4[3] + 1;
+   						if (C1_var4[3] >= C1_PARAM-1)
+   						begin
+							C1_var4[3] <= 6'd0;
+   							N3_var[3] <= N3_var[3] + 1;
+							result_mem_3[M3_var[3]][N3_var[3]][0]<= res_temp_w_conc[3] + biases_mem[(C1_var4[3]-2)] ;												
+   							if (N3_var[3] >= N3_PARAM-1)
+   							begin
+   								N3_var[3] <= 8'd0;
+   								M3_var[3] <= M3_var[3] + 1;
+   								if (M3_var[3] >= M3_PARAM-1)
+   								begin
+   									conv_done[3] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+   
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [4]
+   
+   assign mult_temp_w_4 = kernel_arr_in4[M1_var2[4]][N1_var2[4]][C1_var4[4]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[4] + M1_var2[4]][N3_var[4] + N1_var2[4]][C1_var4[4]];
+   assign mult_temp_w_conc[4] = mult_temp_w_4[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[4] = mult_temp_w_conc[4] + result_mem_4[M3_var[4]][N3_var[4]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[4] <= 8'd0;
+       		M1_var2[4] <= 8'd0;
+       		C1_var4[4] <= 6'd0;
+       		N3_var[4] <= 8'd0;
+			M3_var[4] <= 8'd0;
+			conv_done[4] <= 1'd0;
+			result_temp[4] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_4[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[4] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[4] == 0)
+   			begin
+   				result_temp[4] <= result_mem_4[M3_var[4]][N3_var[4]][0] + 
+   				kernel_arr_in4[M1_var2[4]][N1_var2[4]][C1_var4[4]][0] * 
+   				image_mem_arr_in_zpad[M3_var[4] + M1_var2[4]][N3_var[4] + N1_var2[4]][C1_var4[4]];
+   				//-----------------------------------------------------------
+   				result_mem_4[M3_var[4]][N3_var[4]][0] <= res_temp_w_conc[4];
+   				N1_var2[4] <= N1_var2[4] + 1;
+   				if (N1_var2[4] >= N1_PARAM-1)
+   				begin
+   					N1_var2[4] <= 8'd0;
+   					M1_var2[4] <= M1_var2[4] + 1;
+   					if (M1_var2[4] >= M1_PARAM-1)
+   					begin
+   						M1_var2[4] <= 8'd0;
+   						C1_var4[4] <= C1_var4[4] + 1;
+   						if (C1_var4[4] >= C1_PARAM-1)
+   						begin
+							C1_var4[4] <= 6'd0;
+   							N3_var[4] <= N3_var[4] + 1;
+							result_mem_4[M3_var[4]][N3_var[4]][0]<= res_temp_w_conc[4] + biases_mem[(C1_var4[4]-2)] ;												
+   							if (N3_var[4] >= N3_PARAM-1)
+   							begin
+   								N3_var[4] <= 8'd0;
+   								M3_var[4] <= M3_var[4] + 1;
+   								if (M3_var[4] >= M3_PARAM-1)
+   								begin
+   									conv_done[4] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+   
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [5]
+   
+   assign mult_temp_w_5 = kernel_arr_in5[M1_var2[5]][N1_var2[5]][C1_var4[5]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[5] + M1_var2[5]][N3_var[5] + N1_var2[5]][C1_var4[5]];
+   assign mult_temp_w_conc[5] = mult_temp_w_5[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[5] = mult_temp_w_conc[5] + result_mem_5[M3_var[5]][N3_var[5]][0];//wire with result
+ 
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[5] <= 8'd0;
+       		M1_var2[5] <= 8'd0;
+       		C1_var4[5] <= 6'd0;
+       		N3_var[5] <= 8'd0;
+			M3_var[5] <= 8'd0;
+			conv_done[5] <= 1'd0;
+			result_temp[5] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_5[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[5] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[5] == 0)
+   			begin
+   				result_temp[5] <= result_mem_5[M3_var[5]][N3_var[5]][0] + 
+   				kernel_arr_in5[M1_var2[5]][N1_var2[5]][C1_var4[5]][0] * 
+   				image_mem_arr_in_zpad[M3_var[5] + M1_var2[5]][N3_var[5] + N1_var2[5]][C1_var4[5]];
+   				//-----------------------------------------------------------
+   				result_mem_5[M3_var[5]][N3_var[5]][0] <= res_temp_w_conc[5];
+   				N1_var2[5] <= N1_var2[5] + 1;
+   				if (N1_var2[5] >= N1_PARAM-1)
+   				begin
+   					N1_var2[5] <= 8'd0;
+   					M1_var2[5] <= M1_var2[5] + 1;
+   					if (M1_var2[5] >= M1_PARAM-1)
+   					begin
+   						M1_var2[5] <= 8'd0;
+   						C1_var4[5] <= C1_var4[5] + 1;
+   						if (C1_var4[5] >= C1_PARAM-1)
+   						begin
+							C1_var4[5] <= 6'd0;
+   							N3_var[5] <= N3_var[5] + 1;
+							result_mem_5[M3_var[5]][N3_var[5]][0]<= res_temp_w_conc[5] + biases_mem[(C1_var4[5]-2)] ;												
+   							if (N3_var[5] >= N3_PARAM-1)
+   							begin
+   								N3_var[5] <= 8'd0;
+   								M3_var[5] <= M3_var[5] + 1;
+   								if (M3_var[5] >= M3_PARAM-1)
+   								begin
+   									conv_done[5] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [6]
+   
+   assign mult_temp_w_6 = kernel_arr_in6[M1_var2[6]][N1_var2[6]][C1_var4[6]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[6] + M1_var2[6]][N3_var[6] + N1_var2[6]][C1_var4[6]];
+   assign mult_temp_w_conc[6] = mult_temp_w_6[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[6] = mult_temp_w_conc[6] + result_mem_6[M3_var[6]][N3_var[6]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[6] <= 8'd0;
+       		M1_var2[6] <= 8'd0;
+       		C1_var4[6] <= 6'd0;
+       		N3_var[6] <= 8'd0;
+			M3_var[6] <= 8'd0;
+			conv_done[6] <= 1'd0;
+			result_temp[6] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_6[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[6] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[6] == 0)
+   			begin
+   				result_temp[6] <= result_mem_6[M3_var[6]][N3_var[6]][0] + 
+   				kernel_arr_in6[M1_var2[6]][N1_var2[6]][C1_var4[6]][0] * 
+   				image_mem_arr_in_zpad[M3_var[6] + M1_var2[6]][N3_var[6] + N1_var2[6]][C1_var4[6]];
+   				//-----------------------------------------------------------
+   				result_mem_6[M3_var[6]][N3_var[6]][0] <= res_temp_w_conc[6];
+   				N1_var2[6] <= N1_var2[6] + 1;
+   				if (N1_var2[6] >= N1_PARAM-1)
+   				begin
+   					N1_var2[6] <= 8'd0;
+   					M1_var2[6] <= M1_var2[6] + 1;
+   					if (M1_var2[6] >= M1_PARAM-1)
+   					begin
+   						M1_var2[6] <= 8'd0;
+   						C1_var4[6] <= C1_var4[6] + 1;
+   						if (C1_var4[6] >= C1_PARAM-1)
+   						begin
+							C1_var4[6] <= 6'd0;
+   							N3_var[6] <= N3_var[6] + 1;
+							result_mem_6[M3_var[6]][N3_var[6]][0]<= res_temp_w_conc[6] + biases_mem[(C1_var4[6]-2)] ;												
+   							if (N3_var[6] >= N3_PARAM-1)
+   							begin
+   								N3_var[6] <= 8'd0;
+   								M3_var[6] <= M3_var[6] + 1;
+   								if (M3_var[6] >= M3_PARAM-1)
+   								begin
+   									conv_done[6] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [7]
+   
+   assign mult_temp_w_7 = kernel_arr_in7[M1_var2[7]][N1_var2[7]][C1_var4[7]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[7] + M1_var2[7]][N3_var[7] + N1_var2[7]][C1_var4[7]];
+   assign mult_temp_w_conc[7] = mult_temp_w_7[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[7] = mult_temp_w_conc[7] + result_mem_7[M3_var[7]][N3_var[7]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[7] <= 8'd0;
+       		M1_var2[7] <= 8'd0;
+       		C1_var4[7] <= 6'd0;
+       		N3_var[7] <= 8'd0;
+			M3_var[7] <= 8'd0;
+			conv_done[7] <= 1'd0;
+			result_temp[7] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_7[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[7] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[7] == 0)
+   			begin
+   				result_temp[7] <= result_mem_7[M3_var[7]][N3_var[7]][0] + 
+   				kernel_arr_in7[M1_var2[7]][N1_var2[7]][C1_var4[7]][0] * 
+   				image_mem_arr_in_zpad[M3_var[7] + M1_var2[7]][N3_var[7] + N1_var2[7]][C1_var4[7]];
+   				//-----------------------------------------------------------
+   				result_mem_7[M3_var[7]][N3_var[7]][0] <= res_temp_w_conc[7];
+   				N1_var2[7] <= N1_var2[7] + 1;
+   				if (N1_var2[7] >= N1_PARAM-1)
+   				begin
+   					N1_var2[7] <= 8'd0;
+   					M1_var2[7] <= M1_var2[7] + 1;
+   					if (M1_var2[7] >= M1_PARAM-1)
+   					begin
+   						M1_var2[7] <= 8'd0;
+   						C1_var4[7] <= C1_var4[7] + 1;
+   						if (C1_var4[7] >= C1_PARAM-1)
+   						begin
+							C1_var4[7] <= 6'd0;
+   							N3_var[7] <= N3_var[7] + 1;
+							result_mem_7[M3_var[7]][N3_var[7]][0]<= res_temp_w_conc[7] + biases_mem[(C1_var4[7]-2)] ;												
+   							if (N3_var[7] >= N3_PARAM-1)
+   							begin
+   								N3_var[7] <= 8'd0;
+   								M3_var[7] <= M3_var[7] + 1;
+   								if (M3_var[7] >= M3_PARAM-1)
+   								begin
+   									conv_done[7] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [8]
+   
+   assign mult_temp_w_8 = kernel_arr_in8[M1_var2[8]][N1_var2[8]][C1_var4[8]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[8] + M1_var2[8]][N3_var[8] + N1_var2[8]][C1_var4[8]];
+   assign mult_temp_w_conc[8] = mult_temp_w_8[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[8] = mult_temp_w_conc[8] + result_mem_8[M3_var[8]][N3_var[8]][0];//wire with result
+
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[8] <= 8'd0;
+       		M1_var2[8] <= 8'd0;
+       		C1_var4[8] <= 6'd0;
+       		N3_var[8] <= 8'd0;
+			M3_var[8] <= 8'd0;
+			conv_done[8] <= 1'd0;
+			result_temp[8] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_8[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[8] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[8] == 0)
+   			begin
+   				result_temp[8] <= result_mem_8[M3_var[8]][N3_var[8]][0] + 
+   				kernel_arr_in8[M1_var2[8]][N1_var2[8]][C1_var4[8]][0] * 
+   				image_mem_arr_in_zpad[M3_var[8] + M1_var2[8]][N3_var[8] + N1_var2[8]][C1_var4[8]];
+   				//-----------------------------------------------------------
+   				result_mem_8[M3_var[8]][N3_var[8]][0] <= res_temp_w_conc[8];
+   				N1_var2[8] <= N1_var2[8] + 1;
+   				if (N1_var2[8] >= N1_PARAM-1)
+   				begin
+   					N1_var2[8] <= 8'd0;
+   					M1_var2[8] <= M1_var2[8] + 1;
+   					if (M1_var2[8] >= M1_PARAM-1)
+   					begin
+   						M1_var2[8] <= 8'd0;
+   						C1_var4[8] <= C1_var4[8] + 1;
+   						if (C1_var4[8] >= C1_PARAM-1)
+   						begin
+							C1_var4[8] <= 6'd0;
+   							N3_var[8] <= N3_var[8] + 1;
+							result_mem_8[M3_var[8]][N3_var[8]][0]<= res_temp_w_conc[8] + biases_mem[(C1_var4[8]-2)] ;												
+   							if (N3_var[8] >= N3_PARAM-1)
+   							begin
+   								N3_var[8] <= 8'd0;
+   								M3_var[8] <= M3_var[8] + 1;
+   								if (M3_var[8] >= M3_PARAM-1)
+   								begin
+   									conv_done[8] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [9]
+   
+   assign mult_temp_w_9 = kernel_arr_in9[M1_var2[9]][N1_var2[9]][C1_var4[9]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[9] + M1_var2[9]][N3_var[9] + N1_var2[9]][C1_var4[9]];
+   assign mult_temp_w_conc[9] = mult_temp_w_9[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[9] = mult_temp_w_conc[9] + result_mem_9[M3_var[9]][N3_var[9]][0];//wire with result
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[9] <= 8'd0;
+       		M1_var2[9] <= 8'd0;
+       		C1_var4[9] <= 6'd0;
+       		N3_var[9] <= 8'd0;
+			M3_var[9] <= 8'd0;
+			conv_done[9] <= 1'd0;
+			result_temp[9] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_9[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[9] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[9] == 0)
+   			begin
+   				result_temp[9] <= result_mem_9[M3_var[9]][N3_var[9]][0] + 
+   				kernel_arr_in9[M1_var2[9]][N1_var2[9]][C1_var4[9]][0] * 
+   				image_mem_arr_in_zpad[M3_var[9] + M1_var2[9]][N3_var[9] + N1_var2[9]][C1_var4[9]];
+   				//-----------------------------------------------------------
+   				result_mem_9[M3_var[9]][N3_var[9]][0] <= res_temp_w_conc[9];
+   				N1_var2[9] <= N1_var2[9] + 1;
+   				if (N1_var2[9] >= N1_PARAM-1)
+   				begin
+   					N1_var2[9] <= 8'd0;
+   					M1_var2[9] <= M1_var2[9] + 1;
+   					if (M1_var2[9] >= M1_PARAM-1)
+   					begin
+   						M1_var2[9] <= 8'd0;
+   						C1_var4[9] <= C1_var4[9] + 1;
+   						if (C1_var4[9] >= C1_PARAM-1)
+   						begin
+							C1_var4[9] <= 6'd0;
+   							N3_var[9] <= N3_var[9] + 1;
+							result_mem_9[M3_var[9]][N3_var[9]][0]<= res_temp_w_conc[9] + biases_mem[(C1_var4[9]-2)] ;												
+   							if (N3_var[9] >= N3_PARAM-1)
+   							begin
+   								N3_var[9] <= 8'd0;
+   								M3_var[9] <= M3_var[9] + 1;
+   								if (M3_var[9] >= M3_PARAM-1)
+   								begin
+   									conv_done[9] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [10]
+   
+   assign mult_temp_w_10 = kernel_arr_in10[M1_var2[10]][N1_var2[10]][C1_var4[10]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[10] + M1_var2[10]][N3_var[10] + N1_var2[10]][C1_var4[10]];
+   assign mult_temp_w_conc[10] = mult_temp_w_10[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[10] = mult_temp_w_conc[10] + result_mem_4[M3_var[10]][N3_var[10]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[10] <= 8'd0;
+       		M1_var2[10] <= 8'd0;
+       		C1_var4[10] <= 6'd0;
+       		N3_var[10] <= 8'd0;
+			M3_var[10] <= 8'd0;
+			conv_done[10] <= 1'd0;
+			result_temp[10] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_10[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[10] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[10] == 0)
+   			begin
+   				result_temp[10] <= result_mem_10[M3_var[10]][N3_var[10]][0] + 
+   				kernel_arr_in10[M1_var2[10]][N1_var2[10]][C1_var4[10]][0] * 
+   				image_mem_arr_in_zpad[M3_var[10] + M1_var2[10]][N3_var[10] + N1_var2[10]][C1_var4[10]];
+   				//-----------------------------------------------------------
+   				result_mem_10[M3_var[10]][N3_var[10]][0] <= res_temp_w_conc[10];
+   				N1_var2[10] <= N1_var2[10] + 1;
+   				if (N1_var2[10] >= N1_PARAM-1)
+   				begin
+   					N1_var2[10] <= 8'd0;
+   					M1_var2[10] <= M1_var2[10] + 1;
+   					if (M1_var2[10] >= M1_PARAM-1)
+   					begin
+   						M1_var2[10] <= 8'd0;
+   						C1_var4[10] <= C1_var4[10] + 1;
+   						if (C1_var4[10] >= C1_PARAM-1)
+   						begin
+							C1_var4[10] <= 6'd0;
+   							N3_var[10] <= N3_var[10] + 1;
+							result_mem_10[M3_var[10]][N3_var[10]][0]<= res_temp_w_conc[10] + biases_mem[(C1_var4[10]-2)] ;												
+   							if (N3_var[10] >= N3_PARAM-1)
+   							begin
+   								N3_var[10] <= 8'd0;
+   								M3_var[10] <= M3_var[10] + 1;
+   								if (M3_var[10] >= M3_PARAM-1)
+   								begin
+   									conv_done[10] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [11]
+   
+   assign mult_temp_w_11 = kernel_arr_in11[M1_var2[11]][N1_var2[11]][C1_var4[11]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[11] + M1_var2[11]][N3_var[11] + N1_var2[11]][C1_var4[11]];
+   assign mult_temp_w_conc[11] = mult_temp_w_11[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[11] = mult_temp_w_conc[11] + result_mem_11[M3_var[11]][N3_var[11]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[11] <= 8'd0;
+       		M1_var2[11] <= 8'd0;
+       		C1_var4[11] <= 6'd0;
+       		N3_var[11] <= 8'd0;
+			M3_var[11] <= 8'd0;
+			conv_done[11] <= 1'd0;
+			result_temp[11] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_11[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[11] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[11] == 0)
+   			begin
+   				result_temp[11] <= result_mem_11[M3_var[11]][N3_var[11]][0] + 
+   				kernel_arr_in11[M1_var2[11]][N1_var2[11]][C1_var4[11]][0] * 
+   				image_mem_arr_in_zpad[M3_var[11] + M1_var2[11]][N3_var[11] + N1_var2[11]][C1_var4[11]];
+   				//-----------------------------------------------------------
+   				result_mem_11[M3_var[11]][N3_var[11]][0] <= res_temp_w_conc[11];
+   				N1_var2[11] <= N1_var2[11] + 1;
+   				if (N1_var2[11] >= N1_PARAM-1)
+   				begin
+   					N1_var2[11] <= 8'd0;
+   					M1_var2[11] <= M1_var2[11] + 1;
+   					if (M1_var2[11] >= M1_PARAM-1)
+   					begin
+   						M1_var2[11] <= 8'd0;
+   						C1_var4[11] <= C1_var4[11] + 1;
+   						if (C1_var4[11] >= C1_PARAM-1)
+   						begin
+							C1_var4[11] <= 6'd0;
+   							N3_var[11] <= N3_var[11] + 1;
+							result_mem_11[M3_var[11]][N3_var[11]][0]<= res_temp_w_conc[11] + biases_mem[(C1_var4[11]-2)] ;												
+   							if (N3_var[11] >= N3_PARAM-1)
+   							begin
+   								N3_var[11] <= 8'd0;
+   								M3_var[11] <= M3_var[11] + 1;
+   								if (M3_var[11] >= M3_PARAM-1)
+   								begin
+   									conv_done[11] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [12]
+   
+   assign mult_temp_w_12 = kernel_arr_in12[M1_var2[12]][N1_var2[12]][C1_var4[12]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[12] + M1_var2[12]][N3_var[12] + N1_var2[12]][C1_var4[12]];
+   assign mult_temp_w_conc[12] = mult_temp_w_12[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[12] = mult_temp_w_conc[12] + result_mem_12[M3_var[12]][N3_var[12]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[12] <= 8'd0;
+       		M1_var2[12] <= 8'd0;
+       		C1_var4[12] <= 6'd0;
+       		N3_var[12] <= 8'd0;
+			M3_var[12] <= 8'd0;
+			conv_done[12] <= 1'd0;
+			result_temp[12] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_12[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[12] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[12] == 0)
+   			begin
+   				result_temp[12] <= result_mem_12[M3_var[12]][N3_var[12]][0] + 
+   				kernel_arr_in12[M1_var2[12]][N1_var2[12]][C1_var4[12]][0] * 
+   				image_mem_arr_in_zpad[M3_var[12] + M1_var2[12]][N3_var[12] + N1_var2[12]][C1_var4[12]];
+   				//-----------------------------------------------------------
+   				result_mem_12[M3_var[12]][N3_var[12]][0] <= res_temp_w_conc[12];
+   				N1_var2[12] <= N1_var2[12] + 1;
+   				if (N1_var2[12] >= N1_PARAM-1)
+   				begin
+   					N1_var2[12] <= 8'd0;
+   					M1_var2[12] <= M1_var2[12] + 1;
+   					if (M1_var2[12] >= M1_PARAM-1)
+   					begin
+   						M1_var2[12] <= 8'd0;
+   						C1_var4[12] <= C1_var4[12] + 1;
+   						if (C1_var4[12] >= C1_PARAM-1)
+   						begin
+							C1_var4[12] <= 6'd0;
+   							N3_var[12] <= N3_var[12] + 1;
+							result_mem_12[M3_var[12]][N3_var[12]][0]<= res_temp_w_conc[12] + biases_mem[(C1_var4[12]-2)] ;												
+   							if (N3_var[12] >= N3_PARAM-1)
+   							begin
+   								N3_var[12] <= 8'd0;
+   								M3_var[12] <= M3_var[12] + 1;
+   								if (M3_var[12] >= M3_PARAM-1)
+   								begin
+   									conv_done[12] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [13]
+   
+   assign mult_temp_w_13 = kernel_arr_in13[M1_var2[13]][N1_var2[13]][C1_var4[13]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[13] + M1_var2[13]][N3_var[13] + N1_var2[13]][C1_var4[13]];
+   assign mult_temp_w_conc[13] = mult_temp_w_13[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[13] = mult_temp_w_conc[13] + result_mem_13[M3_var[13]][N3_var[13]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[13] <= 8'd0;
+       		M1_var2[13] <= 8'd0;
+       		C1_var4[13] <= 6'd0;
+       		N3_var[13] <= 8'd0;
+			M3_var[13] <= 8'd0;
+			conv_done[13] <= 1'd0;
+			result_temp[13] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_13[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[13] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[13] == 0)
+   			begin
+   				result_temp[13] <= result_mem_13[M3_var[13]][N3_var[13]][0] + 
+   				kernel_arr_in13[M1_var2[13]][N1_var2[13]][C1_var4[13]][0] * 
+   				image_mem_arr_in_zpad[M3_var[13] + M1_var2[13]][N3_var[13] + N1_var2[13]][C1_var4[13]];
+   				//-----------------------------------------------------------
+   				result_mem_13[M3_var[13]][N3_var[13]][0] <= res_temp_w_conc[13];
+   				N1_var2[13] <= N1_var2[13] + 1;
+   				if (N1_var2[13] >= N1_PARAM-1)
+   				begin
+   					N1_var2[13] <= 8'd0;
+   					M1_var2[13] <= M1_var2[13] + 1;
+   					if (M1_var2[13] >= M1_PARAM-1)
+   					begin
+   						M1_var2[13] <= 8'd0;
+   						C1_var4[13] <= C1_var4[13] + 1;
+   						if (C1_var4[13] >= C1_PARAM-1)
+   						begin
+							C1_var4[13] <= 6'd0;
+   							N3_var[13] <= N3_var[13] + 1;
+							result_mem_13[M3_var[13]][N3_var[13]][0]<= res_temp_w_conc[13] + biases_mem[(C1_var4[13]-2)] ;												
+   							if (N3_var[13] >= N3_PARAM-1)
+   							begin
+   								N3_var[13] <= 8'd0;
+   								M3_var[13] <= M3_var[13] + 1;
+   								if (M3_var[13] >= M3_PARAM-1)
+   								begin
+   									conv_done[13] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [14]
+   
+   assign mult_temp_w_14 = kernel_arr_in14[M1_var2[14]][N1_var2[14]][C1_var4[14]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[14] + M1_var2[14]][N3_var[14] + N1_var2[14]][C1_var4[14]];
+   assign mult_temp_w_conc[14] = mult_temp_w_14[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[14] = mult_temp_w_conc[14] + result_mem_14[M3_var[14]][N3_var[14]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[14] <= 8'd0;
+       		M1_var2[14] <= 8'd0;
+       		C1_var4[14] <= 6'd0;
+       		N3_var[14] <= 8'd0;
+			M3_var[14] <= 8'd0;
+			conv_done[14] <= 1'd0;
+			result_temp[14] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_14[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[14] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[14] == 0)
+   			begin
+   				result_temp[14] <= result_mem_14[M3_var[14]][N3_var[14]][0] + 
+   				kernel_arr_in14[M1_var2[14]][N1_var2[14]][C1_var4[14]][0] * 
+   				image_mem_arr_in_zpad[M3_var[14] + M1_var2[14]][N3_var[14] + N1_var2[14]][C1_var4[14]];
+   				//-----------------------------------------------------------
+   				result_mem_4[M3_var[14]][N3_var[14]][0] <= res_temp_w_conc[14];
+   				N1_var2[14] <= N1_var2[14] + 1;
+   				if (N1_var2[14] >= N1_PARAM-1)
+   				begin
+   					N1_var2[14] <= 8'd0;
+   					M1_var2[14] <= M1_var2[14] + 1;
+   					if (M1_var2[14] >= M1_PARAM-1)
+   					begin
+   						M1_var2[14] <= 8'd0;
+   						C1_var4[14] <= C1_var4[14] + 1;
+   						if (C1_var4[14] >= C1_PARAM-1)
+   						begin
+							C1_var4[14] <= 6'd0;
+   							N3_var[14] <= N3_var[14] + 1;
+							result_mem_14[M3_var[14]][N3_var[14]][0]<= res_temp_w_conc[14] + biases_mem[(C1_var4[14]-2)] ;												
+   							if (N3_var[14] >= N3_PARAM-1)
+   							begin
+   								N3_var[14] <= 8'd0;
+   								M3_var[14] <= M3_var[14] + 1;
+   								if (M3_var[14] >= M3_PARAM-1)
+   								begin
+   									conv_done[14] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [15]
+   
+   assign mult_temp_w_15 = kernel_arr_in15[M1_var2[15]][N1_var2[15]][C1_var4[15]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[15] + M1_var2[15]][N3_var[15] + N1_var2[15]][C1_var4[15]];
+   assign mult_temp_w_conc[15] = mult_temp_w_15[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[15] = mult_temp_w_conc[15] + result_mem_15[M3_var[15]][N3_var[15]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[15] <= 8'd0;
+       		M1_var2[15] <= 8'd0;
+       		C1_var4[15] <= 6'd0;
+       		N3_var[15] <= 8'd0;
+			M3_var[15] <= 8'd0;
+			conv_done[15] <= 1'd0;
+			result_temp[15] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_15[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[15] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[15] == 0)
+   			begin
+   				result_temp[15] <= result_mem_15[M3_var[15]][N3_var[15]][0] + 
+   				kernel_arr_in15[M1_var2[15]][N1_var2[15]][C1_var4[15]][0] * 
+   				image_mem_arr_in_zpad[M3_var[15] + M1_var2[15]][N3_var[15] + N1_var2[15]][C1_var4[15]];
+   				//-----------------------------------------------------------
+   				result_mem_15[M3_var[15]][N3_var[15]][0] <= res_temp_w_conc[15];
+   				N1_var2[15] <= N1_var2[15] + 1;
+   				if (N1_var2[15] >= N1_PARAM-1)
+   				begin
+   					N1_var2[15] <= 8'd0;
+   					M1_var2[15] <= M1_var2[15] + 1;
+   					if (M1_var2[15] >= M1_PARAM-1)
+   					begin
+   						M1_var2[15] <= 8'd0;
+   						C1_var4[15] <= C1_var4[15] + 1;
+   						if (C1_var4[15] >= C1_PARAM-1)
+   						begin
+							C1_var4[15] <= 6'd0;
+   							N3_var[15] <= N3_var[15] + 1;
+							result_mem_15[M3_var[15]][N3_var[15]][0]<= res_temp_w_conc[15] + biases_mem[(C1_var4[15]-2)] ;												
+   							if (N3_var[15] >= N3_PARAM-1)
+   							begin
+   								N3_var[15] <= 8'd0;
+   								M3_var[15] <= M3_var[15] + 1;
+   								if (M3_var[15] >= M3_PARAM-1)
+   								begin
+   									conv_done[15] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [16]
+   
+   assign mult_temp_w_16 = kernel_arr_in16[M1_var2[16]][N1_var2[16]][C1_var4[16]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[16] + M1_var2[16]][N3_var[16] + N1_var2[16]][C1_var4[16]];
+   assign mult_temp_w_conc[16] = mult_temp_w_16[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[16] = mult_temp_w_conc[16] + result_mem_16[M3_var[16]][N3_var[16]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[16] <= 8'd0;
+       		M1_var2[16] <= 8'd0;
+       		C1_var4[16] <= 6'd0;
+       		N3_var[16] <= 8'd0;
+			M3_var[16] <= 8'd0;
+			conv_done[16] <= 1'd0;
+			result_temp[16] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_16[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[16] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[16] == 0)
+   			begin
+   				result_temp[16] <= result_mem_16[M3_var[16]][N3_var[16]][0] + 
+   				kernel_arr_in16[M1_var2[16]][N1_var2[16]][C1_var4[16]][0] * 
+   				image_mem_arr_in_zpad[M3_var[16] + M1_var2[16]][N3_var[16] + N1_var2[16]][C1_var4[16]];
+   				//-----------------------------------------------------------
+   				result_mem_16[M3_var[16]][N3_var[16]][0] <= res_temp_w_conc[16];
+   				N1_var2[16] <= N1_var2[16] + 1;
+   				if (N1_var2[16] >= N1_PARAM-1)
+   				begin
+   					N1_var2[16] <= 8'd0;
+   					M1_var2[16] <= M1_var2[16] + 1;
+   					if (M1_var2[16] >= M1_PARAM-1)
+   					begin
+   						M1_var2[16] <= 8'd0;
+   						C1_var4[16] <= C1_var4[16] + 1;
+   						if (C1_var4[16] >= C1_PARAM-1)
+   						begin
+							C1_var4[16] <= 6'd0;
+   							N3_var[16] <= N3_var[16] + 1;
+							result_mem_16[M3_var[16]][N3_var[16]][0]<= res_temp_w_conc[16] + biases_mem[(C1_var4[16]-2)] ;												
+   							if (N3_var[16] >= N3_PARAM-1)
+   							begin
+   								N3_var[16] <= 8'd0;
+   								M3_var[16] <= M3_var[16] + 1;
+   								if (M3_var[16] >= M3_PARAM-1)
+   								begin
+   									conv_done[16] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [17]
+   
+   assign mult_temp_w_17 = kernel_arr_in17[M1_var2[17]][N1_var2[17]][C1_var4[17]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[17] + M1_var2[17]][N3_var[17] + N1_var2[17]][C1_var4[17]];
+   assign mult_temp_w_conc[17] = mult_temp_w_17[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[17] = mult_temp_w_conc[17] + result_mem_17[M3_var[17]][N3_var[17]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[17] <= 8'd0;
+       		M1_var2[17] <= 8'd0;
+       		C1_var4[17] <= 6'd0;
+       		N3_var[17] <= 8'd0;
+			M3_var[17] <= 8'd0;
+			conv_done[17] <= 1'd0;
+			result_temp[17] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_17[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[17] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[17] == 0)
+   			begin
+   				result_temp[17] <= result_mem_17[M3_var[17]][N3_var[17]][0] + 
+   				kernel_arr_in17[M1_var2[17]][N1_var2[17]][C1_var4[17]][0] * 
+   				image_mem_arr_in_zpad[M3_var[17] + M1_var2[17]][N3_var[17] + N1_var2[17]][C1_var4[17]];
+   				//-----------------------------------------------------------
+   				result_mem_17[M3_var[17]][N3_var[17]][0] <= res_temp_w_conc[17];
+   				N1_var2[17] <= N1_var2[17] + 1;
+   				if (N1_var2[17] >= N1_PARAM-1)
+   				begin
+   					N1_var2[17] <= 8'd0;
+   					M1_var2[17] <= M1_var2[17] + 1;
+   					if (M1_var2[17] >= M1_PARAM-1)
+   					begin
+   						M1_var2[17] <= 8'd0;
+   						C1_var4[17] <= C1_var4[17] + 1;
+   						if (C1_var4[17] >= C1_PARAM-1)
+   						begin
+							C1_var4[17] <= 6'd0;
+   							N3_var[17] <= N3_var[17] + 1;
+							result_mem_17[M3_var[17]][N3_var[17]][0]<= res_temp_w_conc[17] + biases_mem[(C1_var4[17]-2)] ;												
+   							if (N3_var[17] >= N3_PARAM-1)
+   							begin
+   								N3_var[17] <= 8'd0;
+   								M3_var[17] <= M3_var[17] + 1;
+   								if (M3_var[17] >= M3_PARAM-1)
+   								begin
+   									conv_done[17] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [18]
+   
+   assign mult_temp_w_18 = kernel_arr_in18[M1_var2[18]][N1_var2[18]][C1_var4[18]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[18] + M1_var2[18]][N3_var[18] + N1_var2[18]][C1_var4[18]];
+   assign mult_temp_w_conc[18] = mult_temp_w_18[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[18] = mult_temp_w_conc[18] + result_mem_18[M3_var[18]][N3_var[18]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[18] <= 8'd0;
+       		M1_var2[18] <= 8'd0;
+       		C1_var4[18] <= 6'd0;
+       		N3_var[18] <= 8'd0;
+			M3_var[18] <= 8'd0;
+			conv_done[18] <= 1'd0;
+			result_temp[18] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_18[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[18] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[18] == 0)
+   			begin
+   				result_temp[18] <= result_mem_18[M3_var[18]][N3_var[18]][0] + 
+   				kernel_arr_in18[M1_var2[18]][N1_var2[18]][C1_var4[18]][0] * 
+   				image_mem_arr_in_zpad[M3_var[18] + M1_var2[18]][N3_var[18] + N1_var2[18]][C1_var4[18]];
+   				//-----------------------------------------------------------
+   				result_mem_18[M3_var[18]][N3_var[18]][0] <= res_temp_w_conc[18];
+   				N1_var2[18] <= N1_var2[18] + 1;
+   				if (N1_var2[18] >= N1_PARAM-1)
+   				begin
+   					N1_var2[18] <= 8'd0;
+   					M1_var2[18] <= M1_var2[18] + 1;
+   					if (M1_var2[18] >= M1_PARAM-1)
+   					begin
+   						M1_var2[18] <= 8'd0;
+   						C1_var4[18] <= C1_var4[18] + 1;
+   						if (C1_var4[18] >= C1_PARAM-1)
+   						begin
+							C1_var4[18] <= 6'd0;
+   							N3_var[18] <= N3_var[18] + 1;
+							result_mem_18[M3_var[18]][N3_var[18]][0]<= res_temp_w_conc[18] + biases_mem[(C1_var4[18]-2)] ;												
+   							if (N3_var[18] >= N3_PARAM-1)
+   							begin
+   								N3_var[18] <= 8'd0;
+   								M3_var[18] <= M3_var[18] + 1;
+   								if (M3_var[18] >= M3_PARAM-1)
+   								begin
+   									conv_done[18] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [19]
+   
+   assign mult_temp_w_19 = kernel_arr_in19[M1_var2[19]][N1_var2[19]][C1_var4[19]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[19] + M1_var2[19]][N3_var[19] + N1_var2[19]][C1_var4[19]];
+   assign mult_temp_w_conc[19] = mult_temp_w_19[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[19] = mult_temp_w_conc[19] + result_mem_19[M3_var[19]][N3_var[19]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[19] <= 8'd0;
+       		M1_var2[19] <= 8'd0;
+       		C1_var4[19] <= 6'd0;
+       		N3_var[19] <= 8'd0;
+			M3_var[19] <= 8'd0;
+			conv_done[19] <= 1'd0;
+			result_temp[19] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_19[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[19] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[19] == 0)
+   			begin
+   				result_temp[19] <= result_mem_19[M3_var[19]][N3_var[19]][0] + 
+   				kernel_arr_in19[M1_var2[19]][N1_var2[19]][C1_var4[19]][0] * 
+   				image_mem_arr_in_zpad[M3_var[19] + M1_var2[19]][N3_var[19] + N1_var2[19]][C1_var4[19]];
+   				//-----------------------------------------------------------
+   				result_mem_19[M3_var[19]][N3_var[19]][0] <= res_temp_w_conc[19];
+   				N1_var2[19] <= N1_var2[19] + 1;
+   				if (N1_var2[19] >= N1_PARAM-1)
+   				begin
+   					N1_var2[19] <= 8'd0;
+   					M1_var2[19] <= M1_var2[19] + 1;
+   					if (M1_var2[19] >= M1_PARAM-1)
+   					begin
+   						M1_var2[19] <= 8'd0;
+   						C1_var4[19] <= C1_var4[19] + 1;
+   						if (C1_var4[19] >= C1_PARAM-1)
+   						begin
+							C1_var4[19] <= 6'd0;
+   							N3_var[19] <= N3_var[19] + 1;
+							result_mem_19[M3_var[19]][N3_var[19]][0]<= res_temp_w_conc[19] + biases_mem[(C1_var4[19]-2)] ;												
+   							if (N3_var[19] >= N3_PARAM-1)
+   							begin
+   								N3_var[19] <= 8'd0;
+   								M3_var[19] <= M3_var[19] + 1;
+   								if (M3_var[19] >= M3_PARAM-1)
+   								begin
+   									conv_done[19] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [20]
+   
+   assign mult_temp_w_20 = kernel_arr_in20[M1_var2[20]][N1_var2[20]][C1_var4[20]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[20] + M1_var2[20]][N3_var[20] + N1_var2[20]][C1_var4[20]];
+   assign mult_temp_w_conc[20] = mult_temp_w_20[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[20] = mult_temp_w_conc[20] + result_mem_20[M3_var[20]][N3_var[20]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[20] <= 8'd0;
+       		M1_var2[20] <= 8'd0;
+       		C1_var4[20] <= 6'd0;
+       		N3_var[20] <= 8'd0;
+			M3_var[20] <= 8'd0;
+			conv_done[20] <= 1'd0;
+			result_temp[20] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_20[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[20] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[20] == 0)
+   			begin
+   				result_temp[20] <= result_mem_20[M3_var[20]][N3_var[20]][0] + 
+   				kernel_arr_in20[M1_var2[20]][N1_var2[20]][C1_var4[20]][0] * 
+   				image_mem_arr_in_zpad[M3_var[20] + M1_var2[20]][N3_var[20] + N1_var2[20]][C1_var4[20]];
+   				//-----------------------------------------------------------
+   				result_mem_20[M3_var[20]][N3_var[20]][0] <= res_temp_w_conc[20];
+   				N1_var2[20] <= N1_var2[20] + 1;
+   				if (N1_var2[20] >= N1_PARAM-1)
+   				begin
+   					N1_var2[20] <= 8'd0;
+   					M1_var2[20] <= M1_var2[20] + 1;
+   					if (M1_var2[20] >= M1_PARAM-1)
+   					begin
+   						M1_var2[20] <= 8'd0;
+   						C1_var4[20] <= C1_var4[20] + 1;
+   						if (C1_var4[20] >= C1_PARAM-1)
+   						begin
+							C1_var4[20] <= 6'd0;
+   							N3_var[20] <= N3_var[20] + 1;
+							result_mem_20[M3_var[20]][N3_var[20]][0]<= res_temp_w_conc[20] + biases_mem[(C1_var4[20]-2)] ;												
+   							if (N3_var[20] >= N3_PARAM-1)
+   							begin
+   								N3_var[20] <= 8'd0;
+   								M3_var[20] <= M3_var[20] + 1;
+   								if (M3_var[20] >= M3_PARAM-1)
+   								begin
+   									conv_done[20] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [21]
+   
+   assign mult_temp_w_21 = kernel_arr_in21[M1_var2[21]][N1_var2[21]][C1_var4[21]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[21] + M1_var2[21]][N3_var[21] + N1_var2[21]][C1_var4[21]];
+   assign mult_temp_w_conc[21] = mult_temp_w_21[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[21] = mult_temp_w_conc[21] + result_mem_21[M3_var[21]][N3_var[21]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[21] <= 8'd0;
+       		M1_var2[21] <= 8'd0;
+       		C1_var4[21] <= 6'd0;
+       		N3_var[21] <= 8'd0;
+			M3_var[21] <= 8'd0;
+			conv_done[21] <= 1'd0;
+			result_temp[21] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_21[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[21] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[21] == 0)
+   			begin
+   				result_temp[21] <= result_mem_21[M3_var[21]][N3_var[21]][0] + 
+   				kernel_arr_in21[M1_var2[21]][N1_var2[21]][C1_var4[21]][0] * 
+   				image_mem_arr_in_zpad[M3_var[21] + M1_var2[21]][N3_var[21] + N1_var2[21]][C1_var4[21]];
+   				//-----------------------------------------------------------
+   				result_mem_21[M3_var[21]][N3_var[21]][0] <= res_temp_w_conc[21];
+   				N1_var2[21] <= N1_var2[21] + 1;
+   				if (N1_var2[21] >= N1_PARAM-1)
+   				begin
+   					N1_var2[21] <= 8'd0;
+   					M1_var2[21] <= M1_var2[21] + 1;
+   					if (M1_var2[21] >= M1_PARAM-1)
+   					begin
+   						M1_var2[21] <= 8'd0;
+   						C1_var4[21] <= C1_var4[21] + 1;
+   						if (C1_var4[21] >= C1_PARAM-1)
+   						begin
+							C1_var4[21] <= 6'd0;
+   							N3_var[21] <= N3_var[21] + 1;
+							result_mem_21[M3_var[21]][N3_var[21]][0]<= res_temp_w_conc[21] + biases_mem[(C1_var4[21]-2)] ;												
+   							if (N3_var[21] >= N3_PARAM-1)
+   							begin
+   								N3_var[21] <= 8'd0;
+   								M3_var[21] <= M3_var[21] + 1;
+   								if (M3_var[21] >= M3_PARAM-1)
+   								begin
+   									conv_done[21] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [22]
+   
+   assign mult_temp_w_22 = kernel_arr_in22[M1_var2[22]][N1_var2[22]][C1_var4[22]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[22] + M1_var2[22]][N3_var[22] + N1_var2[22]][C1_var4[22]];
+   assign mult_temp_w_conc[22] = mult_temp_w_22[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[22] = mult_temp_w_conc[22] + result_mem_22[M3_var[22]][N3_var[22]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[22] <= 8'd0;
+       		M1_var2[22] <= 8'd0;
+       		C1_var4[22] <= 6'd0;
+       		N3_var[22] <= 8'd0;
+			M3_var[22] <= 8'd0;
+			conv_done[22] <= 1'd0;
+			result_temp[22] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_22[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[22] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[22] == 0)
+   			begin
+   				result_temp[22] <= result_mem_22[M3_var[22]][N3_var[22]][0] + 
+   				kernel_arr_in22[M1_var2[22]][N1_var2[22]][C1_var4[22]][0] * 
+   				image_mem_arr_in_zpad[M3_var[22] + M1_var2[22]][N3_var[22] + N1_var2[22]][C1_var4[22]];
+   				//-----------------------------------------------------------
+   				result_mem_22[M3_var[22]][N3_var[22]][0] <= res_temp_w_conc[22];
+   				N1_var2[22] <= N1_var2[22] + 1;
+   				if (N1_var2[22] >= N1_PARAM-1)
+   				begin
+   					N1_var2[22] <= 8'd0;
+   					M1_var2[22] <= M1_var2[22] + 1;
+   					if (M1_var2[22] >= M1_PARAM-1)
+   					begin
+   						M1_var2[22] <= 8'd0;
+   						C1_var4[22] <= C1_var4[22] + 1;
+   						if (C1_var4[22] >= C1_PARAM-1)
+   						begin
+							C1_var4[22] <= 6'd0;
+   							N3_var[22] <= N3_var[22] + 1;
+							result_mem_22[M3_var[22]][N3_var[22]][0]<= res_temp_w_conc[22] + biases_mem[(C1_var4[22]-2)] ;												
+   							if (N3_var[22] >= N3_PARAM-1)
+   							begin
+   								N3_var[22] <= 8'd0;
+   								M3_var[22] <= M3_var[22] + 1;
+   								if (M3_var[22] >= M3_PARAM-1)
+   								begin
+   									conv_done[22] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [23]
+   
+   assign mult_temp_w_23 = kernel_arr_in23[M1_var2[23]][N1_var2[23]][C1_var4[23]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[23] + M1_var2[23]][N3_var[23] + N1_var2[23]][C1_var4[23]];
+   assign mult_temp_w_conc[23] = mult_temp_w_23[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[23] = mult_temp_w_conc[23] + result_mem_23[M3_var[23]][N3_var[23]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[23] <= 8'd0;
+       		M1_var2[23] <= 8'd0;
+       		C1_var4[23] <= 6'd0;
+       		N3_var[23] <= 8'd0;
+			M3_var[23] <= 8'd0;
+			conv_done[23] <= 1'd0;
+			result_temp[23] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_23[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[23] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[23] == 0)
+   			begin
+   				result_temp[23] <= result_mem_23[M3_var[23]][N3_var[23]][0] + 
+   				kernel_arr_in23[M1_var2[23]][N1_var2[23]][C1_var4[23]][0] * 
+   				image_mem_arr_in_zpad[M3_var[23] + M1_var2[23]][N3_var[23] + N1_var2[23]][C1_var4[23]];
+   				//-----------------------------------------------------------
+   				result_mem_23[M3_var[23]][N3_var[23]][0] <= res_temp_w_conc[23];
+   				N1_var2[23] <= N1_var2[23] + 1;
+   				if (N1_var2[23] >= N1_PARAM-1)
+   				begin
+   					N1_var2[23] <= 8'd0;
+   					M1_var2[23] <= M1_var2[23] + 1;
+   					if (M1_var2[23] >= M1_PARAM-1)
+   					begin
+   						M1_var2[23] <= 8'd0;
+   						C1_var4[23] <= C1_var4[23] + 1;
+   						if (C1_var4[23] >= C1_PARAM-1)
+   						begin
+							C1_var4[23] <= 6'd0;
+   							N3_var[23] <= N3_var[23] + 1;
+							result_mem_23[M3_var[23]][N3_var[23]][0]<= res_temp_w_conc[23] + biases_mem[(C1_var4[23]-2)] ;												
+   							if (N3_var[23] >= N3_PARAM-1)
+   							begin
+   								N3_var[23] <= 8'd0;
+   								M3_var[23] <= M3_var[23] + 1;
+   								if (M3_var[23] >= M3_PARAM-1)
+   								begin
+   									conv_done[23] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [24]
+   
+   assign mult_temp_w_24 = kernel_arr_in24[M1_var2[24]][N1_var2[24]][C1_var4[24]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[24] + M1_var2[24]][N3_var[24] + N1_var2[24]][C1_var4[24]];
+   assign mult_temp_w_conc[24] = mult_temp_w_24[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[24] = mult_temp_w_conc[24] + result_mem_24[M3_var[24]][N3_var[24]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[24] <= 8'd0;
+       		M1_var2[24] <= 8'd0;
+       		C1_var4[24] <= 6'd0;
+       		N3_var[24] <= 8'd0;
+			M3_var[24] <= 8'd0;
+			conv_done[24] <= 1'd0;
+			result_temp[24] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_24[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[24] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[24] == 0)
+   			begin
+   				result_temp[24] <= result_mem_24[M3_var[24]][N3_var[24]][0] + 
+   				kernel_arr_in24[M1_var2[24]][N1_var2[24]][C1_var4[24]][0] * 
+   				image_mem_arr_in_zpad[M3_var[24] + M1_var2[24]][N3_var[24] + N1_var2[24]][C1_var4[24]];
+   				//-----------------------------------------------------------
+   				result_mem_24[M3_var[24]][N3_var[24]][0] <= res_temp_w_conc[24];
+   				N1_var2[24] <= N1_var2[24] + 1;
+   				if (N1_var2[24] >= N1_PARAM-1)
+   				begin
+   					N1_var2[24] <= 8'd0;
+   					M1_var2[24] <= M1_var2[24] + 1;
+   					if (M1_var2[24] >= M1_PARAM-1)
+   					begin
+   						M1_var2[24] <= 8'd0;
+   						C1_var4[24] <= C1_var4[24] + 1;
+   						if (C1_var4[24] >= C1_PARAM-1)
+   						begin
+							C1_var4[24] <= 6'd0;
+   							N3_var[24] <= N3_var[24] + 1;
+							result_mem_24[M3_var[24]][N3_var[24]][0]<= res_temp_w_conc[24] + biases_mem[(C1_var4[24]-2)] ;												
+   							if (N3_var[24] >= N3_PARAM-1)
+   							begin
+   								N3_var[24] <= 8'd0;
+   								M3_var[24] <= M3_var[24] + 1;
+   								if (M3_var[24] >= M3_PARAM-1)
+   								begin
+   									conv_done[24] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [25]
+   
+   assign mult_temp_w_25 = kernel_arr_in25[M1_var2[25]][N1_var2[25]][C1_var4[25]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[25] + M1_var2[25]][N3_var[25] + N1_var2[25]][C1_var4[25]];
+   assign mult_temp_w_conc[25] = mult_temp_w_25[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[25] = mult_temp_w_conc[25] + result_mem_25[M3_var[25]][N3_var[25]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[25] <= 8'd0;
+       		M1_var2[25] <= 8'd0;
+       		C1_var4[25] <= 6'd0;
+       		N3_var[25] <= 8'd0;
+			M3_var[25] <= 8'd0;
+			conv_done[25] <= 1'd0;
+			result_temp[25] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_25[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[25] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[25] == 0)
+   			begin
+   				result_temp[25] <= result_mem_25[M3_var[25]][N3_var[25]][0] + 
+   				kernel_arr_in25[M1_var2[25]][N1_var2[25]][C1_var4[25]][0] * 
+   				image_mem_arr_in_zpad[M3_var[25] + M1_var2[25]][N3_var[25] + N1_var2[25]][C1_var4[25]];
+   				//-----------------------------------------------------------
+   				result_mem_25[M3_var[25]][N3_var[25]][0] <= res_temp_w_conc[25];
+   				N1_var2[25] <= N1_var2[25] + 1;
+   				if (N1_var2[25] >= N1_PARAM-1)
+   				begin
+   					N1_var2[25] <= 8'd0;
+   					M1_var2[25] <= M1_var2[25] + 1;
+   					if (M1_var2[25] >= M1_PARAM-1)
+   					begin
+   						M1_var2[25] <= 8'd0;
+   						C1_var4[25] <= C1_var4[25] + 1;
+   						if (C1_var4[25] >= C1_PARAM-1)
+   						begin
+							C1_var4[25] <= 6'd0;
+   							N3_var[25] <= N3_var[25] + 1;
+							result_mem_25[M3_var[25]][N3_var[25]][0]<= res_temp_w_conc[25] + biases_mem[(C1_var4[25]-2)] ;												
+   							if (N3_var[25] >= N3_PARAM-1)
+   							begin
+   								N3_var[25] <= 8'd0;
+   								M3_var[25] <= M3_var[25] + 1;
+   								if (M3_var[25] >= M3_PARAM-1)
+   								begin
+   									conv_done[25] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [26]
+   
+   assign mult_temp_w_26 = kernel_arr_in26[M1_var2[26]][N1_var2[26]][C1_var4[26]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[26] + M1_var2[26]][N3_var[26] + N1_var2[26]][C1_var4[26]];
+   assign mult_temp_w_conc[26] = mult_temp_w_26[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[26] = mult_temp_w_conc[26] + result_mem_26[M3_var[26]][N3_var[26]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[26] <= 8'd0;
+       		M1_var2[26] <= 8'd0;
+       		C1_var4[26] <= 6'd0;
+       		N3_var[26] <= 8'd0;
+			M3_var[26] <= 8'd0;
+			conv_done[26] <= 1'd0;
+			result_temp[26] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_26[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[26] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[26] == 0)
+   			begin
+   				result_temp[26] <= result_mem_26[M3_var[26]][N3_var[26]][0] + 
+   				kernel_arr_in26[M1_var2[26]][N1_var2[26]][C1_var4[26]][0] * 
+   				image_mem_arr_in_zpad[M3_var[26] + M1_var2[26]][N3_var[26] + N1_var2[26]][C1_var4[26]];
+   				//-----------------------------------------------------------
+   				result_mem_26[M3_var[26]][N3_var[26]][0] <= res_temp_w_conc[26];
+   				N1_var2[26] <= N1_var2[26] + 1;
+   				if (N1_var2[26] >= N1_PARAM-1)
+   				begin
+   					N1_var2[26] <= 8'd0;
+   					M1_var2[26] <= M1_var2[26] + 1;
+   					if (M1_var2[26] >= M1_PARAM-1)
+   					begin
+   						M1_var2[26] <= 8'd0;
+   						C1_var4[26] <= C1_var4[26] + 1;
+   						if (C1_var4[26] >= C1_PARAM-1)
+   						begin
+							C1_var4[26] <= 6'd0;
+   							N3_var[26] <= N3_var[26] + 1;
+							result_mem_26[M3_var[26]][N3_var[26]][0]<= res_temp_w_conc[26] + biases_mem[(C1_var4[26]-2)] ;												
+   							if (N3_var[26] >= N3_PARAM-1)
+   							begin
+   								N3_var[26] <= 8'd0;
+   								M3_var[26] <= M3_var[26] + 1;
+   								if (M3_var[26] >= M3_PARAM-1)
+   								begin
+   									conv_done[26] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [27]
+   
+   assign mult_temp_w_27 = kernel_arr_in27[M1_var2[27]][N1_var2[27]][C1_var4[27]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[27] + M1_var2[27]][N3_var[27] + N1_var2[27]][C1_var4[27]];
+   assign mult_temp_w_conc[27] = mult_temp_w_27[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[27] = mult_temp_w_conc[27] + result_mem_27[M3_var[27]][N3_var[27]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[27] <= 8'd0;
+       		M1_var2[27] <= 8'd0;
+       		C1_var4[27] <= 6'd0;
+       		N3_var[27] <= 8'd0;
+			M3_var[27] <= 8'd0;
+			conv_done[27] <= 1'd0;
+			result_temp[27] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_27[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[27] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[27] == 0)
+   			begin
+   				result_temp[27] <= result_mem_27[M3_var[27]][N3_var[27]][0] + 
+   				kernel_arr_in27[M1_var2[27]][N1_var2[27]][C1_var4[27]][0] * 
+   				image_mem_arr_in_zpad[M3_var[27] + M1_var2[27]][N3_var[27] + N1_var2[27]][C1_var4[27]];
+   				//-----------------------------------------------------------
+   				result_mem_27[M3_var[27]][N3_var[27]][0] <= res_temp_w_conc[27];
+   				N1_var2[27] <= N1_var2[27] + 1;
+   				if (N1_var2[27] >= N1_PARAM-1)
+   				begin
+   					N1_var2[27] <= 8'd0;
+   					M1_var2[27] <= M1_var2[27] + 1;
+   					if (M1_var2[27] >= M1_PARAM-1)
+   					begin
+   						M1_var2[27] <= 8'd0;
+   						C1_var4[27] <= C1_var4[27] + 1;
+   						if (C1_var4[27] >= C1_PARAM-1)
+   						begin
+							C1_var4[27] <= 6'd0;
+   							N3_var[27] <= N3_var[27] + 1;
+							result_mem_27[M3_var[27]][N3_var[27]][0]<= res_temp_w_conc[27] + biases_mem[(C1_var4[27]-2)] ;												
+   							if (N3_var[27] >= N3_PARAM-1)
+   							begin
+   								N3_var[27] <= 8'd0;
+   								M3_var[27] <= M3_var[27] + 1;
+   								if (M3_var[27] >= M3_PARAM-1)
+   								begin
+   									conv_done[27] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [28]
+   
+   assign mult_temp_w_28 = kernel_arr_in28[M1_var2[28]][N1_var2[28]][C1_var4[28]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[28] + M1_var2[28]][N3_var[28] + N1_var2[28]][C1_var4[28]];
+   assign mult_temp_w_conc[28] = mult_temp_w_28[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[28] = mult_temp_w_conc[28] + result_mem_28[M3_var[28]][N3_var[28]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[28] <= 8'd0;
+       		M1_var2[28] <= 8'd0;
+       		C1_var4[28] <= 6'd0;
+       		N3_var[28] <= 8'd0;
+			M3_var[28] <= 8'd0;
+			conv_done[28] <= 1'd0;
+			result_temp[28] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_28[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[28] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[28] == 0)
+   			begin
+   				result_temp[28] <= result_mem_28[M3_var[28]][N3_var[28]][0] + 
+   				kernel_arr_in28[M1_var2[28]][N1_var2[28]][C1_var4[28]][0] * 
+   				image_mem_arr_in_zpad[M3_var[28] + M1_var2[28]][N3_var[28] + N1_var2[28]][C1_var4[28]];
+   				//-----------------------------------------------------------
+   				result_mem_28[M3_var[28]][N3_var[28]][0] <= res_temp_w_conc[28];
+   				N1_var2[28] <= N1_var2[28] + 1;
+   				if (N1_var2[28] >= N1_PARAM-1)
+   				begin
+   					N1_var2[28] <= 8'd0;
+   					M1_var2[28] <= M1_var2[28] + 1;
+   					if (M1_var2[28] >= M1_PARAM-1)
+   					begin
+   						M1_var2[28] <= 8'd0;
+   						C1_var4[28] <= C1_var4[28] + 1;
+   						if (C1_var4[28] >= C1_PARAM-1)
+   						begin
+							C1_var4[28] <= 6'd0;
+   							N3_var[28] <= N3_var[28] + 1;
+							result_mem_28[M3_var[28]][N3_var[28]][0]<= res_temp_w_conc[28] + biases_mem[(C1_var4[28]-2)] ;												
+   							if (N3_var[28] >= N3_PARAM-1)
+   							begin
+   								N3_var[28] <= 8'd0;
+   								M3_var[28] <= M3_var[28] + 1;
+   								if (M3_var[28] >= M3_PARAM-1)
+   								begin
+   									conv_done[28] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [29]
+   
+   assign mult_temp_w_29 = kernel_arr_in29[M1_var2[29]][N1_var2[29]][C1_var4[29]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[29] + M1_var2[29]][N3_var[29] + N1_var2[29]][C1_var4[29]];
+   assign mult_temp_w_conc[29] = mult_temp_w_29[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[29] = mult_temp_w_conc[29] + result_mem_29[M3_var[29]][N3_var[29]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[29] <= 8'd0;
+       		M1_var2[29] <= 8'd0;
+       		C1_var4[29] <= 6'd0;
+       		N3_var[29] <= 8'd0;
+			M3_var[29] <= 8'd0;
+			conv_done[29] <= 1'd0;
+			result_temp[29] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_29[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[29] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[29] == 0)
+   			begin
+   				result_temp[29] <= result_mem_29[M3_var[29]][N3_var[29]][0] + 
+   				kernel_arr_in29[M1_var2[29]][N1_var2[29]][C1_var4[29]][0] * 
+   				image_mem_arr_in_zpad[M3_var[29] + M1_var2[29]][N3_var[29] + N1_var2[29]][C1_var4[29]];
+   				//-----------------------------------------------------------
+   				result_mem_29[M3_var[29]][N3_var[29]][0] <= res_temp_w_conc[29];
+   				N1_var2[29] <= N1_var2[29] + 1;
+   				if (N1_var2[29] >= N1_PARAM-1)
+   				begin
+   					N1_var2[29] <= 8'd0;
+   					M1_var2[29] <= M1_var2[29] + 1;
+   					if (M1_var2[29] >= M1_PARAM-1)
+   					begin
+   						M1_var2[29] <= 8'd0;
+   						C1_var4[29] <= C1_var4[29] + 1;
+   						if (C1_var4[29] >= C1_PARAM-1)
+   						begin
+							C1_var4[29] <= 6'd0;
+   							N3_var[29] <= N3_var[29] + 1;
+							result_mem_29[M3_var[29]][N3_var[29]][0]<= res_temp_w_conc[29] + biases_mem[(C1_var4[29]-2)] ;												
+   							if (N3_var[29] >= N3_PARAM-1)
+   							begin
+   								N3_var[29] <= 8'd0;
+   								M3_var[29] <= M3_var[29] + 1;
+   								if (M3_var[29] >= M3_PARAM-1)
+   								begin
+   									conv_done[29] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [30]
+   
+   assign mult_temp_w_30 = kernel_arr_in30[M1_var2[30]][N1_var2[30]][C1_var4[30]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[30] + M1_var2[30]][N3_var[30] + N1_var2[30]][C1_var4[30]];
+   assign mult_temp_w_conc[30] = mult_temp_w_30[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[30] = mult_temp_w_conc[30] + result_mem_30[M3_var[30]][N3_var[30]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[30] <= 8'd0;
+       		M1_var2[30] <= 8'd0;
+       		C1_var4[30] <= 6'd0;
+       		N3_var[30] <= 8'd0;
+			M3_var[30] <= 8'd0;
+			conv_done[30] <= 1'd0;
+			result_temp[30] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_30[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[30] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[30] == 0)
+   			begin
+   				result_temp[30] <= result_mem_30[M3_var[30]][N3_var[30]][0] + 
+   				kernel_arr_in30[M1_var2[30]][N1_var2[30]][C1_var4[30]][0] * 
+   				image_mem_arr_in_zpad[M3_var[30] + M1_var2[30]][N3_var[30] + N1_var2[30]][C1_var4[30]];
+   				//-----------------------------------------------------------
+   				result_mem_30[M3_var[30]][N3_var[30]][0] <= res_temp_w_conc[30];
+   				N1_var2[30] <= N1_var2[30] + 1;
+   				if (N1_var2[30] >= N1_PARAM-1)
+   				begin
+   					N1_var2[30] <= 8'd0;
+   					M1_var2[30] <= M1_var2[30] + 1;
+   					if (M1_var2[30] >= M1_PARAM-1)
+   					begin
+   						M1_var2[30] <= 8'd0;
+   						C1_var4[30] <= C1_var4[30] + 1;
+   						if (C1_var4[30] >= C1_PARAM-1)
+   						begin
+							C1_var4[30] <= 6'd0;
+   							N3_var[30] <= N3_var[30] + 1;
+							result_mem_30[M3_var[30]][N3_var[30]][0]<= res_temp_w_conc[30] + biases_mem[(C1_var4[30]-2)] ;												
+   							if (N3_var[30] >= N3_PARAM-1)
+   							begin
+   								N3_var[30] <= 8'd0;
+   								M3_var[30] <= M3_var[30] + 1;
+   								if (M3_var[30] >= M3_PARAM-1)
+   								begin
+   									conv_done[30] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+     
+  //---------------------------------------------------------------------------------------------------------------------------
+   ////////////////////////
+   // convolution [31]
+   
+   assign mult_temp_w_31 = kernel_arr_in31[M1_var2[31]][N1_var2[31]][C1_var4[31]][0] *       //wire for multiplication
+   						image_mem_arr_in_zpad[M3_var[31] + M1_var2[31]][N3_var[31] + N1_var2[31]][C1_var4[31]];
+   assign mult_temp_w_conc[31] = mult_temp_w_31[33:14];                             //wire for concatenation after multiplication
+   assign res_temp_w_conc[31] = mult_temp_w_conc[31] + result_mem_31[M3_var[31]][N3_var[31]][0];//wire with result
+   
+   always@(posedge clk)
+       	if (reset == 1) begin
+       		N1_var2[31] <= 8'd0;
+       		M1_var2[31] <= 8'd0;
+       		C1_var4[31] <= 6'd0;
+       		N3_var[31] <= 8'd0;
+			M3_var[31] <= 8'd0;
+			conv_done[31] <= 1'd0;
+			result_temp[31] <= 39'd0;
+			for (j=0; j < 128; j=j+1) 
+			begin
+				for (i=0; i < 128; i=i+1) 
+				begin
+					for( k=0; k < 1; k=k+1)
+					begin
+						result_mem_31[j][i][k] <= 19'd0;
+					end
+				end	
+			end
+       	end
+       	else begin
+       		if (kernel_recieved[31] == 1 && zero_pad_done == 1 &&
+       			biases_recieved == 1 && image_deflattened == 1 && conv_done[31] == 0)
+   			begin
+   				result_temp[31] <= result_mem_31[M3_var[31]][N3_var[31]][0] + 
+   				kernel_arr_in31[M1_var2[31]][N1_var2[31]][C1_var4[31]][0] * 
+   				image_mem_arr_in_zpad[M3_var[31] + M1_var2[31]][N3_var[31] + N1_var2[31]][C1_var4[31]];
+   				//-----------------------------------------------------------
+   				result_mem_31[M3_var[31]][N3_var[31]][0] <= res_temp_w_conc[31];
+   				N1_var2[31] <= N1_var2[31] + 1;
+   				if (N1_var2[31] >= N1_PARAM-1)
+   				begin
+   					N1_var2[31] <= 8'd0;
+   					M1_var2[31] <= M1_var2[31] + 1;
+   					if (M1_var2[31] >= M1_PARAM-1)
+   					begin
+   						M1_var2[31] <= 8'd0;
+   						C1_var4[31] <= C1_var4[31] + 1;
+   						if (C1_var4[31] >= C1_PARAM-1)
+   						begin
+							C1_var4[31] <= 6'd0;
+   							N3_var[31] <= N3_var[31] + 1;
+							result_mem_31[M3_var[31]][N3_var[31]][0]<= res_temp_w_conc[31] + biases_mem[(C1_var4[31]-2)] ;												
+   							if (N3_var[31] >= N3_PARAM-1)
+   							begin
+   								N3_var[31] <= 8'd0;
+   								M3_var[31] <= M3_var[31] + 1;
+   								if (M3_var[31] >= M3_PARAM-1)
+   								begin
+   									conv_done[31] <= 1;
+   								end
+   							end
+   						end
+   					end
+   				end
+   			end
+   		end
+    
 //_____________________________________________________________________________________________________________________________________________________________________
-////////////////////////
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
 	// result flattening 
 	always@(posedge clk)
 	begin
@@ -2818,6 +4918,8 @@ module firstConv
 		begin
 			result_fl_0[M3_var_def[0]*N3_PARAM + N3_var_def[0]] <=
 			result_mem_0[N3_var_def[0]][M3_var_def[0]][0];
+			//--------
+			result0 <= result_fl_0[M3_var_def[0]*N3_PARAM + N3_var_def[0]];
 			//incerementing arrays counters
 			N3_var_def[0] <= N3_var_def[0] + 1;
 			if (N3_var_def[0] >= N3_PARAM-1)
@@ -2828,6 +4930,1059 @@ module firstConv
 				begin
 					M3_var_def[0] <= 8'd0;					
 					result_flattened[0] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[1] <= 8'd0;
+			M3_var_def[1] <= 8'd0;
+			result_flattened[1] <= 1'd0;    		
+		end
+		else if (conv_done[1] == 1)
+		begin
+			result_fl_1[M3_var_def[1]*N3_PARAM + N3_var_def[1]] <=
+			result_mem_1[N3_var_def[1]][M3_var_def[1]][0];
+			//--------
+			result1 <= result_fl_1[M3_var_def[1]*N3_PARAM + N3_var_def[1]];
+			//incerementing arrays counters
+			N3_var_def[1] <= N3_var_def[1] + 1;
+			if (N3_var_def[1] >= N3_PARAM-1)
+			begin
+				N3_var_def[1] <= 6'd0;
+				M3_var_def[1] <= M3_var_def[1] + 1;
+				if (M3_var_def[1] >= M3_PARAM-1)
+				begin
+					M3_var_def[1] <= 8'd0;					
+					result_flattened[1] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[2] <= 8'd0;
+			M3_var_def[2] <= 8'd0;
+			result_flattened[2] <= 1'd0;    		
+		end
+		else if (conv_done[2] == 1)
+		begin
+			result_fl_2[M3_var_def[2]*N3_PARAM + N3_var_def[2]] <=
+			result_mem_2[N3_var_def[2]][M3_var_def[2]][0];
+			//--------
+			result2 <= result_fl_2[M3_var_def[2]*N3_PARAM + N3_var_def[2]];
+			//incerementing arrays counters
+			N3_var_def[2] <= N3_var_def[2] + 1;
+			if (N3_var_def[2] >= N3_PARAM-1)
+			begin
+				N3_var_def[2] <= 6'd0;
+				M3_var_def[2] <= M3_var_def[2] + 1;
+				if (M3_var_def[2] >= M3_PARAM-1)
+				begin
+					M3_var_def[2] <= 8'd0;					
+					result_flattened[2] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[3] <= 8'd0;
+			M3_var_def[3] <= 8'd0;
+			result_flattened[3] <= 1'd0;    		
+		end
+		else if (conv_done[3] == 1)
+		begin
+			result_fl_3[M3_var_def[3]*N3_PARAM + N3_var_def[3]] <=
+			result_mem_3[N3_var_def[3]][M3_var_def[3]][0];
+			//--------
+			result3 <= result_fl_3[M3_var_def[3]*N3_PARAM + N3_var_def[3]];
+			//incerementing arrays counters
+			N3_var_def[3] <= N3_var_def[3] + 1;
+			if (N3_var_def[3] >= N3_PARAM-1)
+			begin
+				N3_var_def[3] <= 6'd0;
+				M3_var_def[3] <= M3_var_def[3] + 1;
+				if (M3_var_def[3] >= M3_PARAM-1)
+				begin
+					M3_var_def[3] <= 8'd0;					
+					result_flattened[3] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[4] <= 8'd0;
+			M3_var_def[4] <= 8'd0;
+			result_flattened[4] <= 1'd0;    		
+		end
+		else if (conv_done[4] == 1)
+		begin
+			result_fl_4[M3_var_def[4]*N3_PARAM + N3_var_def[4]] <=
+			result_mem_4[N3_var_def[4]][M3_var_def[4]][0];
+			//--------
+			result4 <= result_fl_4[M3_var_def[4]*N3_PARAM + N3_var_def[4]];
+			//incerementing arrays counters
+			N3_var_def[4] <= N3_var_def[4] + 1;
+			if (N3_var_def[4] >= N3_PARAM-1)
+			begin
+				N3_var_def[4] <= 6'd0;
+				M3_var_def[4] <= M3_var_def[4] + 1;
+				if (M3_var_def[4] >= M3_PARAM-1)
+				begin
+					M3_var_def[4] <= 8'd0;					
+					result_flattened[4] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[5] <= 8'd0;
+			M3_var_def[5] <= 8'd0;
+			result_flattened[5] <= 1'd0;    		
+		end
+		else if (conv_done[5] == 1)
+		begin
+			result_fl_5[M3_var_def[5]*N3_PARAM + N3_var_def[5]] <=
+			result_mem_5[N3_var_def[5]][M3_var_def[5]][0];
+			//--------
+			result5 <= result_fl_5[M3_var_def[5]*N3_PARAM + N3_var_def[5]];
+			//incerementing arrays counters
+			N3_var_def[5] <= N3_var_def[5] + 1;
+			if (N3_var_def[5] >= N3_PARAM-1)
+			begin
+				N3_var_def[5] <= 6'd0;
+				M3_var_def[5] <= M3_var_def[5] + 1;
+				if (M3_var_def[5] >= M3_PARAM-1)
+				begin
+					M3_var_def[5] <= 8'd0;					
+					result_flattened[5] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[6] <= 8'd0;
+			M3_var_def[6] <= 8'd0;
+			result_flattened[6] <= 1'd0;    		
+		end
+		else if (conv_done[6] == 1)
+		begin
+			result_fl_6[M3_var_def[6]*N3_PARAM + N3_var_def[6]] <=
+			result_mem_6[N3_var_def[6]][M3_var_def[6]][0];
+			//--------
+			result6 <= result_fl_6[M3_var_def[6]*N3_PARAM + N3_var_def[6]];
+			//incerementing arrays counters
+			N3_var_def[6] <= N3_var_def[6] + 1;
+			if (N3_var_def[6] >= N3_PARAM-1)
+			begin
+				N3_var_def[6] <= 6'd0;
+				M3_var_def[6] <= M3_var_def[6] + 1;
+				if (M3_var_def[6] >= M3_PARAM-1)
+				begin
+					M3_var_def[6] <= 8'd0;					
+					result_flattened[6] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[7] <= 8'd0;
+			M3_var_def[7] <= 8'd0;
+			result_flattened[7] <= 1'd0;    		
+		end
+		else if (conv_done[7] == 1)
+		begin
+			result_fl_7[M3_var_def[7]*N3_PARAM + N3_var_def[7]] <=
+			result_mem_7[N3_var_def[7]][M3_var_def[7]][0];
+			//--------
+			result7 <= result_fl_7[M3_var_def[7]*N3_PARAM + N3_var_def[7]];
+			//incerementing arrays counters
+			N3_var_def[7] <= N3_var_def[7] + 1;
+			if (N3_var_def[7] >= N3_PARAM-1)
+			begin
+				N3_var_def[7] <= 6'd0;
+				M3_var_def[7] <= M3_var_def[7] + 1;
+				if (M3_var_def[7] >= M3_PARAM-1)
+				begin
+					M3_var_def[7] <= 8'd0;					
+					result_flattened[7] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[8] <= 8'd0;
+			M3_var_def[8] <= 8'd0;
+			result_flattened[8] <= 1'd0;    		
+		end
+		else if (conv_done[8] == 1)
+		begin
+			result_fl_8[M3_var_def[8]*N3_PARAM + N3_var_def[8]] <=
+			result_mem_8[N3_var_def[8]][M3_var_def[8]][0];
+			//--------
+			result8 <= result_fl_8[M3_var_def[8]*N3_PARAM + N3_var_def[8]];
+			//incerementing arrays counters
+			N3_var_def[8] <= N3_var_def[8] + 1;
+			if (N3_var_def[8] >= N3_PARAM-1)
+			begin
+				N3_var_def[8] <= 6'd0;
+				M3_var_def[8] <= M3_var_def[8] + 1;
+				if (M3_var_def[8] >= M3_PARAM-1)
+				begin
+					M3_var_def[8] <= 8'd0;					
+					result_flattened[8] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[9] <= 8'd0;
+			M3_var_def[9] <= 8'd0;
+			result_flattened[9] <= 1'd0;    		
+		end
+		else if (conv_done[9] == 1)
+		begin
+			result_fl_9[M3_var_def[9]*N3_PARAM + N3_var_def[9]] <=
+			result_mem_9[N3_var_def[9]][M3_var_def[9]][0];
+			//--------
+			result9 <= result_fl_9[M3_var_def[9]*N3_PARAM + N3_var_def[9]];
+			//incerementing arrays counters
+			N3_var_def[9] <= N3_var_def[9] + 1;
+			if (N3_var_def[9] >= N3_PARAM-1)
+			begin
+				N3_var_def[9] <= 6'd0;
+				M3_var_def[9] <= M3_var_def[9] + 1;
+				if (M3_var_def[9] >= M3_PARAM-1)
+				begin
+					M3_var_def[9] <= 8'd0;					
+					result_flattened[9] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[10] <= 8'd0;
+			M3_var_def[10] <= 8'd0;
+			result_flattened[10] <= 1'd0;    		
+		end
+		else if (conv_done[10] == 1)
+		begin
+			result_fl_10[M3_var_def[10]*N3_PARAM + N3_var_def[10]] <=
+			result_mem_10[N3_var_def[10]][M3_var_def[10]][0];
+			//--------
+			result10 <= result_fl_10[M3_var_def[10]*N3_PARAM + N3_var_def[10]];
+			//incerementing arrays counters
+			N3_var_def[10] <= N3_var_def[10] + 1;
+			if (N3_var_def[10] >= N3_PARAM-1)
+			begin
+				N3_var_def[10] <= 6'd0;
+				M3_var_def[10] <= M3_var_def[10] + 1;
+				if (M3_var_def[10] >= M3_PARAM-1)
+				begin
+					M3_var_def[10] <= 8'd0;					
+					result_flattened[10] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[11] <= 8'd0;
+			M3_var_def[11] <= 8'd0;
+			result_flattened[11] <= 1'd0;    		
+		end
+		else if (conv_done[11] == 1)
+		begin
+			result_fl_11[M3_var_def[11]*N3_PARAM + N3_var_def[11]] <=
+			result_mem_11[N3_var_def[11]][M3_var_def[11]][0];
+			//--------
+			result11 <= result_fl_11[M3_var_def[11]*N3_PARAM + N3_var_def[11]];
+			//incerementing arrays counters
+			N3_var_def[11] <= N3_var_def[11] + 1;
+			if (N3_var_def[11] >= N3_PARAM-1)
+			begin
+				N3_var_def[11] <= 6'd0;
+				M3_var_def[11] <= M3_var_def[11] + 1;
+				if (M3_var_def[11] >= M3_PARAM-1)
+				begin
+					M3_var_def[11] <= 8'd0;					
+					result_flattened[11] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[12] <= 8'd0;
+			M3_var_def[12] <= 8'd0;
+			result_flattened[12] <= 1'd0;    		
+		end
+		else if (conv_done[12] == 1)
+		begin
+			result_fl_12[M3_var_def[12]*N3_PARAM + N3_var_def[12]] <=
+			result_mem_12[N3_var_def[12]][M3_var_def[12]][0];
+			//--------
+			result12 <= result_fl_12[M3_var_def[12]*N3_PARAM + N3_var_def[12]];
+			//incerementing arrays counters
+			N3_var_def[12] <= N3_var_def[12] + 1;
+			if (N3_var_def[12] >= N3_PARAM-1)
+			begin
+				N3_var_def[12] <= 6'd0;
+				M3_var_def[12] <= M3_var_def[12] + 1;
+				if (M3_var_def[12] >= M3_PARAM-1)
+				begin
+					M3_var_def[12] <= 8'd0;					
+					result_flattened[12] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[13] <= 8'd0;
+			M3_var_def[13] <= 8'd0;
+			result_flattened[13] <= 1'd0;    		
+		end
+		else if (conv_done[13] == 1)
+		begin
+			result_fl_13[M3_var_def[13]*N3_PARAM + N3_var_def[13]] <=
+			result_mem_13[N3_var_def[13]][M3_var_def[13]][0];
+			//--------
+			result13 <= result_fl_13[M3_var_def[13]*N3_PARAM + N3_var_def[13]];
+			//incerementing arrays counters
+			N3_var_def[13] <= N3_var_def[13] + 1;
+			if (N3_var_def[13] >= N3_PARAM-1)
+			begin
+				N3_var_def[13] <= 6'd0;
+				M3_var_def[13] <= M3_var_def[13] + 1;
+				if (M3_var_def[13] >= M3_PARAM-1)
+				begin
+					M3_var_def[13] <= 8'd0;					
+					result_flattened[13] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[14] <= 8'd0;
+			M3_var_def[14] <= 8'd0;
+			result_flattened[14] <= 1'd0;    		
+		end
+		else if (conv_done[14] == 1)
+		begin
+			result_fl_14[M3_var_def[14]*N3_PARAM + N3_var_def[14]] <=
+			result_mem_14[N3_var_def[14]][M3_var_def[14]][0];
+			//--------
+			result14 <= result_fl_14[M3_var_def[14]*N3_PARAM + N3_var_def[14]];
+			//incerementing arrays counters
+			N3_var_def[14] <= N3_var_def[14] + 1;
+			if (N3_var_def[14] >= N3_PARAM-1)
+			begin
+				N3_var_def[14] <= 6'd0;
+				M3_var_def[14] <= M3_var_def[14] + 1;
+				if (M3_var_def[14] >= M3_PARAM-1)
+				begin
+					M3_var_def[14] <= 8'd0;					
+					result_flattened[14] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[15] <= 8'd0;
+			M3_var_def[15] <= 8'd0;
+			result_flattened[15] <= 1'd0;    		
+		end
+		else if (conv_done[15] == 1)
+		begin
+			result_fl_15[M3_var_def[15]*N3_PARAM + N3_var_def[15]] <=
+			result_mem_15[N3_var_def[15]][M3_var_def[15]][0];
+			//--------
+			result15 <= result_fl_15[M3_var_def[15]*N3_PARAM + N3_var_def[15]];
+			//incerementing arrays counters
+			N3_var_def[15] <= N3_var_def[15] + 1;
+			if (N3_var_def[15] >= N3_PARAM-1)
+			begin
+				N3_var_def[15] <= 6'd0;
+				M3_var_def[15] <= M3_var_def[15] + 1;
+				if (M3_var_def[15] >= M3_PARAM-1)
+				begin
+					M3_var_def[15] <= 8'd0;					
+					result_flattened[15] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[16] <= 8'd0;
+			M3_var_def[16] <= 8'd0;
+			result_flattened[16] <= 1'd0;    		
+		end
+		else if (conv_done[16] == 1)
+		begin
+			result_fl_16[M3_var_def[16]*N3_PARAM + N3_var_def[16]] <=
+			result_mem_16[N3_var_def[16]][M3_var_def[16]][0];
+			//--------
+			result16 <= result_fl_16[M3_var_def[16]*N3_PARAM + N3_var_def[16]];
+			//incerementing arrays counters
+			N3_var_def[16] <= N3_var_def[16] + 1;
+			if (N3_var_def[16] >= N3_PARAM-1)
+			begin
+				N3_var_def[16] <= 6'd0;
+				M3_var_def[16] <= M3_var_def[16] + 1;
+				if (M3_var_def[16] >= M3_PARAM-1)
+				begin
+					M3_var_def[16] <= 8'd0;					
+					result_flattened[16] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[17] <= 8'd0;
+			M3_var_def[17] <= 8'd0;
+			result_flattened[17] <= 1'd0;    		
+		end
+		else if (conv_done[17] == 1)
+		begin
+			result_fl_17[M3_var_def[17]*N3_PARAM + N3_var_def[17]] <=
+			result_mem_17[N3_var_def[17]][M3_var_def[17]][0];
+			//--------
+			result17 <= result_fl_17[M3_var_def[17]*N3_PARAM + N3_var_def[17]];
+			//incerementing arrays counters
+			N3_var_def[17] <= N3_var_def[17] + 1;
+			if (N3_var_def[17] >= N3_PARAM-1)
+			begin
+				N3_var_def[17] <= 6'd0;
+				M3_var_def[17] <= M3_var_def[17] + 1;
+				if (M3_var_def[17] >= M3_PARAM-1)
+				begin
+					M3_var_def[17] <= 8'd0;					
+					result_flattened[17] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[18] <= 8'd0;
+			M3_var_def[18] <= 8'd0;
+			result_flattened[18] <= 1'd0;    		
+		end
+		else if (conv_done[18] == 1)
+		begin
+			result_fl_18[M3_var_def[18]*N3_PARAM + N3_var_def[18]] <=
+			result_mem_18[N3_var_def[18]][M3_var_def[18]][0];
+			//--------
+			result18 <= result_fl_18[M3_var_def[18]*N3_PARAM + N3_var_def[18]];
+			//incerementing arrays counters
+			N3_var_def[18] <= N3_var_def[18] + 1;
+			if (N3_var_def[18] >= N3_PARAM-1)
+			begin
+				N3_var_def[18] <= 6'd0;
+				M3_var_def[18] <= M3_var_def[18] + 1;
+				if (M3_var_def[18] >= M3_PARAM-1)
+				begin
+					M3_var_def[18] <= 8'd0;					
+					result_flattened[18] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[19] <= 8'd0;
+			M3_var_def[19] <= 8'd0;
+			result_flattened[19] <= 1'd0;    		
+		end
+		else if (conv_done[19] == 1)
+		begin
+			result_fl_19[M3_var_def[19]*N3_PARAM + N3_var_def[19]] <=
+			result_mem_19[N3_var_def[19]][M3_var_def[19]][0];
+			//--------
+			result19 <= result_fl_19[M3_var_def[19]*N3_PARAM + N3_var_def[19]];
+			//incerementing arrays counters
+			N3_var_def[19] <= N3_var_def[19] + 1;
+			if (N3_var_def[19] >= N3_PARAM-1)
+			begin
+				N3_var_def[19] <= 6'd0;
+				M3_var_def[19] <= M3_var_def[19] + 1;
+				if (M3_var_def[19] >= M3_PARAM-1)
+				begin
+					M3_var_def[19] <= 8'd0;					
+					result_flattened[19] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[20] <= 8'd0;
+			M3_var_def[20] <= 8'd0;
+			result_flattened[20] <= 1'd0;    		
+		end
+		else if (conv_done[20] == 1)
+		begin
+			result_fl_20[M3_var_def[20]*N3_PARAM + N3_var_def[20]] <=
+			result_mem_20[N3_var_def[20]][M3_var_def[20]][0];
+			//--------
+			result20 <= result_fl_20[M3_var_def[20]*N3_PARAM + N3_var_def[20]];
+			//incerementing arrays counters
+			N3_var_def[20] <= N3_var_def[20] + 1;
+			if (N3_var_def[20] >= N3_PARAM-1)
+			begin
+				N3_var_def[20] <= 6'd0;
+				M3_var_def[20] <= M3_var_def[20] + 1;
+				if (M3_var_def[20] >= M3_PARAM-1)
+				begin
+					M3_var_def[20] <= 8'd0;					
+					result_flattened[20] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[21] <= 8'd0;
+			M3_var_def[21] <= 8'd0;
+			result_flattened[21] <= 1'd0;    		
+		end
+		else if (conv_done[21] == 1)
+		begin
+			result_fl_21[M3_var_def[21]*N3_PARAM + N3_var_def[21]] <=
+			result_mem_21[N3_var_def[21]][M3_var_def[21]][0];
+			//--------
+			result21 <= result_fl_21[M3_var_def[21]*N3_PARAM + N3_var_def[21]];
+			//incerementing arrays counters
+			N3_var_def[21] <= N3_var_def[21] + 1;
+			if (N3_var_def[21] >= N3_PARAM-1)
+			begin
+				N3_var_def[21] <= 6'd0;
+				M3_var_def[21] <= M3_var_def[21] + 1;
+				if (M3_var_def[21] >= M3_PARAM-1)
+				begin
+					M3_var_def[21] <= 8'd0;					
+					result_flattened[21] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[22] <= 8'd0;
+			M3_var_def[22] <= 8'd0;
+			result_flattened[22] <= 1'd0;    		
+		end
+		else if (conv_done[22] == 1)
+		begin
+			result_fl_22[M3_var_def[22]*N3_PARAM + N3_var_def[22]] <=
+			result_mem_22[N3_var_def[22]][M3_var_def[22]][0];
+			//--------
+			result22 <= result_fl_22[M3_var_def[22]*N3_PARAM + N3_var_def[22]];
+			//incerementing arrays counters
+			N3_var_def[22] <= N3_var_def[22] + 1;
+			if (N3_var_def[22] >= N3_PARAM-1)
+			begin
+				N3_var_def[22] <= 6'd0;
+				M3_var_def[22] <= M3_var_def[22] + 1;
+				if (M3_var_def[22] >= M3_PARAM-1)
+				begin
+					M3_var_def[22] <= 8'd0;					
+					result_flattened[22] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[23] <= 8'd0;
+			M3_var_def[23] <= 8'd0;
+			result_flattened[23] <= 1'd0;    		
+		end
+		else if (conv_done[23] == 1)
+		begin
+			result_fl_23[M3_var_def[23]*N3_PARAM + N3_var_def[23]] <=
+			result_mem_23[N3_var_def[23]][M3_var_def[23]][0];
+			//--------
+			result23 <= result_fl_23[M3_var_def[23]*N3_PARAM + N3_var_def[23]];
+			//incerementing arrays counters
+			N3_var_def[23] <= N3_var_def[23] + 1;
+			if (N3_var_def[23] >= N3_PARAM-1)
+			begin
+				N3_var_def[23] <= 6'd0;
+				M3_var_def[23] <= M3_var_def[23] + 1;
+				if (M3_var_def[23] >= M3_PARAM-1)
+				begin
+					M3_var_def[23] <= 8'd0;					
+					result_flattened[23] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[24] <= 8'd0;
+			M3_var_def[24] <= 8'd0;
+			result_flattened[24] <= 1'd0;    		
+		end
+		else if (conv_done[24] == 1)
+		begin
+			result_fl_24[M3_var_def[24]*N3_PARAM + N3_var_def[24]] <=
+			result_mem_24[N3_var_def[24]][M3_var_def[24]][0];
+			//--------
+			result24 <= result_fl_24[M3_var_def[24]*N3_PARAM + N3_var_def[24]];
+			//incerementing arrays counters
+			N3_var_def[24] <= N3_var_def[24] + 1;
+			if (N3_var_def[24] >= N3_PARAM-1)
+			begin
+				N3_var_def[24] <= 6'd0;
+				M3_var_def[24] <= M3_var_def[24] + 1;
+				if (M3_var_def[24] >= M3_PARAM-1)
+				begin
+					M3_var_def[24] <= 8'd0;					
+					result_flattened[24] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[25] <= 8'd0;
+			M3_var_def[25] <= 8'd0;
+			result_flattened[25] <= 1'd0;    		
+		end
+		else if (conv_done[25] == 1)
+		begin
+			result_fl_25[M3_var_def[25]*N3_PARAM + N3_var_def[25]] <=
+			result_mem_25[N3_var_def[25]][M3_var_def[25]][0];
+			//--------
+			result25 <= result_fl_25[M3_var_def[25]*N3_PARAM + N3_var_def[25]];
+			//incerementing arrays counters
+			N3_var_def[25] <= N3_var_def[25] + 1;
+			if (N3_var_def[25] >= N3_PARAM-1)
+			begin
+				N3_var_def[25] <= 6'd0;
+				M3_var_def[25] <= M3_var_def[25] + 1;
+				if (M3_var_def[25] >= M3_PARAM-1)
+				begin
+					M3_var_def[25] <= 8'd0;					
+					result_flattened[25] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[26] <= 8'd0;
+			M3_var_def[26] <= 8'd0;
+			result_flattened[26] <= 1'd0;    		
+		end
+		else if (conv_done[26] == 1)
+		begin
+			result_fl_26[M3_var_def[26]*N3_PARAM + N3_var_def[26]] <=
+			result_mem_26[N3_var_def[26]][M3_var_def[26]][0];
+			//--------
+			result26 <= result_fl_26[M3_var_def[26]*N3_PARAM + N3_var_def[26]];
+			//incerementing arrays counters
+			N3_var_def[26] <= N3_var_def[26] + 1;
+			if (N3_var_def[26] >= N3_PARAM-1)
+			begin
+				N3_var_def[26] <= 6'd0;
+				M3_var_def[26] <= M3_var_def[26] + 1;
+				if (M3_var_def[26] >= M3_PARAM-1)
+				begin
+					M3_var_def[26] <= 8'd0;					
+					result_flattened[26] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[27] <= 8'd0;
+			M3_var_def[27] <= 8'd0;
+			result_flattened[27] <= 1'd0;    		
+		end
+		else if (conv_done[27] == 1)
+		begin
+			result_fl_27[M3_var_def[27]*N3_PARAM + N3_var_def[27]] <=
+			result_mem_27[N3_var_def[27]][M3_var_def[27]][0];
+			//--------
+			result27 <= result_fl_27[M3_var_def[27]*N3_PARAM + N3_var_def[27]];
+			//incerementing arrays counters
+			N3_var_def[27] <= N3_var_def[27] + 1;
+			if (N3_var_def[27] >= N3_PARAM-1)
+			begin
+				N3_var_def[27] <= 6'd0;
+				M3_var_def[27] <= M3_var_def[27] + 1;
+				if (M3_var_def[27] >= M3_PARAM-1)
+				begin
+					M3_var_def[27] <= 8'd0;					
+					result_flattened[27] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[28] <= 8'd0;
+			M3_var_def[28] <= 8'd0;
+			result_flattened[28] <= 1'd0;    		
+		end
+		else if (conv_done[28] == 1)
+		begin
+			result_fl_28[M3_var_def[28]*N3_PARAM + N3_var_def[28]] <=
+			result_mem_28[N3_var_def[28]][M3_var_def[28]][0];
+			//--------
+			result28 <= result_fl_28[M3_var_def[28]*N3_PARAM + N3_var_def[28]];
+			//incerementing arrays counters
+			N3_var_def[28] <= N3_var_def[28] + 1;
+			if (N3_var_def[28] >= N3_PARAM-1)
+			begin
+				N3_var_def[28] <= 6'd0;
+				M3_var_def[28] <= M3_var_def[28] + 1;
+				if (M3_var_def[28] >= M3_PARAM-1)
+				begin
+					M3_var_def[28] <= 8'd0;					
+					result_flattened[28] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[29] <= 8'd0;
+			M3_var_def[29] <= 8'd0;
+			result_flattened[29] <= 1'd0;    		
+		end
+		else if (conv_done[29] == 1)
+		begin
+			result_fl_29[M3_var_def[29]*N3_PARAM + N3_var_def[29]] <=
+			result_mem_29[N3_var_def[29]][M3_var_def[29]][0];
+			//--------
+			result29 <= result_fl_29[M3_var_def[29]*N3_PARAM + N3_var_def[29]];
+			//incerementing arrays counters
+			N3_var_def[29] <= N3_var_def[29] + 1;
+			if (N3_var_def[29] >= N3_PARAM-1)
+			begin
+				N3_var_def[29] <= 6'd0;
+				M3_var_def[29] <= M3_var_def[29] + 1;
+				if (M3_var_def[29] >= M3_PARAM-1)
+				begin
+					M3_var_def[29] <= 8'd0;					
+					result_flattened[29] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[30] <= 8'd0;
+			M3_var_def[30] <= 8'd0;
+			result_flattened[30] <= 1'd0;    		
+		end
+		else if (conv_done[30] == 1)
+		begin
+			result_fl_30[M3_var_def[30]*N3_PARAM + N3_var_def[30]] <=
+			result_mem_30[N3_var_def[30]][M3_var_def[30]][0];
+			//--------
+			result30 <= result_fl_30[M3_var_def[30]*N3_PARAM + N3_var_def[30]];
+			//incerementing arrays counters
+			N3_var_def[30] <= N3_var_def[30] + 1;
+			if (N3_var_def[30] >= N3_PARAM-1)
+			begin
+				N3_var_def[30] <= 6'd0;
+				M3_var_def[30] <= M3_var_def[30] + 1;
+				if (M3_var_def[30] >= M3_PARAM-1)
+				begin
+					M3_var_def[30] <= 8'd0;					
+					result_flattened[30] <= 1'd1;
+					
+				end
+			end
+		end
+	end
+
+
+	//---------------------------------------------------------------------------------------------------
+	////////////////////////
+	// result flattening 
+	always@(posedge clk)
+	begin
+		if (reset == 1)
+		begin
+			N3_var_def[31] <= 8'd0;
+			M3_var_def[31] <= 8'd0;
+			result_flattened[31] <= 1'd0;    		
+		end
+		else if (conv_done[31] == 1)
+		begin
+			result_fl_31[M3_var_def[31]*N3_PARAM + N3_var_def[31]] <=
+			result_mem_31[N3_var_def[31]][M3_var_def[31]][0];
+			//--------
+			result31 <= result_fl_31[M3_var_def[31]*N3_PARAM + N3_var_def[31]];
+			//incerementing arrays counters
+			N3_var_def[31] <= N3_var_def[31] + 1;
+			if (N3_var_def[31] >= N3_PARAM-1)
+			begin
+				N3_var_def[31] <= 6'd0;
+				M3_var_def[31] <= M3_var_def[31] + 1;
+				if (M3_var_def[31] >= M3_PARAM-1)
+				begin
+					M3_var_def[31] <= 8'd0;					
+					result_flattened[31] <= 1'd1;
 					
 				end
 			end
