@@ -22,7 +22,7 @@ void tb_driver::generate_biases(void) {
         for (int i=0;i<BIASES;i++){
             biases_flattened[i] = biases_firstConv[i];
             //cout<<biases_flattened[i]<<endl;
-        }
+        }/*
         cout<<"biases_flattened"<<"\n";
         for (int i = 0; i < (BIASES); i++){
             cout <<  biases_flattened[i].to_hex() << "\n ";
@@ -65,7 +65,7 @@ void tb_driver::generate_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_flatte
 		}  /*
         cout<<"kernel_flattened_mem_"<<c+1<<"\n";
         for (int i = 0; i < (KER/L1); i++){
-            cout << kernel_flattened_mem[i].to_hex() << "\n ";
+            cout << kernel_flattened_mem[i].to_bin() << "\n";
             
         } 
         cout<<"\n";/**/
@@ -107,7 +107,8 @@ void tb_driver::generate_image(void){
         /*
             cout<<"------------image_flattened-----------"<<endl;
         for (int i=0;i<IMG;i++){
-            cout<< image_flattened[i].to_hex()<< " \n";
+            cout<<"["<<i<<"]="<< image_flattened[i].to_bin()
+            <<" | "<< image_flattened[i]<< " \n";
         } 
         /* */
         //поэлементная передача данных на порты

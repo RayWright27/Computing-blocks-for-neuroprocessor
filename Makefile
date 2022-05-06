@@ -12,7 +12,9 @@ LIBS= -lsystemc -lstdc++ -lm
 
 #CXXFLAGS	:= -std=c++11 -O3 -Wall -Wextra -Wno-unused-parameter
 
-SOURCES = main.cpp tb_driver.h tb_driver.cpp macro.h weights.hpp weights.cpp conv1_unrlld.h conv1_unrlld.cpp #max_pooling.h max_pooling.cpp dense.h dense.cpp 
+SOURCES = main.cpp tb_driver.h tb_driver.cpp macro.h weights.hpp\
+		  weights.cpp conv1_unrlld.h conv1_unrlld.cpp max_pooling1_unrlld.h \
+		  max_pooling1_unrlld.cpp # dense.h dense.cpp 
 
 DEPENDENCIES = \
 		Makefile \

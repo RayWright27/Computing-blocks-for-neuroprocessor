@@ -1,3 +1,4 @@
+#define SC_INCLUDE_FX
 #include <systemc.h>
 #include <macro.h>
 #include <iomanip> 
@@ -31,11 +32,11 @@ SC_MODULE(dense) {
 	sc_out<bool>	dense_result_vld_tb;
 	sc_out<bool>	dense_result_vld_next;
 
-	sc_in<double>	input;
-	sc_in<double>	coeff;
-	sc_in<double>	biases;
-	sc_out<double>	dense_result_tb;
-	sc_out<double>	dense_result_next;
+	sc_in<sc_fixed<W_LEN_i, I_LEN_i>>	input;
+	sc_in<sc_fixed<W_LEN_w, I_LEN_w>>	coeff;
+	sc_in<sc_fixed<W_LEN_w, I_LEN_w>>	biases;
+	sc_out<sc_fixed<W_LEN_i, I_LEN_i>>	dense_result_tb;
+	sc_out<sc_fixed<W_LEN_i, I_LEN_i>>	dense_result_next;
 
 	sc_logic		input_recieved = sc_logic(0);
 	sc_logic		coeff_recieved = sc_logic(0);
@@ -44,11 +45,14 @@ SC_MODULE(dense) {
 	sc_logic		dense_result_sent_tb = sc_logic(0);
 	sc_logic		dense_result_sent_next = sc_logic(0);
 	
-	double*			dense_input;
-	double**		coeff_arr;
-	double* 		coeff_flattened;
-	double*			biases_arr;
-	double*			dense_result_arr;
+	sc_fixed<W_LEN_i, I_LEN_i>*			dense_input;
+	sc_fixed<W_LEN_w, I_LEN_w>**		coeff_arr;
+	sc_fixed<W_LEN_w, I_LEN_w>* 		coeff_flattened;
+	sc_fixed<W_LEN_w, I_LEN_w>*			biases_arr;
+	sc_fixed<W_LEN_i, I_LEN_i>*			dense_result_arr;
+	sc_fixed<W_LEN_s, I_LEN_s>*			dense_result_arr_2;
+	sc_fixed<W_LEN_i, I_LEN_i>*			dense_result_arr_3;
+
 
 	void recieve_input(void);
 	void recieve_coeff(void);
@@ -64,14 +68,16 @@ SC_MODULE(dense) {
 	{
 		cout<<"------------------------------"<< module_name <<"["<<this<<"]"<< "-------------------------------"<<endl;
 		
-		coeff_flattened = new double[DENSE_COEFF_param];
-		dense_input = new double[IN_param];
-		biases_arr = new double[BIASES_param];
-		dense_result_arr = new double[OUT_param];
+		coeff_flattened = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE_COEFF_param];
+		dense_input = new sc_fixed<W_LEN_i, I_LEN_i>[IN_param];
+		biases_arr = new sc_fixed<W_LEN_w, I_LEN_w>[BIASES_param];
+		dense_result_arr = new sc_fixed<W_LEN_i, I_LEN_i>[OUT_param];
+		dense_result_arr_2 = new sc_fixed<W_LEN_s, I_LEN_s>[OUT_param];
+		dense_result_arr_3 = new sc_fixed<W_LEN_i, I_LEN_i>[OUT_param];
 
-		coeff_arr = new double*[DENSE_COEFF1_param];
+		coeff_arr = new sc_fixed<W_LEN_w, I_LEN_w>*[DENSE_COEFF1_param];
 		for(int k = 0; k < DENSE_COEFF1_param; k++){
-			coeff_arr[k] = new double[DENSE_COEFF2_param];
+			coeff_arr[k] = new sc_fixed<W_LEN_w, I_LEN_w>[DENSE_COEFF2_param];
 		}
 
 		SC_THREAD(recieve_input);

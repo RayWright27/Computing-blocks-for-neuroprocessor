@@ -1,7 +1,7 @@
-#include "max_pooling.h"
+#include "max_pooling1_unrlld.h"
 #include <iomanip>
 #include <fstream>
-sc_fixed<W_LEN_i, I_LEN_i> max_pool::maximum(sc_fixed<W_LEN_i, I_LEN_i> a, sc_fixed<W_LEN_i, I_LEN_i> b){
+sc_fixed<W_LEN_i, I_LEN_i> max_pooling1_unrlld::maximum(sc_fixed<W_LEN_i, I_LEN_i> a, sc_fixed<W_LEN_i, I_LEN_i> b){
         if (a > b) {
             return a;
         }
@@ -14,28 +14,32 @@ sc_fixed<W_LEN_i, I_LEN_i> max_pool::maximum(sc_fixed<W_LEN_i, I_LEN_i> a, sc_fi
         return 0;
 };
 
-void max_pool::recieve_image(void){
-    image_rdy.write(0);
-    if( image_recieved == sc_logic(0)){
+void max_pooling1_unrlld::recieve_image(int c, sc_fixed<W_LEN_i, I_LEN_i>* featuremap,
+					                    sc_fixed<W_LEN_i, I_LEN_i>*** featuremap_in){
+    image_rdy[c].write(0);
+    if( image_recieved[c] == sc_logic(0)){
         for (int i = 0; i < POOL_IN_param; i++){
-            image_rdy.write(1);
+            image_rdy[c].write(1);
             do{
                 wait(clk->posedge_event());
-            }while (!image_vld.read());
-            featuremap[i] = image.read();
-            image_rdy.write(0);
+            }while (!image_vld[c].read());
+            featuremap[i] = image[c].read();
+            image_rdy[c].write(0);
         }
         
         for (int k = 0; k < F_M2_param; k++) {
             for (int i = 0; i < F_M1_param; i++) {
-                for (int j = 0; j < F_M3_param; j++) {
+                for (int j = 0; j < 1; j++) {
                     featuremap_in[k][i][j] = 
-                    featuremap[k * F_M1_param * F_M3_param + i * F_M3_param + j];
+                    featuremap[k * F_M1_param * 1 + i * 1 + j];/*
+                    cout<<"featuremap_in["<<k<<"]["<<j<<"]["<<i<<"]="
+                    << featuremap_in[k][j][i].to_hex() 
+					<<" | "<< featuremap_in[k][j][i].to_bin()<< "\n ";/**/
                 }
             }
         }
-        image_recieved = sc_logic(1);
-        cout <<"@"<<sc_time_stamp()<<" max_pooling input recieved ["<<this<<"]\n";
+        image_recieved[c] = sc_logic(1);
+        cout <<"@"<<sc_time_stamp()<<" max_pooling input recieved "<<c<<" ["<<this<<"]\n";
         /*
         for (int k = 0; k < F_M2_param; k++) {
             for (int i = 0; i < F_M1_param; i++) {
@@ -62,16 +66,19 @@ void max_pool::recieve_image(void){
 
 };
 
-void max_pool::max_pooling(void) {
+void max_pooling1_unrlld::max_pooling(int c, sc_fixed<W_LEN_i, I_LEN_i>*** featuremap_in,
+                     sc_fixed<W_LEN_i, I_LEN_i>*** result,
+					 sc_fixed<W_LEN_i, I_LEN_i>* max_pooled) 
+{
     for (int k = 0; k < POOLOUT2_param; k++) {
         for (int i = 0; i < POOLOUT1_param; i++) {
-            for (int j = 0; j < POOLOUT3_param; j++) {
+            for (int j = 0; j < 1; j++) {
                 result[k][i][j]=0;
             }
         }
     }
     while(true){
-        if( image_recieved == sc_logic(1) and max_pool_done == sc_logic(0)){
+        if( image_recieved[c] == sc_logic(1) and max_pool_done[c] == sc_logic(0)){
             for (int k = 0; k < POOLOUT2_param; k++) {
                 for (int i = 0; i < POOLOUT1_param; i++) {//сдвиг кернела в матрице признаков
                     for (int j = 0; j < P2_param; j++) {
@@ -85,17 +92,16 @@ void max_pool::max_pooling(void) {
                     }
                 }
             }
-              /*
+              
             cout << "[отладочный вывод][max_pooling] результат" << endl;
-            for (int k = 0; k < POOLOUT3; k++) {
-                for (int i = 0; i < POOLOUT2; i++) {
-                    for (int j = 0; j < POOLOUT1; j++) {
-                        cout <<std::setprecision(35)<<std::fixed<< result[k][i][j]<<" ";
+            for (int k = 0; k < POOLOUT2; k++) {
+                for (int i = 0; i < POOLOUT1; i++) {
+                    for (int j = 0; j < 1; j++) {
+                        cout<<"result["<<k<<"]["<<i<<"]["<<j<<"] = " << result[k][i][j].to_bin()<<" ";
                     }
                     cout << endl;
                 }
-                cout << "_________" << endl;
-            }
+            }        
             cout << endl;
             /**/
             for (int k = 0; k < POOLOUT2_param; k++) {
@@ -107,22 +113,22 @@ void max_pool::max_pooling(void) {
                     }
 				}
 			}
-            if (verbose_param==1){
+            if (verbose_param == 1){
                 cout<<"отладочный вывод ["<<this<<"] max_pooling\n";
-                for(int i =0; i < POOL_ED_param; i++){
+                for(int i =0; i < POOL_ED_param/POOLOUT3_param; i++){
                     cout<<"max_pooled["<<i<<"] = "<<max_pooled[i]<<endl;
                 }/**/
             }
-            max_pool_done = sc_logic(1);
+            max_pool_done[c] = sc_logic(1);
             cout<<"@"<<sc_time_stamp()<<" max_pooling done ["<<this<<"]\n";
-
+           
         }
         else{
             wait(clk->posedge_event());
         }
     }
 };
-
+/*
 void max_pool::send_to_dri_tb(void){
     max_pool_result_vld_tb.write(0);
     while(true){
@@ -167,4 +173,4 @@ void max_pool::send_to_next(void){
             wait(clk->posedge_event());
         }
     }
-};
+};/**/

@@ -16,6 +16,7 @@ void conv1_unrlld::recieve_image(void) {
 					wait(clk->posedge_event());
 				}while (!image_vld.read());
 				image_in_flattened[i]=image.read();
+				
 				image_rdy.write(0);			
 			}
 			for (int k = 0; k < N2; ++k){
@@ -31,7 +32,8 @@ void conv1_unrlld::recieve_image(void) {
 			for (int k = 0; k < N2; ++k) {
 				for (int j = 0; j < M2; j++){
 					for (int i = 0; i < C1; ++i) {
-						cout<<"image_in["<<k<<"]["<<j<<"]["<<i<<"]="<< image_in[k][j][i] << "\n ";
+						cout<<"image_in["<<k<<"]["<<j<<"]["<<i<<"]="<< image_in[k][j][i].to_hex() 
+						<<" | "<< image_in[k][j][i].to_bin()<< "\n ";
 					}
 				}
 			}
@@ -106,10 +108,11 @@ void conv1_unrlld::recieve_biases(void) {
 			biases_in[k]=biases.read();
 			biases_rdy.write(0);
 		}
-		
+		/*
 			cout << "[отладочный вывод]["<<this <<"] баесы:" << endl;
 			for (int k = 0; k < BIASES; ++k) {
-					cout<<"biases_in["<<k<<"]="<<biases_in[k]<<endl;
+					cout<</*"biases_in["<<k<<"]="<<biases_in[k].to_bin()<<" | "
+					<<biases_in[k].to_bin()<<endl;
 			}/**/
 		
 		biases_recieved=sc_logic(1);
@@ -118,7 +121,7 @@ void conv1_unrlld::recieve_biases(void) {
 };
 /**/ 
 void conv1_unrlld::recieve_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_in_flat_mem, 
-								sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_mem) {
+								  sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_mem) {
 	//инициализируем хэндшейк
 	
 	kernel_rdy[c].write(0);
@@ -141,7 +144,9 @@ void conv1_unrlld::recieve_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_in_f
 		}/*
 		cout<<"kernel_in_flat_mem"<<c<<" "<<this<<"\n";
 		for (int i = 0; i < KER/L1; i++){
-			cout <<"kernel_in_flat_mem"<<c<<"["<<i<<"]"<<"="<< kernel_in_flat_mem[i] << "\n ";
+			cout /*<<"kernel_in_flat_mem"<<c<<"["<<i<<"]"<<"="<< kernel_in_flat_mem[i].to_hex() <<
+			" | "<< kernel_in_flat_mem[i].to_bin()<<
+			" | "<< kernel_in_flat_mem[i].to_bin()<< "\n ";/*
 			
 		} 
 		cout<<"\n\n\n\n\n";/**/ 
@@ -152,7 +157,9 @@ void conv1_unrlld::recieve_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_in_f
 				for (int j = 0; j < C1; ++j) {
 					for (int c = 0; c < 1; ++c){
 					//cout<<i<<" "<<k<<" "<<j<<" "<<c<<"\n";
-						kernel_in_mem[i][k][j][c] = kernel_in_flat_mem[i * N1 * C1 + k * C1 + j + c];
+						kernel_in_mem[i][k][j][c] = kernel_in_flat_mem[i * N1 * C1 + k * C1 + j + c];/*
+						cout <<"kernel_in_mem["<<i<<"]["<<k<<"]["<<j<<"]["<<c<<"]="<<
+						kernel_in_mem[i][k][j][c].to_hex()<<"\n";/**/
 					}
 				}
 			}
@@ -171,7 +178,7 @@ void conv1_unrlld::recieve_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_in_f
 		}
 		/**/	
 		kernel_recieved[c]=sc_logic(1);
-		cout<<"kernel_recieved["<<c<<"]="<<kernel_recieved[c]<<"\n";
+		//cout<<"kernel_recieved["<<c<<"]="<<kernel_recieved[c]<<"\n";
 		
 		if( kernel_recieved[0] == sc_logic(1) and kernel_recieved[1] == sc_logic(1) and
 			kernel_recieved[2] == sc_logic(1) and kernel_recieved[3] == sc_logic(1) and
@@ -199,13 +206,10 @@ void conv1_unrlld::recieve_kernel(int c, sc_fixed<W_LEN_w, I_LEN_w>* kernel_in_f
 };
 
 void conv1_unrlld::convolution(int c, sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_mem, 
-							   sc_fixed<W_LEN_i, I_LEN_i>*** result_mem) {
-	while(true){/*
-		cout<<"c="<<c<<" kernel_recieved["<<c<<"]="<<kernel_recieved[c]<<" "	
-		<<"image_recieved="<<image_recieved<<" "
-		<<"biases_recieved="<<biases_recieved<<" "
-		<<"conv_done["<<c<<"]="<<conv_done[c]<<" "
-		<<"zero_pad_done="<<zero_pad_done<<"\n";/**/
+							   sc_fixed<W_LEN_i, I_LEN_i>*** result_mem, 
+							   sc_fixed<W_LEN_i, I_LEN_i>* convolved_mat) {
+	while(true){
+		
 		if(conv_done[c] == sc_logic(1)){ 
 				wait(clk->posedge_event());
 			//	cout<<"ooo\n";
@@ -215,6 +219,7 @@ void conv1_unrlld::convolution(int c, sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_m
 				image_recieved == sc_logic(1) and biases_recieved == sc_logic(1) and 
 				conv_done[c] == sc_logic(0) and zero_pad_done == sc_logic(1))
 		{
+			sc_fixed<W_LEN_i, I_LEN_i> temp;
 			//свёртка	
 			//cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;
 			for (int k = 0; k < 1; k++){
@@ -223,97 +228,49 @@ void conv1_unrlld::convolution(int c, sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_m
 						for (int c = 0; c < C1; c++){//количество входных изображений
 							for (int m = 0; m < M1; m++) {//(высота/кол-во строк) кернела
 								for (int n = 0; n < N1; n++) {//(ширина/кол-во столбцов) кернела
+									/*
+									cout<<"\nresult_mem_pre["<<i<<"]["<<j<<"]["<<k<<"] =              "
+									<<result_mem[i][j][k].to_bin()<<"\n";/**/
 									result_mem[i][j][k] += 
 									kernel_in_mem[m][n][c][k] * 
-									image_in_padded[i + m][j + n][c];/**/
+									image_in_padded[i + m][j + n][c];
+
+
+									temp = image_in_padded[i + m][j + n][c]*kernel_in_mem[m][n][c][k];/*
+									cout<<"kernel_in["<<m<<"]["<<n<<"]["<<c<<"["<<k<<
+									"]*image_in["<<i + m<<"]["<<j + n<<"]["<<c<<"]="
+									<<temp.to_bin()<<"\n";/**/
+
 									/*
-									cout<<"result_mem["<<i<<"]["<<j<<"]["<<k<<"]+=kernel_in["<<m
-									<<"]["<<n<<"]["<<c<<"]["<<k<<
-									"]*image_in["<<i<<"+"<<m<<"]["<<j<<"+"<<n<<"]["<<c<<"] | ";
-									cout<<"result_mem["<<i<<"]["<<j<<"]["<<k<<"]+="<<kernel_in_mem[m][n][c][k]<<"*"
-									<< image_in_padded[i + m][j + n][c]<<"="<<result_mem[i][j][k]<<"\n";/**/
+									cout<<"result_mem["<<i<<"]["<<j<<"]["<<k<<"]+=                  "
+									<<kernel_in_mem[m][n][c][k].to_bin()<<"*\n                                        "
+									<< image_in_padded[i + m][j + n][c].to_bin()<<"=\n"
+									<<result_mem[i][j][k].to_bin()<<"\n";/**/
 									wait(clk->posedge_event());
 								}
 							}		
 						}
-					
-					cout<<"result_mem_unb["<<i<<"]["<<j<<"]["<<c<<"]="<<result_mem[i][j][k]<<"\n";/**/
 					/*
-					result[i][j][k] += biases_in[c];
-					/*
-
-					cout<<"result_biased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
+					cout<<"result_mem_unb["<<i<<"]["<<j<<"]["<<c<<"]="<<result_mem[i][j][k]<<" | "
+					<<result_mem[i][j][k].to_bin()<<"\n";
+					cout<<result_mem[i][j][k].q_mode()<<" "
+					<<result_mem[i][j][k].o_mode()<<"\n-------------------\n";/**/
+					
+					result_mem[i][j][k] += biases_in[c];/*
+					cout<<"biases_in["<<c<<"]="<<biases_in[c]
+					<<" | "<<biases_in[c].to_bin()<<"\n";
+					cout<<"result_biased[]="<<result_mem[0][0][0]
+					<<" | "<<result_mem[0][0][0].to_bin()<<"\n";/**/ 
 					}
 					
 				}
-			}		
-			//-----------------------------------------------------------------------------------------------------------------------------
-			/*
-			for (int k = 0; k < L1; k++) {//число кернелов и выходных матрицы соотв-но
-				for (int i = 0; i < M3; i++) {//(высота/кол-во строк) выходного изображения
-					for (int j = 0; j < N3; j++) {//(ширина/кол-во столбцов) выходного изображения
-						for (int c = 0; c < C1; c++){//количество входных изображений
-							for (int m = 0; m < M1; m++) {//(высота/кол-во строк) кернела
-								for (int n = 0; n < N1; n++) {//(ширина/кол-во столбцов) кернела
-									result[i][j][k] += 
-									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];/**//*
-									if(verbose==1){
-										cout<<std::scientific<<"result["<<i<<"]["<<j<<"]["<<k<<"]+=kernel_in["<<m<<"]["<<n<<"]["<<c<<"]["<<k<<
-										"]*image_in["<<i<<"+"<<m<<"]["<<j<<"+"<<n<<"]["<<c<<"] | ";
-										cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]+="<<kernel_in[m][n][c][k]<<"*"
-										<< image_in_padded[i + m][j + n][c]<<"="<<result[i][j][k]<<"\n";/**//*
-									}
-									next_trigger();
-								}		
-							}
-						}
-						if(verbose==1){
-							cout<<"result_unbiased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**//*
-						}
-						result[i][j][k] += biases_in[k];
-						if(verbose==1){
-							cout<<"result_biased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**//*
-						}
-						
-						
-					}
-				}
-			}/*
-			for (int i = 0; i < M3; i++){
-				for (int j = 0; j < N3; j++){
-					for (int k = 0; k < 1; k++){
-						cout<<"result_pre["<<i<<"]["<<j<<"]["<<c<<"]="<<result[i][j][k]<<"\n";
-					}
-				}
-			}/**//*
-			cout << "размеры выходной матрицы: " << endl;
-			cout << "M3= " << M3 << " N3= " << N3 << " " << endl << endl;
-			cout<<"результат после ReLU ["<< this <<"]---------------------------------\n";
-			sc_fixed<W_LEN_i, I_LEN_i> zero = 0;
-			for (int i = 0; i < M3; i++){
-					for (int j = 0; j < N3; j++){
-						for (int k = 0; k < 1; k++){
-						if (result[i][j][k] < zero) {
-							result[i][j][k] = zero;
-							wait(clk->posedge_event());
-							//next_trigger();
-						}
-						else {
-							wait(clk->posedge_event());
-							//next_trigger();
-						}	
-						cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**//*
-					}
-				}
-			}	
-			
-			/**/
-			/*
+			}
+			/*		
 			cout<<"[отладочный вывод CONV]["<< this <<"] результат:"<<endl;
 			for (int k = 0; k < N3; ++k) {
 				for (int i = 0; i < M3; ++i) {
 					for (int j = 0; j < L3; ++j) {
-						cout << result[k][i][j] << " ";
+						cout << result_mem[k][i][j] << " ";
 					}
 					cout << endl;
 				}
@@ -321,22 +278,22 @@ void conv1_unrlld::convolution(int c, sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_m
 			}
 			cout << endl<<endl;   
 			/**/  
-			/*
+			
 			for (int i = 0; i < M3; i++) {
 					for (int j = 0; j < N3; j++) {
-						for (int k = 0; k < L3; k++) {
-						convolved_mat[i*N3*L3+j*L3+k]=result[i][j][k];
+						for (int k = 0; k < 1; k++) {
+						convolved_mat[i*N3+j+k] = result_mem[i][j][k];
 						
 					}
 				}
 			}
 
-			/*
-			cout<<this<<" CONV results ["<<this<<"]\n";
-			for (int i = 0; i < CONV_ED; i++){
-				cout<<"convolved_mat["<<i<<"]"<<convolved_mat[i]<<endl;
+			
+			cout<<this<<" CONV results"<<c<<" ["<<this<<"]\n";
+			for (int i = 0; i < CONV_ED/L1; i++){
+				cout<</*"convolved_mat "<<c<<" ["<<i<<"]="<<*/convolved_mat[i].to_bin()<<endl;
 			}
-			cout<<endl<<endl;
+			cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
 			/**/
 			conv_done[c] = sc_logic(1);
 			if (conv_done[0] == sc_logic(1) and conv_done[1] == sc_logic(1) and
@@ -366,7 +323,7 @@ void conv1_unrlld::convolution(int c, sc_fixed<W_LEN_w, I_LEN_w>**** kernel_in_m
 		}/**/
 	}
 };
-
+/*
 void conv1_unrlld::send_to_dri_tb(void){
 	//conv_2d_result_tb.write(0);
 	conv_2d_result_vld_tb.write(0);
@@ -385,7 +342,7 @@ void conv1_unrlld::send_to_dri_tb(void){
 				conv_2d_result_vld_tb.write(0);
 			}	
 			conv_2d_result_tb.write(0);
-			cout<<"@" << sc_time_stamp() <<" "<<this<<" data transmitted"<<endl;/**/
+			cout<<"@" << sc_time_stamp() <<" "<<this<<" data transmitted"<<endl;/**//*
 			conv_result_sent_tb = sc_logic(1);
 		}
 		else{
@@ -394,24 +351,24 @@ void conv1_unrlld::send_to_dri_tb(void){
 	}
 };/**/
 
-void conv1_unrlld::send_to_next_layer(void){
+void conv1_unrlld::send_to_next_layer(int c, sc_fixed<W_LEN_i, I_LEN_i>* convolved_mat){
 	//conv_2d_result_next.write(0);
-	conv_2d_result_vld_next.write(0);
+	conv_2d_result_vld_next[c].write(0);
 	while(true){
-		if (conv_done == sc_logic(1) and conv_result_sent_next == sc_logic(0)){
-			for (int i=0;i<CONV_ED;i++){
-				conv_2d_result_vld_next.write(1);
-				conv_2d_result_next.write(convolved_mat[i]);
+		if (conv_done[c] == sc_logic(1) and conv_result_sent_next[c] == sc_logic(0)){
+			for (int i=0;i<CONV_ED/L1;i++){
+				conv_2d_result_vld_next[c].write(1);
+				conv_2d_result_next[c].write(convolved_mat[i]);
 				
 				do{
 					wait(clk->posedge_event());
-				}while (!conv_2d_result_rdy_next.read());
-				conv_2d_result_vld_next.write(0);
+				}while (!conv_2d_result_rdy_next[c].read());
+				conv_2d_result_vld_next[c].write(0);
 				
 			}	
-			conv_2d_result_next.write(0);
+			conv_2d_result_next[c].write(0);
 			cout<<"@" << sc_time_stamp() <<" "<< this << " data transmitted"<<endl;
-			conv_result_sent_next = sc_logic(1);
+			conv_result_sent_next[c] = sc_logic(1);
 		}
 		else{
 			wait(clk->posedge_event());
