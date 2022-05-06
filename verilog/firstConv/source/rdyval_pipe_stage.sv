@@ -34,38 +34,41 @@ module rdyval_pipe_stage #(
     output logic vld_nxt,
     input  logic rdy_nxt,
     output logic [DWIDTH-1:0] o_dat,
-
+	
     // rising edge active clock
     input  logic clk,
     // asynchronous reset, active low
     input  logic rst_n
+   
 );
 
 // Implements the handshake signalling. Notice that the `rdy` flag is just
 // an inverted version of `vld_nxt`. It is assumed the implementation tools
 // will optimize this per available resources.
-always_ff @(posedge clk or negedge rst_n) begin: p_handshake
-    if (!rst_n) begin
-        rdy     <= 1'b1;
-        vld_nxt <= 1'b0;
-    end
-    else begin
-        if (vld & ~vld_nxt) begin
-            rdy     <= 1'b0;
-            vld_nxt <= 1'b1;
-        end
-        else if (vld_nxt & rdy_nxt) begin
-            rdy     <= 1'b1;
-            vld_nxt <= 1'b0;
-        end
-    end
-end: p_handshake
 
-// Implements the data buffer flop. It is factored into a separate process as
-// we do not need to have the reset for data path flops.
-always_ff @(posedge clk) begin: p_data
-    if (vld & ~vld_nxt)
-        o_dat <= i_dat;
-end: p_data
+	always_ff @(posedge clk or negedge rst_n) begin: p_handshake
+		if (!rst_n) begin
+			rdy     <= 1'b1;
+			vld_nxt <= 1'b0;
+		end
+		else begin
+	
+			if (vld & ~vld_nxt) begin
+				rdy     <= 1'b0;
+				vld_nxt <= 1'b1;
+			end
+			else if (vld_nxt & rdy_nxt) begin
+				rdy     <= 1'b1;
+				vld_nxt <= 1'b0;
+			end
+		end
+	end: p_handshake
+	
+	// Implements the data buffer flop. It is factored into a separate process as
+	// we do not need to have the reset for data path flops.
+	always_ff @(posedge clk) begin: p_data
+		if (vld & ~vld_nxt)
+			o_dat <= i_dat;
+	end: p_data
 
 endmodule: rdyval_pipe_stage
