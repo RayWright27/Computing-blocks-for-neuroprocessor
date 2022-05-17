@@ -16,13 +16,14 @@ void conv::recieve_image(void) {
 					wait(clk->posedge_event());
 				}while (!image_vld.read());
 				image_in_flattened[i]=image.read();
-				image_rdy.write(0);			
+				image_rdy.write(0);
+				cout<<"image_in_flattened["<<i<<"] = "<<image_in_flattened[i].to_bin()<<"\n";			
 			}
 			for (int k = 0; k < N2_param; ++k){
 				for (int j = 0; j < M2_param; j++){
 					for (int i = 0; i < C1_param; ++i){
 						image_in[k][j][i] = 
-						image_in_flattened[k * M2_param * C1_param + j *C1_param + i]; //можно цикл по C1 сделать в конце
+						image_in_flattened[k * M2_param * C1_param + j *C1_param + i]; 
 					}
 				}
 			}/*
@@ -136,7 +137,9 @@ void conv::recieve_kernel(void) {
 			}while (!kernel_vld.read());
 			kernel_in_flattened[i] = kernel.read();
 			kernel_rdy.write(0);
-		}
+		}/*
+		cout<<"kernel_in_flattened "<<this<<"\n";
+		cout <<"kernel_in_flattened["<<1<<"]="<< kernel_in_flattened[1] << "\n ";/**/
 		if(verbose==1){
 			cout<<"kernel_in_flattened "<<this<<"\n";
 			for (int i = 0; i < KER_param; i++){
@@ -205,7 +208,6 @@ void conv::convolution(void) {
 									result[i][j][k] += 
 									kernel_in[m][n][c][k] * image_in_padded[i + m][j + n][c];/**/
 									if(verbose==1){/*
-									
 										cout<<std::scientific<<"result["<<i<<"]["<<j<<"]["<<k<<"]+=kernel_in["<<m<<"]["<<n<<"]["<<c<<"]["<<k<<
 										"]*image_in["<<i<<"+"<<m<<"]["<<j<<"+"<<n<<"]["<<c<<"] | ";
 										cout<<"result["<<i<<"]["<<j<<"]["<<k<<"]+="<<kernel_in[m][n][c][k]<<"*"
@@ -215,10 +217,12 @@ void conv::convolution(void) {
 								}		
 							}
 						}
-						
+						if(verbose==1){
+							//cout<<"result_unbiased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
+						}
 						result[i][j][k] += biases_in[k];
-						if(verbose==1){/*
-							cout<<"result_biased["<<i<<"]["<<j<<"]["<<k<<"]="<<result[i][j][k]<<"\n";/**/
+						if(verbose==1){
+							cout<<"result_biased["<<i<<"]["<<j<<"]["<<0<<"]="<<result[i][j][0]<<"\n";/**/
 						}
 						
 						
@@ -238,11 +242,12 @@ void conv::convolution(void) {
 			if(verbose==1){
 				cout<<"результат после ReLU ["<< this <<"]---------------------------------\n";
 			}
+			sc_fixed<W_LEN_i, I_LEN_i> zero = 0;
 		 	for (int i = 0; i < M3_param; i++){
 				 for (int j = 0; j < N3_param; j++){
 					 for (int k = 0; k < L3_param; k++){
-						if (result[i][j][k] < 0.f) {
-							result[i][j][k] = 0.f;
+						if (result[i][j][k] < zero) {
+							result[i][j][k] = zero;
 							//wait(clk->posedge_event());
 							next_trigger();
 						}
@@ -306,17 +311,17 @@ void conv::send_to_dri_tb(void){
 	while(true){
 		if ( conv_done == sc_logic(1) and conv_result_sent_tb == sc_logic(0)){
 			for (int i = 0; i < CONV_ED_param; i++){
-					conv_2d_result_vld_tb.write(1);
-					conv_2d_result_tb.write(convolved_mat[i]);
-					do{
-						wait(clk->posedge_event());
-					}while (!conv_2d_result_rdy_tb.read());
-					
-					conv_2d_result_vld_tb.write(0);
-				}	
-				conv_2d_result_tb.write(0);
-				cout<<"@" << sc_time_stamp() <<" "<<this<<" data transmitted"<<endl;
-				conv_result_sent_tb = sc_logic(1);
+				conv_2d_result_vld_tb.write(1);
+				conv_2d_result_tb.write(convolved_mat[i]);
+				do{
+					wait(clk->posedge_event());
+				}while (!conv_2d_result_rdy_tb.read());
+				
+				conv_2d_result_vld_tb.write(0);
+			}	
+			conv_2d_result_tb.write(0);
+			cout<<"@" << sc_time_stamp() <<" "<<this<<" data transmitted"<<endl;
+			conv_result_sent_tb = sc_logic(1);
 		}
 		else{
 			wait(clk->posedge_event());
@@ -330,15 +335,15 @@ void conv::send_to_next_layer(void){
 	while(true){
 		if (conv_done == sc_logic(1) and conv_result_sent_next == sc_logic(0)){
 			for (int i=0;i<CONV_ED_param;i++){
-					conv_2d_result_vld_next.write(1);
-					conv_2d_result_next.write(convolved_mat[i]);
-					
-					do{
-						wait(clk->posedge_event());
-					}while (!conv_2d_result_rdy_next.read());
-					conv_2d_result_vld_next.write(0);
-					
-				}	
+				conv_2d_result_vld_next.write(1);
+				conv_2d_result_next.write(convolved_mat[i]);
+				
+				do{
+					wait(clk->posedge_event());
+				}while (!conv_2d_result_rdy_next.read());
+				conv_2d_result_vld_next.write(0);
+				
+			}	
 			conv_2d_result_next.write(0);
 			cout<<"@" << sc_time_stamp() <<" "<< this << " data transmitted"<<endl;
 			conv_result_sent_next = sc_logic(1);

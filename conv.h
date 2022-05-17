@@ -1,3 +1,4 @@
+#define SC_INCLUDE_FX
 #include <macro.h>
 #include <systemc.h>
 	SC_MODULE(conv) {
@@ -37,11 +38,11 @@
 		sc_out<bool> 	conv_2d_result_vld_tb;
 		sc_out<bool> 	conv_2d_result_vld_next;
 
-		sc_in<double> 	biases;
-		sc_in<double> 	kernel;
-		sc_in<double> 	image;
-		sc_out<double> 	conv_2d_result_tb;
-		sc_out<double> 	conv_2d_result_next;
+		sc_in<sc_fixed<W_LEN_w, I_LEN_w>> 	biases;
+		sc_in<sc_fixed<W_LEN_w, I_LEN_w>> 	kernel;
+		sc_in<sc_fixed<W_LEN_i, I_LEN_i>> 	image;
+		sc_out<sc_fixed<W_LEN_i, I_LEN_i>> 	conv_2d_result_tb;
+		sc_out<sc_fixed<W_LEN_i, I_LEN_i>> 	conv_2d_result_next;
 
 		sc_logic 		kernel_recieved = sc_logic(0);
 		sc_logic 		image_recieved = sc_logic(0);
@@ -52,13 +53,13 @@
 		sc_logic		zero_pad_done = sc_logic(0);
 
 		
-		double**** 		kernel_in;//указатель на динамический массив т.к. в С++ недоступна инициализация массива переменной длинны
-		double*** 		image_in;
-		double*** 		image_in_padded;
-		double* 		biases_in;
-		double*** 		result;
-		double* 		convolved_mat;
-		double*			image_in_flattened;
+		sc_fixed<W_LEN_w, I_LEN_w>**** 		kernel_in;//указатель на динамический массив т.к. в С++ недоступна инициализация массива переменной длинны
+		sc_fixed<W_LEN_i, I_LEN_i>*** 		image_in;
+		sc_fixed<W_LEN_i, I_LEN_i>*** 		image_in_padded;
+		sc_fixed<W_LEN_w, I_LEN_w>* 		biases_in;
+		sc_fixed<W_LEN_i, I_LEN_i>*** 		result;
+		sc_fixed<W_LEN_i, I_LEN_i>* 		convolved_mat;
+		sc_fixed<W_LEN_i, I_LEN_i>*			image_in_flattened;
 		
 		void recieve_image(void);
 		void recieve_biases(void);
@@ -95,47 +96,47 @@
 			cout<<"-------------------------------------------------------------------------------------------------"<<endl<<endl;	
 		//	cout<<M1_param<<" "<<L1_param<<" "<<N1_param<<" "<< endl;
 			
-			image_in_padded = new double**[N2_param+2*ZERO_PAD_param];
+			image_in_padded = new sc_fixed<W_LEN_i, I_LEN_i>**[N2_param+2*ZERO_PAD_param];
 			for (int j = 0; j < N2_param+2*ZERO_PAD_param; j++){
-				image_in_padded[j] = new double*[M2_param+2*ZERO_PAD_param];
+				image_in_padded[j] = new sc_fixed<W_LEN_i, I_LEN_i>*[M2_param+2*ZERO_PAD_param];
 				for (int i = 0; i < M2_param + 2*ZERO_PAD_param; i++){
-					image_in_padded[j][i] = new double[C1_param];		
+					image_in_padded[j][i] = new sc_fixed<W_LEN_i, I_LEN_i>[C1_param];		
 				}
 			}/*
 			*/
 			//объявление динамического kernel_in
-			kernel_in = new double***[M1_param];//выходные
+			kernel_in = new sc_fixed<W_LEN_w, I_LEN_w>***[M1_param];//выходные
 			for (int k = 0; k < M1_param; k++){
-				kernel_in[k] = new double**[N1_param];//входные
+				kernel_in[k] = new sc_fixed<W_LEN_w, I_LEN_w>**[N1_param];//входные
 				for (int i=0; i < N1_param; i++){
-					kernel_in[k][i] = new double*[C1_param];
+					kernel_in[k][i] = new sc_fixed<W_LEN_w, I_LEN_w>*[C1_param];
 					for (int j = 0; j < C1_param; j++){
-						kernel_in[k][i][j] = new double[L1_param];
+						kernel_in[k][i][j] = new sc_fixed<W_LEN_w, I_LEN_w>[L1_param];
 					}
 				}
 			}
 			//объявление динамического image_in
-			image_in = new double**[N2_param];
+			image_in = new sc_fixed<W_LEN_i, I_LEN_i>**[N2_param];
 			for (int j = 0; j < N2_param; j++){
-				image_in[j] = new double*[M2_param];
+				image_in[j] = new sc_fixed<W_LEN_i, I_LEN_i>*[M2_param];
 				for (int i = 0; i < M2_param; i++){
-					image_in[j][i] = new double[C1_param];		
+					image_in[j][i] = new sc_fixed<W_LEN_i, I_LEN_i>[C1_param];		
 				}
 			}
 			
 			//объявление динамического result
-			result = new double**[N3_param];
+			result = new sc_fixed<W_LEN_i, I_LEN_i>**[N3_param];
 			for (int i=0; i<N3_param;i++){
-				result[i] = new double*[M3_param];
+				result[i] = new sc_fixed<W_LEN_i, I_LEN_i>*[M3_param];
 				for (int j=0;j<M3_param;j++){
-					result[i][j] = new double[L3_param];
+					result[i][j] = new sc_fixed<W_LEN_i, I_LEN_i>[L3_param];
 				}
 			}
 
-			biases_in = new double[BIASES_param];
-			convolved_mat = new double[CONV_ED_param];
+			biases_in = new sc_fixed<W_LEN_w, I_LEN_w>[BIASES_param];
+			convolved_mat = new sc_fixed<W_LEN_i, I_LEN_i>[CONV_ED_param];
 
-			image_in_flattened = new double[IMG_param];//вектор, принимающий значения из порта
+			image_in_flattened = new sc_fixed<W_LEN_i, I_LEN_i>[IMG_param];//вектор, принимающий значения из порта
 			
 			SC_THREAD(recieve_kernel);
 			

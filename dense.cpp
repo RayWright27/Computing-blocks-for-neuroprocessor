@@ -1,19 +1,25 @@
 #include "dense.h"
 #include <math.h>
 #include <assert.h>
-void softmax(double *input, size_t size) {
+void softmax(sc_fixed<W_LEN_s, I_LEN_s> *input, size_t size) {
+    cout<<"------------------------------------------------------\n";
     auto out(input);
     size_t sz = size;
-    float sum = 0.f;
-    for (size_t i = 0; i < sz; ++i) {
+    sc_fixed<W_LEN_s, I_LEN_s> sum = 0;
+    const sc_fixed<W_LEN_s, I_LEN_s> zero = 0;
+    for (int i = 0; i < sz; ++i) {
+        //cout<<"softmax_out["<<i<<"]="<<out[i]<<"\n";
         out[i] = exp(out[i]);
+        //cout<<"softmax_out["<<i<<"]="<<out[i]<<"\n";
         sum += out[i];
-    }
-    if (sum != 0.f) {
+        //cout<<"softmax_sum="<<sum<<"\n";
+    }/**/
+    if (sum != zero) {
         for (size_t i = 0; i < sz; ++i) {
             out[i] /= sum;
         }
     }
+    cout<<"------------------------------------------------------\n";
 }
 
 void dense::recieve_input(void){
@@ -60,7 +66,7 @@ void dense::recieve_coeff(void){
                 for(int i = 0; i < DENSE_COEFF2_param; i++){
                     coeff_arr[j][i] = coeff_flattened[DENSE_COEFF2_param * j + i];
                 }
-            }
+            }/*
              cout<<"---------------------------coeffs:["<<this<<"]----------------------------------"<<endl;
            for(int j = 0; j < DENSE_COEFF1_param; j++){
                 for(int i = 0; i < DENSE_COEFF2_param; i++){
@@ -89,7 +95,7 @@ void dense::recieve_biases(void){
                 }while(!biases_vld.read());
                 biases_arr[i]=biases.read();
                 biases_rdy.write(0);
-            }
+            }/*
             cout<<"---------------------------biases:["<<this<<"]----------------------------------"<<endl;
             for(int i = 0; i < BIASES_param; i++){
                 cout<<"biases_arr["<<i<<"]="<<biases_arr[i]<<'\n';
@@ -113,33 +119,40 @@ void dense::dense_func(void) {
                 for (int j = 0; j < DENSE_COEFF2_param; j++) {
                     dense_result_arr[j] += coeff_arr[i][j] * dense_input[i];
                     /*
-                    cout<<"dense_result_arr["<<i<<"]+="<<dense_result_arr[i]<<" | coeff_arr["<<i<<"]["<<j<<"]="<<
+                    cout<<"dense_result_arr["<<j<<"]+="<<dense_result_arr[j]<<" | coeff_arr["<<i<<"]["<<j<<"]="<<
                     coeff_arr[i][j]<<" |  dense_input["<<i<<"]="<< dense_input[i]<<'\n';
                     /**/
                     wait(clk->posedge_event());    
                 }			
             }
-             cout<<"dense_result_arr PRE activation func ["<<this<<"]\n";
-             for (int i = 0; i < DENSE_COEFF2_param; i++){
+           // cout<<"dense_result_arr PRE activation func ["<<this<<"]\n";
+            for (int i = 0; i < DENSE_COEFF2_param; i++){
                 dense_result_arr[i] += biases_arr[i];
-                
-                cout<<"dense_result_arr["<<i<<"]="<<dense_result_arr[i]<<"\n";
+                //cout<<"dense_result_arr["<<i<<"]="<<dense_result_arr[i]<<"\n";
+                wait(clk->posedge_event());
+            }
+            for (int i = 0; i < DENSE_COEFF2_param; i++){
                 if (func==1){
-                    if (dense_result_arr[i] <= 0.0f) {
-                        dense_result_arr[i]=0.0f;
+                    if (dense_result_arr[i] <= 0) {
+                        dense_result_arr[i]=0;
                         //wait(clk->posedge_event());
                         //next_trigger();
                     }
                 }
-                wait(clk->posedge_event());
+            }
+            for (int i = 0; i < DENSE_COEFF2_param; i++){
+                dense_result_arr_2[i]=dense_result_arr[i];
             }
             if (func==2){
-                softmax(dense_result_arr, DENSE_COEFF2_param);
+                softmax(dense_result_arr_2, DENSE_COEFF2_param);
+            }
+             for (int i = 0; i < DENSE_COEFF2_param; i++){
+                dense_result_arr_3[i]=dense_result_arr_2[i];
             }
             
-             cout<<"---------------------------["<<this<<"]----------------------------------"<<endl;
+           // cout<<"dense_result_arr AFTER activation func ["<<this<<"]----------------------------------"<<endl;
             for (int i = 0; i < OUT_param; i++) {
-                cout<<"dense_result_arr["<<i<<"]="<<dense_result_arr[i] <<endl;
+                cout<<"dense_result["<<i<<"]="<<dense_result_arr_3[i] <<endl;
             }
             cout<<"-------------------------------------------------------------"<<endl;
             cout <<endl<< endl;
@@ -161,7 +174,7 @@ void dense::send_to_dri_tb(void){
         if(dense_done == sc_logic(1) and dense_result_sent_tb == sc_logic(0)){
             for(int i = 0; i < OUT_param; i++){
                 dense_result_vld_tb.write(1);
-                dense_result_tb.write(dense_result_arr[i]);
+                dense_result_tb.write(dense_result_arr_3[i]);
                 do{
                     wait(clk->posedge_event());
                 }while(!dense_result_rdy_tb.read());
@@ -185,7 +198,7 @@ void dense::send_to_next(void){
         if(dense_done == sc_logic(1) and dense_result_sent_next == sc_logic(0)){
             for(int i = 0; i < OUT_param; i++){
                 dense_result_vld_next.write(1);
-                dense_result_next.write(dense_result_arr[i]);
+                dense_result_next.write(dense_result_arr_3[i]);
                 do{
                     wait(clk->posedge_event());
                 }while(!dense_result_rdy_next.read());
