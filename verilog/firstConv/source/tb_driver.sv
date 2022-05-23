@@ -1,37 +1,17 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 04/13/2022 03:45:18 PM
-// Design Name: 
-// Module Name: tb_driver
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module tb_driver;
 
-localparam kerSF = 2.0**-14.00;  // Q4.4 scaling factor is 2^-4
+localparam kerSF = 2.0**-14.00;  // 
 localparam imgSF = 2.0**-14.00;
 // parameters for BRAM blocks
 parameter	RAM_WIDTH_KER = 16;  //16 + 4 because of two excess LSBs and MSBs 
 parameter	RAM_ADDR_BITS_KER = 5; // 27 memory rows => we take 2^5=32
-parameter	RAM_WIDTH_IMG = 20;
+parameter	RAM_WIDTH_IMG = 16;
 parameter	RAM_ADDR_BITS_IMG = 16; // 49152 memory rows => we take 2^5=32
 parameter	RAM_WIDTH_BIAS = 16;
 parameter	RAM_ADDR_BITS_BIAS = 6; //
-
 
 reg								clk;
 reg								clk05;
@@ -39,31 +19,22 @@ reg								reset;
 reg								ram_enable;
 reg								write_enable;
 
-
-
 reg 	[RAM_ADDR_BITS_KER-1:0]	address_kernel[31:0];
 reg 	[RAM_WIDTH_KER-1:0] 	input_kernel_ram[31:0];
 reg	signed	[RAM_WIDTH_KER-1:0] 	output_kernel_ram[31:0];
 
-
 reg 	[RAM_ADDR_BITS_IMG-1:0]	address_image;
 reg 	[RAM_WIDTH_IMG-1:0] 	input_image_ram;
 wire signed	[RAM_WIDTH_IMG-1:0] 	output_image_ram;
-
 
 reg 	[RAM_ADDR_BITS_BIAS-1:0]address_biases;
 reg 	[RAM_WIDTH_BIAS-1:0] 	input_biases_ram;
 wire signed	[RAM_WIDTH_BIAS-1:0] 	output_biases_ram;
 
 
-
 ////////////////////////////
 //generating 32 bram blocks for kernel
 ////////////////////////////
-/*
-genvar i;
-generate
-	for (i = 0; i < 32; i = i + 1) begin:ker_mem*/
 
 bram
 #(
@@ -82,8 +53,7 @@ ker_mem1
 	.input_data		(input_kernel_ram[0]),
 	.output_data    (output_kernel_ram[0])
 );
-	/*end
-endgenerate*/
+
 bram
 #(
 	.RAM_WIDTH 		(RAM_WIDTH_KER 		),
@@ -611,7 +581,7 @@ ker_mem32
 	.address		(address_kernel[31]	),
 	.input_data		(input_kernel_ram[31]),
 	.output_data    (output_kernel_ram[31])
-);
+);/**/
 ////////////////////////////
 //generating 1 bram blocks for image
 ////////////////////////////
@@ -619,9 +589,9 @@ bram
 #(
 	.RAM_WIDTH 		(RAM_WIDTH_IMG 		),
 	.RAM_ADDR_BITS 	(RAM_ADDR_BITS_IMG 	),
-	.DATA_FILE 		("tulip1.txt"		),
+	.DATA_FILE 		("tulip_zpadded_flat.txt"		),
 	.INIT_START_ADDR(0					),
-	.INIT_END_ADDR	(49152				)
+	.INIT_END_ADDR	(130*130*3)//49152				)
 )
 image_mem_bram
 (
@@ -672,13 +642,6 @@ wire 							bias_vld_next;
 wire 							bias_rdy_next;
 reg	 [RAM_WIDTH_BIAS-1:0]		bias;
 firstConv
-#(
-	.RAM_WIDTH_KER	(RAM_WIDTH_KER		),
-	.RAM_WIDTH_BIAS	(RAM_WIDTH_BIAS  	),//because concat goes straight into biases_mem
-	.RAM_WIDTH_IMG	(RAM_WIDTH_IMG		),
-	.KER_MEM_LENGTH (27					),
-	.IMAGE_MEM_LENGTH(49152				)
-)
 Conv1
 (
 	.clk			(clk				 ),
@@ -723,7 +686,7 @@ Conv1
 	.kernel28		(ker[28]				 ),
 	.kernel29		(ker[29]				 ),
 	.kernel30		(ker[30]				 ),
-	.kernel31		(ker[31]				 ),
+	.kernel31		(ker[31]				 ),/**/
 	.kernel_vld0	(ker_vld_next[0]	 ),
 	.kernel_rdy0	(ker_rdy_next[0]	 ),
 	.kernel_vld1	(ker_vld_next[1]	 ),
@@ -787,40 +750,8 @@ Conv1
 	.kernel_rdy30	(ker_rdy_next[30]	 ),
 	.kernel_vld30	(ker_vld_next[30]	 ),
 	.kernel_rdy31	(ker_rdy_next[31]	 ),
-	.kernel_vld31	(ker_vld_next[31]	 )
-	
-	/*
-	.kernel1		(output_kernel_ram[1]),
-	.kernel2		(output_kernel_ram[2]),
-	.kernel3		(output_kernel_ram[3]),
-	.kernel4		(output_kernel_ram[4]),
-	.kernel5		(output_kernel_ram[5]),
-	.kernel6		(output_kernel_ram[6]),
-	.kernel7		(output_kernel_ram[7]),
-	.kernel8		(output_kernel_ram[8]),
-	.kernel9		(output_kernel_ram[9]),
-	.kernel10		(output_kernel_ram[10]),
-	.kernel11		(output_kernel_ram[11]),
-	.kernel12		(output_kernel_ram[12]),
-	.kernel13		(output_kernel_ram[13]),
-	.kernel14		(output_kernel_ram[14]),
-	.kernel15		(output_kernel_ram[15]),
-	.kernel16		(output_kernel_ram[16]),
-	.kernel17		(output_kernel_ram[17]),
-	.kernel18		(output_kernel_ram[18]),
-	.kernel19		(output_kernel_ram[19]),
-	.kernel20		(output_kernel_ram[20]),
-	.kernel21		(output_kernel_ram[21]),
-	.kernel22		(output_kernel_ram[22]),
-	.kernel23		(output_kernel_ram[23]),
-	.kernel24		(output_kernel_ram[24]),
-	.kernel25		(output_kernel_ram[25]),
-	.kernel26		(output_kernel_ram[26]),
-	.kernel27		(output_kernel_ram[27]),
-	.kernel28		(output_kernel_ram[28]),
-	.kernel29		(output_kernel_ram[29]),
-	.kernel30		(output_kernel_ram[30]),
-	.kernel31		(output_kernel_ram[31])/**/
+	.kernel_vld31	(ker_vld_next[31]	 )/**/
+
 );	
 //-----------------------------------------------------------------------------------------------
 reg								ker_rdy[31:0];
@@ -1338,7 +1269,7 @@ rdyval_ker31
 	.clk			(clk				  ),
 	.rst_n			(!reset				  )
 );
-
+/**/
 //----------------------------------------------------------------------------------------------
 rdyval_pipe_stage 
 #(
@@ -2151,5 +2082,4 @@ initial begin
 			end
 end		
  	
-
 endmodule
