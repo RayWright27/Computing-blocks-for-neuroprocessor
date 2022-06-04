@@ -1,7 +1,10 @@
-set CLOCK	10.000
+set CLOCK	5.655
 create_clock -period [expr $CLOCK] -name clk -add [get_ports clk]
 set_clock_uncertainty -setup [expr $CLOCK*0.01] [get_ports clk]
 set_clock_uncertainty -hold [expr $CLOCK*0.01] [get_ports clk]
+
+
+
 set_input_delay -clock [get_clocks clk] -min -add_delay 0.000 [get_ports {biases[*]}]
 set_input_delay -clock [get_clocks clk] -max -add_delay [expr $CLOCK*0.01*0.5] [get_ports {biases[*]}]
 set_input_delay -clock [get_clocks clk] -min -add_delay 0.000 [get_ports {image[*]}]
@@ -213,3 +216,52 @@ set_output_delay -clock [get_clocks clk] -min -add_delay 0.000 [get_ports kernel
 set_output_delay -clock [get_clocks clk] -max -add_delay [expr $CLOCK*0.01*0.5] [get_ports kernel_rdy8]
 set_output_delay -clock [get_clocks clk] -min -add_delay 0.000 [get_ports kernel_rdy9]
 set_output_delay -clock [get_clocks clk] -max -add_delay [expr $CLOCK*0.01*0.5] [get_ports kernel_rdy9]
+
+set_false_path -to [get_ports {biases_out[*]}]
+set_false_path -to [get_ports {image_out[*]}]
+set_false_path -to [get_ports {kernel_all[*]}]
+set_false_path -to [get_ports biases_rdy]
+set_false_path -to [get_ports image_rdy]
+set_false_path -to [get_ports kernel_rdy0]
+set_false_path -to [get_ports kernel_rdy1]
+set_false_path -to [get_ports kernel_rdy10]
+set_false_path -to [get_ports kernel_rdy11]
+set_false_path -to [get_ports kernel_rdy12]
+set_false_path -to [get_ports kernel_rdy13]
+set_false_path -to [get_ports kernel_rdy14]
+set_false_path -to [get_ports kernel_rdy15]
+set_false_path -to [get_ports kernel_rdy16]
+set_false_path -to [get_ports kernel_rdy17]
+set_false_path -to [get_ports kernel_rdy18]
+set_false_path -to [get_ports kernel_rdy19]
+set_false_path -to [get_ports kernel_rdy2]
+set_false_path -to [get_ports kernel_rdy20]
+set_false_path -to [get_ports kernel_rdy21]
+set_false_path -to [get_ports kernel_rdy22]
+set_false_path -to [get_ports kernel_rdy23]
+set_false_path -to [get_ports kernel_rdy24]
+set_false_path -to [get_ports kernel_rdy25]
+set_false_path -to [get_ports kernel_rdy26]
+set_false_path -to [get_ports kernel_rdy27]
+set_false_path -to [get_ports kernel_rdy28]
+
+set_false_path -to [get_ports kernel_rdy29]
+
+set_false_path -to [get_ports kernel_rdy3]
+
+set_false_path -to [get_ports kernel_rdy30]
+
+set_false_path -to [get_ports kernel_rdy31]
+
+set_false_path -to [get_ports kernel_rdy4]
+
+set_false_path -to [get_ports kernel_rdy5]
+
+set_false_path -to [get_ports kernel_rdy6]
+
+set_false_path -to [get_ports kernel_rdy7]
+
+set_false_path -to [get_ports kernel_rdy8]
+set_false_path -to [get_ports kernel_rdy9]
+
+
