@@ -53,7 +53,7 @@ ker_mem1
 	.input_data		(input_kernel_ram[0]),
 	.output_data    (output_kernel_ram[0])
 );
-
+/*
 bram
 #(
 	.RAM_WIDTH 		(RAM_WIDTH_KER 		),
@@ -772,7 +772,7 @@ rdyval_ker0
 	.clk			(clk				  ),
 	.rst_n			(!reset				  )
 );
-
+/*
 rdyval_pipe_stage 
 #(
 	.DWIDTH			(RAM_WIDTH_KER		  )

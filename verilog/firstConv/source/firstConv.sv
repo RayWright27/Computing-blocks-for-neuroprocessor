@@ -260,7 +260,7 @@ module firstConv
 	reg signed [RAM_WIDTH_IMG-1:0] dat_read_kernel1_mem;   
 	reg signed [RAM_WIDTH_IMG-1:0] inp_kernel1_mem ;
 	reg signed [RAM_WIDTH_IMG-1:0] outp_kernel1_mem;
-	
+
 	wire signed [RAM_WIDTH_IMG-1:0] dat_read_kernel1_mem_w;   
 	wire signed [RAM_WIDTH_IMG-1:0] outp_kernel1_mem_w;
 	always@(posedge clk) begin
@@ -1181,7 +1181,7 @@ module firstConv
 			.dout(outp_kernel31_mem_w),
 			.dat_read(dat_read_kernel31_mem_w)
 	);
-   
+   /**/
     reg								kernel_recieved[31:0];
     reg 		[5:0]				kernel_vals_cnt[31:0];
    //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2256,7 +2256,7 @@ module firstConv
 			.dout(outp_result31_mem_w),
 			.dat_read(dat_read_result31_mem_w)
 	);
-
+/**/
 	reg								resultset2zero[31:0];
    
    
@@ -3300,7 +3300,7 @@ module firstConv
     	end
 
 
-
+/**/
 
 //_________________________________________________________________________________________________________________________________________________________________________________________
    ////////////////////////
@@ -3466,6 +3466,7 @@ module firstConv
 							M3_var[0] <= M3_var[0] + 1;
 							if (M3_var[0] >= M3_PARAM-1)
 							begin
+								M3_var[0] <= 8'd0;
 								conv_done[0] <= 1'd0;
 								en_r_img_mem <= 1'd0;
 								en_r_biases_mem <= 1'd0;
@@ -3479,7 +3480,7 @@ module firstConv
 			//end
 			end
    		end
-   		
+		
    ////////////////////////
    // For the rest of the convolution threads we don't change control signals for image/biases memories
    // to avoid multidriven nets
